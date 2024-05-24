@@ -1,0 +1,13 @@
+.main-layout {
+    display: flex;
+}
+
+.side-layout {
+    width: 13%;
+    height: 100vh;
+
+}
+
+.body-layout {
+    flex: 1;
+}

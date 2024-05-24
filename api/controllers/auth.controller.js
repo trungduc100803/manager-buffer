@@ -1,9 +1,10 @@
 import Auth from "../models/authModel.model.js";
 import bcrypt from 'bcrypt'
 import JWT from 'jsonwebtoken'
+import { handleError } from "../middlewares/handleError.js";
 
 const authController = {
-    signUp: async (req, res) => {
+    signUp: async (req, res, next) => {
         const { username, password, email } = req.body
 
         try {
@@ -54,11 +55,11 @@ const authController = {
 
 
         } catch (error) {
-            console.log(error)
+            next(error)
         }
 
     },
-    signIn: async (req, res) => {
+    signIn: async (req, res, next) => {
         const { email, password } = req.body
 
         try {
@@ -102,7 +103,7 @@ const authController = {
                 })
 
         } catch (error) {
-            console.log(error)
+            next(error)
         }
     }
 }
