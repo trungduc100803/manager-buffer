@@ -1,0 +1,32 @@
+.card {
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: rgba(173, 173, 173, 0.2) 0px 7px 29px 0px;
+    background-color: rgb(240, 241, 241)rgb(240, 241, 241);
+}
+
+.card-img {
+    padding-top: 80%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.card p {
+    font-size: 1.3rem;
+    font-weight: 600;
+    padding: 12px 0 24px 0;
+}
+
+.card span {
+    font-size: 1rem;
+}
+
+.card:hover {
+    transition: all ease 0.3s;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    transform: scale(1.02);
+    cursor: pointer;
+}

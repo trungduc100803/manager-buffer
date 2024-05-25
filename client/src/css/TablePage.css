@@ -1,0 +1,18 @@
+.tablepage-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.tablepage-cards {
+    display: flex;
+    align-items: center;
+    margin: 0 -16px;
+    flex-wrap: wrap;
+}
+
+.tablepage-card-item {
+    width: 25%;
+    padding: 0 16px;
+    margin-bottom: 20px;
+}

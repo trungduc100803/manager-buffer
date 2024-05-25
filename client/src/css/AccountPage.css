@@ -1,0 +1,85 @@
+.accountpage-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.accountpage-body {
+    display: flex;
+    padding: 10px;
+    margin-top: 30px;
+    background-color: rgb(240, 241, 241);
+    border-radius: 10px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.accountpage-avatar {
+    width: 25%;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    overflow: hidden;
+}
+
+.accountpage-avatar>div {
+    padding-top: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+
+.accountpage-content {
+    flex: 1;
+    padding: 50px 0 20px 50px;
+    position: relative;
+}
+
+.account-name {
+    margin-bottom: 80px;
+}
+
+.account-name p {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.account-name span {
+    font-size: 0.9rem;
+    color: #636161;
+    font-weight: 600;
+}
+
+.account-address {
+    margin-bottom: 20px;
+}
+
+.account-address p {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #636161;
+}
+
+.account-address span {
+    display: flex;
+    align-items: center;
+}
+
+.account-icon {
+    margin-right: 10px;
+    font-size: 1.4rem;
+}
+
+.account-edit {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: deepskyblue;
+    font-weight: 600;
+}
+
+.account-edit:hover {
+    text-decoration: underline;
+    transition: all ease 0.2s;
+    cursor: pointer;
+}

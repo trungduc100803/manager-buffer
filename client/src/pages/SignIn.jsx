@@ -1,45 +1,44 @@
-import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React from 'react'
+import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import ReactLoading from 'react-loading';
 
 
-import handleRequestApi from '../api/index'
-import '../css/SignUp.css'
+import '../css/SignIn.css'
 import { setAuthFailure, setAuthPending, setAuthSuccess } from '../redux/authSlice'
+import handleRequestApi from '../api/index';
 
-
-const SignUp = () => {
+const SignIn = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const { error } = useSelector(state => state.user)
+    const { error, loading } = useSelector(state => state.user)
     const [formData, setFormData] = useState({})
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.id]: e.target.value.trim() })
     }
 
-    const handleSubmit = async event => {
+    const handleSubmit = async (event) => {
         event.preventDefault()
         dispatch(setAuthPending())
-        const auth = await handleRequestApi.singup(formData)
+        const auth = await handleRequestApi.signin(formData)
+
         if (!auth.success) {
             dispatch(setAuthFailure(auth.message))
             return
         }
+
         dispatch(setAuthSuccess(auth.auth))
-        navigate('/sign-in')
+        navigate('/')
+
     }
 
-
     return (
-        <div className='sign-up'>
+        <div className='sign-in'>
             <form action="" onSubmit={e => handleSubmit(e)}>
-                <p className='signup-title'>Đăng kí tài khoản</p>
+                <p className='signin-title'>Đăng nhập</p>
 
-                <div className="form-item">
-                    <label htmlFor="">Tên đăng nhập</label>
-                    <input onChange={(e) => handleChange(e)} type="text" name="" id="username" placeholder='' />
-                </div>
                 <div className="form-item">
                     <label htmlFor="">Email</label>
                     <input onChange={(e) => handleChange(e)} type="text" name="" id="email" placeholder='' />
@@ -49,23 +48,18 @@ const SignUp = () => {
                     <label htmlFor="">Mật khẩu</label>
                     <input onChange={(e) => handleChange(e)} type="password" name="" id="password" placeholder='' />
                 </div>
-
-                <div className="form-item">
-                    <label htmlFor="">Nhập lại mật khẩu</label>
-                    <input onChange={(e) => handleChange(e)} type="password" name="" id="repeatpassword" placeholder='' />
-                </div>
                 {
                     error !== null && <p>{error}</p>
                 }
 
-                <div className="btn-register">
-                    <button type='submit' >Đăng kí</button>
+                <div className="btn-signup">
+                    <button type='submit' >{loading ? <ReactLoading height={'20px'} width={'20px'} color='white' /> : 'Đăng nhập'}</button>
                 </div>
-                <p className="suggest-login">
-                    Nếu bạn có tài khoản hãy <Link to={'/sign-in'}>Đăng nhập</Link></p>
+                <p className="suggest-signup">
+                    Nếu bạn chưa có tài khoản hãy <Link to={'/sign-up'}>Đăng kí</Link></p>
             </form>
         </div>
     )
 }
 
-export default SignUp
+export default SignIn

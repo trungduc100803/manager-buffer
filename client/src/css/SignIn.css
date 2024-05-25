@@ -1,17 +1,17 @@
-.sign-up {
+.sign-in {
     height: 100vh;
     background: linear-gradient(to top, #86B6F6, #B4D4FF);
     display: flex;
 }
 
-.signup-title {
+.signin-title {
     font-size: 2rem;
     font-weight: 600;
     text-align: center;
     margin-bottom: 30px;
 }
 
-.sign-up form {
+.sign-in form {
     margin: auto;
     padding: 20px;
     min-width: 550px;
@@ -36,7 +36,7 @@
     outline: none;
 }
 
-.btn-register {
+.btn-signup {
     margin-top: 70px;
     font-size: 1.2rem;
     font-weight: 600;
@@ -47,23 +47,23 @@
     background-color: #B4D4FF;
 }
 
-.btn-register:hover {
+.btn-signup:hover {
     color: white;
     transition: all ease 0.2s;
     cursor: pointer;
     background-color: #86B6F6;
 }
 
-.suggest-login {
+.suggest-signup {
     text-align: center;
     margin-top: 6px;
 }
 
-.suggest-login a {
+.suggest-signup a {
     color: #86B6F6;
 }
 
-.suggest-login a:hover {
+.suggest-signup a:hover {
     text-decoration: underline;
     transition: all ease 0.2s;
     font-weight: 600;

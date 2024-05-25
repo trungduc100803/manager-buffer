@@ -5,16 +5,21 @@ import { handleError } from "../middlewares/handleError.js";
 
 const authController = {
     signUp: async (req, res, next) => {
-        const { username, password, email } = req.body
-
+        const { username, password, email, repeatpassword } = req.body
         try {
-            if (!username || !password || !email) {
+            if (!username || !password || !email, !repeatpassword) {
                 return res.status(400).send({
                     success: false,
                     message: "Fields is require"
                 })
             }
 
+            if (password !== repeatpassword) {
+                return res.status(400).send({
+                    success: false,
+                    message: "Fields is require"
+                })
+            }
             // const auth = await Auth.findOne(email)
             // if (auth) {
             //     return res.status(400).send({
@@ -78,7 +83,7 @@ const authController = {
             })
 
 
-            const validPassword = bcrypt.compare(password, auth.password)
+            const validPassword = await bcrypt.compare(password, auth.password)
 
             if (!validPassword) return res.status(400).send({
                 success: false,
@@ -102,6 +107,19 @@ const authController = {
                     auth: rest
                 })
 
+        } catch (error) {
+            next(error)
+        }
+    },
+    singOut: async (req, res, next) => {
+        try {
+            return res
+                .status(200)
+                .clearCookie('access_token')
+                .send({
+                    success: true,
+                    message: 'User has been logout'
+                })
         } catch (error) {
             next(error)
         }

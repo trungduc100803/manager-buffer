@@ -1,8 +1,18 @@
-.home-page {
-    padding: 100px 20px 50px 20px;
-}
-
-.home-page h1 {
+.home-page>p {
     font-size: 1.8rem;
     font-weight: 600;
+}
+
+.home-dash {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 -12px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.home-dash-item {
+    flex: 1;
+    padding: 0 12px;
 }
