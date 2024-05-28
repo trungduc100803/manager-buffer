@@ -100,7 +100,7 @@ const authController = {
 
             return res
                 .status(200)
-                .cookie("access_token", token)
+                .cookie("access_token", token, { httpOnly: true })
                 .send({
                     success: true,
                     message: "Sign in successfully",

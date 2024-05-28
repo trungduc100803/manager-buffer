@@ -1,0 +1,26 @@
+.detailproduct{
+    padding: 70px 100px;
+}
+
+.line-link {
+    display: flex;
+    align-items:  center;
+}
+
+.line-link-item {
+    display: flex;
+    align-items: center;
+    color: rgb(24, 156, 156);
+}
+
+.line-link-icon{
+    font-size: 1.2rem;
+    margin-right: 2px;
+}
+
+
+.line-link-item:hover{
+    transition: all ease 0.2s;
+    text-decoration: underline;
+    cursor: pointer;
+}

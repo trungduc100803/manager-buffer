@@ -7,6 +7,9 @@ import PrivateRoute from './components/PrivateRoute'
 import SignUp from './pages/SignUp'
 import SignIn from './pages/SignIn'
 import DetailProduct from './pages/DetailProduct'
+import AdminRoute from './components/AdminRoute'
+import AddChair from './pages/AddChair'
+import AddTable from './pages/AddTable'
 
 const App = () => {
 
@@ -18,6 +21,10 @@ const App = () => {
         <Route path='/detail-product' element={<DetailProduct />} />
         <Route element={<PrivateRoute />}>
           <Route path='/' element={<MainLayout />} />
+        </Route>
+        <Route element={<AdminRoute />}>
+          <Route path='/add-chair' element={<AddChair />} />
+          <Route path='/add-table' element={<AddTable />} />
         </Route>
       </Routes>
     </BrowserRouter>

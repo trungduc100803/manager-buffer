@@ -2,6 +2,7 @@ import React from 'react'
 import '../css/HomePage.css'
 import CardHomeDash from '../components/CardHomeDash'
 
+
 const HomePage = () => {
     return (
         <div className='home-page'>

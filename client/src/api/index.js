@@ -35,6 +35,19 @@ const handleRequestApi = {
 
         const auth = await res.json()
         return auth
+    },
+    addChair: async (formData) => {
+        const res = await fetch(urlApi.addChairUrl, {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData)
+        })
+
+        const chair = await res.json()
+        return chair
     }
 }
 

@@ -8,6 +8,7 @@ import HomePage from '../pages/HomePage'
 import AccountPage from '../pages/AccountPage'
 import ChairPage from '../pages/ChairPage'
 import TablePage from '../pages/TablePage'
+import Manager from '../pages/Manager'
 
 const MainLayout = () => {
     const location = useLocation()
@@ -36,6 +37,9 @@ const MainLayout = () => {
                 }
                 {
                     tab === 'table' && <TablePage />
+                }
+                {
+                    tab === 'admin' && <Manager />
                 }
             </div>
         </div>
