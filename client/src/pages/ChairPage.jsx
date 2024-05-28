@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 
 import '../css/ChairPage.css'
 import Card from '../components/Card'
 import slug from '../config/slug'
+import handleRequestApi from '../api'
+import { setAllChair } from '../redux/chairSlice'
 
 const datachair = {
     id: '83289328',
@@ -12,20 +15,42 @@ const datachair = {
 }
 
 const ChairPage = () => {
+    const dispatch = useDispatch()
+    const { listCurrentChair } = useSelector(state => state.chair)
+
+    useEffect(() => {
+        const getAllChair = async () => {
+            const chairs = await handleRequestApi.getAllChair()
+            if (!chairs.success) {
+                return
+            }
+            dispatch(setAllChair(chairs.chairs))
+        }
+        getAllChair()
+    }, [])
     return (
         <>
             <div className='chairpage'>
                 <p className="chairpage-title">Các mẫu ghế</p>
                 <div className="chairpage-cards">
-                    <div className="chairpage-card-item">
-                        <Card data={datachair}  slug={slug.chair} />
+                    {
+                        listCurrentChair.length > 0 ?
+                            listCurrentChair.map((chair) => (
+                                <div className="chairpage-card-item">
+                                    <Card key={chair._id} data={chair} slug={slug.chair} />
+                                </div>
+                            )) :
+                            <p>Chưa có ghế nào được thêm</p>
+                    }
+                    {/* <div className="chairpage-card-item">
+                        <Card data={datachair} slug={slug.chair} />
                     </div>
                     <div className="chairpage-card-item">
-                        <Card data={datachair}  slug={slug.chair} />
+                        <Card data={datachair} slug={slug.chair} />
                     </div>
                     <div className="chairpage-card-item">
-                        <Card data={datachair}  slug={slug.chair} />
-                    </div>
+                        <Card data={datachair} slug={slug.chair} />
+                    </div> */}
                 </div>
             </div>
         </>

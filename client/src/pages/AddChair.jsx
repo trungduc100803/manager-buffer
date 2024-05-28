@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
+import { useDispatch, useSelector } from 'react-redux'
+import ReactLoading from 'react-loading'
+import { toast } from 'react-toastify'
 
-import {app} from '../firebase'
+
+import { app } from '../firebase'
 import '../css/AddChair.css'
 import handleRequestApi from '../api/index'
+import { setFailureAddChair, setPendingAddChair, setSuccessAddChair } from '../redux/chairSlice'
 
 export default function AddChair() {
-
+  const dispatch = useDispatch()
+  const { listCurrentChair, loading, err } = useSelector(state => state.chair)
   const [formData, setFormData] = useState({})
   const [file, setFile] = useState(null)
   const [fileUrl, setFileUrl] = useState([])
@@ -16,21 +22,30 @@ export default function AddChair() {
 
 
   const handleChange = (e) => {
-    setFormData({...formData, [e.target.id]: e.target.value.trim()})
+    setFormData({ ...formData, [e.target.id]: e.target.value.trim() })
   }
 
   const handleChangimg = e => {
     const fileElement = e.target.files[0]
-    if(fileElement){
+    if (fileElement) {
       setFile(fileElement)
     }
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    dispatch(setPendingAddChair())
     const chair = await handleRequestApi.addChair(formData)
-    console.log(chair)
+    if (!chair.success) {
+      dispatch(setFailureAddChair(chair.message))
+      return
+    }
+    dispatch(setSuccessAddChair(chair.chair))
+    toast.success("Thêm sản phẩm thành công")
   }
+
+
+  console.log(listCurrentChair)
 
   const uploadImage = async () => {
     //su dung storage trong firebase
@@ -51,32 +66,32 @@ export default function AddChair() {
     const storageRef = ref(storage, fileName)
     const uploadTask = uploadBytesResumable(storageRef, file)
     uploadTask.on(
-        'state_changed',
-        snapshot => {
-            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-            //cai tien trinh upload img
-            setImageFileUploadProgress(progress)
-        },
-        error => {
-            setImageFileUploadError('Cound not upload image ( File must be less than 2MB )')
-            setImageFileUploadProgress(null)
-            setFile(null)
-            setFileUrl(null)
+      'state_changed',
+      snapshot => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        //cai tien trinh upload img
+        setImageFileUploadProgress(progress)
+      },
+      error => {
+        setImageFileUploadError('Cound not upload image ( File must be less than 2MB )')
+        setImageFileUploadProgress(null)
+        setFile(null)
+        setFileUrl(null)
+        setImageFileUploading(false)
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref)
+          .then(downloadUrl => {
+            setFileUrl(downloadUrl)
+            setFormData({ ...formData, urlImg: downloadUrl })
             setImageFileUploading(false)
-        },
-        () => {
-            getDownloadURL(uploadTask.snapshot.ref)
-                .then(downloadUrl => {
-                    setFileUrl(downloadUrl)
-                    setFormData({...formData, urlImg:downloadUrl})
-                    setImageFileUploading(false)
-                })
-        }
+          })
+      }
     )
-}
+  }
 
   useEffect(() => {
-    if(file){
+    if (file) {
       uploadImage()
     }
   }, [file])
@@ -90,12 +105,12 @@ export default function AddChair() {
             <label htmlFor="">Tên ghế</label>
             <input onChange={e => handleChange(e)} type="text" id='name' />
           </div>
-          
+
           <div className="addchair-item">
             <label htmlFor="">Giá</label>
             <input onChange={e => handleChange(e)} type="text" id='price' />
           </div>
-          
+
           <div className="addchair-item">
             <label htmlFor="">Màu sắc</label>
             <input onChange={e => handleChange(e)} type="text" id='color' />
@@ -120,15 +135,18 @@ export default function AddChair() {
           </div>
           <div className="addchair-item">
             <label htmlFor="">Hình ảnh ghế</label>
-            <input onChange={e => handleChangimg(e)} type="file" id='urlImg' accept='image/*'/>
+            <input onChange={e => handleChangimg(e)} type="file" id='urlImg' accept='image/*' />
           </div>
 
           <div className="showchair">
-            <img src={formData.urlImg} style={{width: "30px", height: "30px"}} alt="" />
+            <img src={formData.urlImg} style={{ width: "30px", height: "30px" }} alt="" />
           </div>
 
-          <button type="submit">Thêm sản phẩm</button>
+          <button type="submit">{loading ? <ReactLoading height={'20px'} width={'20px'} color='white' /> : 'Thêm sản phẩm'}</button>
         </form>
+        {
+          err && <p>{err}</p>
+        }
       </div>
     </>
   )

@@ -8,8 +8,8 @@ const Card = ({ data, slug }) => {
     return (
         <>
             <div className='card'>
-                <Link to={`/detail-product?type=${slug}&id=${data.id}&product=${data.name}`}>
-                    <div className="card-img" style={{ backgroundImage: `url(${data.urlImg})` }}></div>
+                <Link to={`/detail-product?type=${slug}&id=${data._id}&product=${data.name}`}>
+                    <div className="card-img" style={{ backgroundImage: `url(${data.urlImg[0]})` }}></div>
                     <p>{data.name}</p>
                     <span>{data.price}đ</span>
                 </Link>

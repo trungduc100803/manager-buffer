@@ -1,14 +1,16 @@
 .main-layout {
     display: flex;
+    height: 100vh;
 }
 
 .side-layout {
     width: 13%;
-    height: 100vh;
 
 }
 
 .body-layout {
+
     padding: 100px 20px 50px 20px;
     flex: 1;
+    overflow-y: scroll;
 }

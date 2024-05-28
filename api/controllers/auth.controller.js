@@ -123,7 +123,8 @@ const authController = {
         } catch (error) {
             next(error)
         }
-    }
+    },
+
 }
 
 

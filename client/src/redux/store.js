@@ -4,9 +4,11 @@ import storage from 'redux-persist/lib/storage'
 import persistStore from 'redux-persist/es/persistStore'
 
 import userReducer from './authSlice'
+import chairReducer from './chairSlice'
 
 const rootReducer = combineReducers({
     user: userReducer,
+    chair: chairReducer,
 })
 
 const persistConfig = {

@@ -48,7 +48,31 @@ const handleRequestApi = {
 
         const chair = await res.json()
         return chair
+    },
+    getAllChair: async () => {
+        const res = await fetch(urlApi.getAllChairUrl, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+
+        const chairs = await res.json()
+        return chairs
+    },
+    deleteChair: async (idChair) => {
+        const res = await fetch(urlApi.deleteChairUrl, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ idChair })
+        })
+
+        const chairs = await res.json()
+        return chairs
     }
+
 }
 
 

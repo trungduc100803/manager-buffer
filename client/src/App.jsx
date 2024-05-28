@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 import MainLayout from './layout/MainLayout'
 import PrivateRoute from './components/PrivateRoute'
@@ -15,6 +16,7 @@ const App = () => {
 
   return (
     <BrowserRouter>
+      <ToastContainer />
       <Routes>
         <Route path='/sign-up' element={<SignUp />} />
         <Route path='/sign-in' element={<SignIn />} />

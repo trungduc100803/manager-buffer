@@ -5,6 +5,8 @@ const urlApi = {
     signInUrl: baseUrl + 'auth/sign-in',
     signOutUrl: baseUrl + 'auth/sign-out',
     addChairUrl: baseUrl + 'chair/add-chair',
+    getAllChairUrl: baseUrl + 'chair/get-all-chair',
+    deleteChairUrl: baseUrl + 'chair/delete-chair',
 }
 
 
