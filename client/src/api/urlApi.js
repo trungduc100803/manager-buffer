@@ -8,7 +8,10 @@ const urlApi = {
     getAllChairUrl: baseUrl + 'chair/get-all-chair',
     deleteChairUrl: baseUrl + 'chair/delete-chair',
     getChairByIdUrl: (id) => {
-        return baseUrl + `chair//get-chair-byId/${id}`
+        return baseUrl + `chair/get-chair-byId/${id}`
+    },
+    updateChairUrl: (id) => {
+        return baseUrl + `chair/update-chair/${id}`
     },
 }
 

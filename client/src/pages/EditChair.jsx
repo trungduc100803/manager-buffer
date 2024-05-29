@@ -3,120 +3,110 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/
 import { useDispatch, useSelector } from 'react-redux'
 import ReactLoading from 'react-loading'
 import { toast } from 'react-toastify'
-import {useLocation} from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 
 import { app } from '../firebase'
 import '../css/AddChair.css'
 import handleRequestApi from '../api/index'
-import { setFailureAddChair, setPendingAddChair, setSuccessAddChair } from '../redux/chairSlice'
+import { setAllChair, setFailureAddChair, setPendingAddChair, setSuccessAddChair } from '../redux/chairSlice'
 
 
 
 export default function EditChair() {
-    const location = useLocation()
-    const dispatch = useDispatch()
-    const { loading } = useSelector(state => state.chair)
-    const [formData, setFormData] = useState({})
-    const [file, setFile] = useState(null)
-    const [fileUrl, setFileUrl] = useState([])
-    const [imageFileUploadProgress, setImageFileUploadProgress] = useState(0)
-    const [imageFileUploading, setImageFileUploading] = useState(false)
-    const [imageFileUploadError, setImageFileUploadError] = useState(null)
-    const [errForm, setErrForm] = useState('')
-    const [chairEdit, setChairEdit] = useState({})
+  const location = useLocation()
+  const dispatch = useDispatch()
+  const { loading } = useSelector(state => state.chair)
+  const [formData, setFormData] = useState({})
+  const [file, setFile] = useState(null)
+  const [fileUrl, setFileUrl] = useState([])
+  const [imageFileUploadProgress, setImageFileUploadProgress] = useState(0)
+  const [imageFileUploading, setImageFileUploading] = useState(false)
+  const [imageFileUploadError, setImageFileUploadError] = useState(null)
+  const [errForm, setErrForm] = useState('')
 
-    const handleChange = (e) => {
-      setFormData({ ...formData, [e.target.id]: e.target.value.trim() })
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value.trim() })
+  }
+
+  const handleChangimg = e => {
+    const fileElement = e.target.files[0]
+    if (fileElement) {
+      setFile(fileElement)
     }
-  
-    const handleChangimg = e => {
-      const fileElement = e.target.files[0]
-      if (fileElement) {
-        setFile(fileElement)
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const urlParams = new URLSearchParams(location.search)
+    const idFromUrl = urlParams.get('id')
+    dispatch(setPendingAddChair())
+    const chairs = await handleRequestApi.updateChair(formData, idFromUrl)
+    if (!chairs.success) {
+      setErrForm(chairs.message)
+      dispatch(setFailureAddChair(chairs.message))
+      return
+    }
+    dispatch(setAllChair(chairs.chairs))
+    toast.success("Cập nhật sản phẩm thành công")
+  }
+
+
+
+  const uploadImage = async () => {
+    setImageFileUploading(true)
+    setImageFileUploadError(null)
+    const storage = getStorage(app)
+    const fileName = new Date().getTime() + file.name
+    const storageRef = ref(storage, fileName)
+    const uploadTask = uploadBytesResumable(storageRef, file)
+    uploadTask.on(
+      'state_changed',
+      snapshot => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        //cai tien trinh upload img
+        setImageFileUploadProgress(progress)
+      },
+      error => {
+        setImageFileUploadError('Cound not upload image ( File must be less than 2MB )')
+        setImageFileUploadProgress(null)
+        setFile(null)
+        setFileUrl(null)
+        setImageFileUploading(false)
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref)
+          .then(downloadUrl => {
+            setFileUrl(downloadUrl)
+            setFormData({ ...formData, urlImg: downloadUrl })
+            setImageFileUploading(false)
+          })
       }
+    )
+  }
+
+  useEffect(() => {
+    if (file) {
+      uploadImage()
     }
-  
-    const handleSubmit = async (e) => {
-      e.preventDefault()
-      dispatch(setPendingAddChair())
-      const chair = await handleRequestApi.addChair(formData)
+  }, [file])
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search)
+    const idFromUrl = urlParams.get('id')
+    const getChair = async (id) => {
+      const chair = await handleRequestApi.getChairById(id)
       if (!chair.success) {
-        setErrForm(chair.message)
-        dispatch(setFailureAddChair(chair.message))
+        setErrForm('Không tìm thấy ghế')
         return
       }
-      dispatch(setSuccessAddChair(chair.chair))
-      toast.success("Thêm sản phẩm thành công")
+      setFormData(chair.chair)
     }
-  
-  
-  
-    const uploadImage = async () => {
-      //su dung storage trong firebase
-      //     service firebase.storage {
-      //         match / b / { bucket } / o {
-      //             match / { allPaths=**} {
-      //   allow read;
-      //   allow write: if
-      //   request.resource.size < 2 * 1024 * 1024 &&
-      //                     request.resource.contentType.matches('image/.*')
-      // }
-      //         }
-      //     }
-      setImageFileUploading(true)
-      setImageFileUploadError(null)
-      const storage = getStorage(app)
-      const fileName = new Date().getTime() + file.name
-      const storageRef = ref(storage, fileName)
-      const uploadTask = uploadBytesResumable(storageRef, file)
-      uploadTask.on(
-        'state_changed',
-        snapshot => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          //cai tien trinh upload img
-          setImageFileUploadProgress(progress)
-        },
-        error => {
-          setImageFileUploadError('Cound not upload image ( File must be less than 2MB )')
-          setImageFileUploadProgress(null)
-          setFile(null)
-          setFileUrl(null)
-          setImageFileUploading(false)
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref)
-            .then(downloadUrl => {
-              setFileUrl(downloadUrl)
-              setFormData({ ...formData, urlImg: downloadUrl })
-              setImageFileUploading(false)
-            })
-        }
-      )
+
+    if (idFromUrl) {
+      getChair(idFromUrl)
     }
-  
-    useEffect(() => {
-      if (file) {
-        uploadImage()
-      }
-    }, [file])
-
-    useEffect(() => {
-        const urlParams = new URLSearchParams(location.search)
-        const idFromUrl = urlParams.get('id')
-        const getChair = async (id) => {
-          const chair = await handleRequestApi.getChairById(id)
-          if(!chair.success){
-            setErrForm('Không tìm thấy ghế')
-            return
-          }
-          setChairEdit(chair.chair)
-        }
-
-        if (idFromUrl) {
-          getChair(idFromUrl)
-        }
-    }, [])
+  }, [])
 
   return (
     <>
@@ -125,60 +115,57 @@ export default function EditChair() {
         <form action="" onSubmit={e => handleSubmit(e)}>
           <div className="addchair-item">
             <label htmlFor="">Tên ghế</label>
-            <input value={chairEdit.name} onChange={e => handleChange(e)} type="text" id='name' />
+            <input value={formData.name} onChange={e => handleChange(e)} type="text" id='name' />
           </div>
 
           <div className="addchair-item">
             <label htmlFor="">Giá</label>
-            <input value={chairEdit.price} onChange={e => handleChange(e)} type="text" id='price' />
+            <input value={formData.price} onChange={e => handleChange(e)} type="text" id='price' />
           </div>
 
           <div className="addchair-item">
             <label htmlFor="">Màu sắc</label>
-            <input value={chairEdit.color} onChange={e => handleChange(e)} type="text" id='color' />
+            <input value={formData.color} onChange={e => handleChange(e)} type="text" id='color' />
           </div>
 
           <div className="addchair-item">
             <label htmlFor="">Ngày nhập</label>
-            <input value={chairEdit.dateIn} onChange={e => handleChange(e)} type="date" id='dateIn' />
+            <input value={formData.dateIn} onChange={e => handleChange(e)} type="date" id='dateIn' />
           </div>
 
           <div className="addchair-item">
             <label htmlFor="">Số lượng lúc nhập</label>
-            <input value={chairEdit.numberAtIn} onChange={e => handleChange(e)} type="number" id='numberAtIn' />
+            <input value={formData.numberAtIn} onChange={e => handleChange(e)} type="number" id='numberAtIn' />
           </div>
           <div className="addchair-item">
             <label htmlFor="">Địa chỉ nhập</label>
-            <input onChange={e => handleChange(e)} type="text" id='addressIn' value={chairEdit.addressIn} />
+            <input onChange={e => handleChange(e)} type="text" id='addressIn' value={formData.addressIn} />
           </div>
           <div className="addchair-item">
             <label htmlFor="">Tình trạng lúc nhập</label>
-            <input onChange={e => handleChange(e)} type="text" id='status' value={chairEdit.status} />
+            <input onChange={e => handleChange(e)} type="text" id='status' value={formData.status} />
           </div>
           <div className="addchair-item">
             <label htmlFor="">Hình ảnh ghế</label>
-            <input onChange={e => handleChangimg(e)} type="file" id='urlImg' accept='image/*'  />
+            <input onChange={e => handleChangimg(e)} type="file" id='urlImg' accept='image/*' />
           </div>
 
           {
-            imageFileUploading && 
+            imageFileUploading &&
             <div>
-              <p>{"Loading..."+ imageFileUploadProgress.toFixed()+"%"}</p>
+              <p>{"Loading..." + imageFileUploadProgress.toFixed() + "%"}</p>
               <ReactLoading height={'40px'} width={'20px'} color='black' />
             </div>
           }
-            {
-              formData.urlIm ? 
-                <div className="showchair">
-                  <img src={formData.urlImg} alt="" />
-                </div> :
-                <div className="showchair">
-                <img src={chairEdit.urlImg} alt="" />
-              </div>
-            }
-            {
-              imageFileUploadError && <p className='err-img'>{imageFileUploadError}</p>
-            }
+          {
+            formData.urlImg &&
+            <div className="showchair">
+              <img src={formData.urlImg} alt="" />
+            </div>
+          }
+          {
+            imageFileUploadError && <p className='err-img'>{imageFileUploadError}</p>
+          }
 
           <button className='btn-addchair' type="submit">{loading ? <ReactLoading height={'20px'} width={'20px'} color='white' /> : 'Cập nhật thông tin'}</button>
         </form>

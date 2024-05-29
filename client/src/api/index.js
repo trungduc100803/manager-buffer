@@ -81,6 +81,17 @@ const handleRequestApi = {
         })
         const chair = await res.json()
         return chair
+    },
+    updateChair: async (formData, id) => {
+        const res = await fetch(urlApi.updateChairUrl(id), {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData)
+        })
+        const chairs = await res.json()
+        return chairs
     }
 
 }

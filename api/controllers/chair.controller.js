@@ -77,13 +77,13 @@ const chairController = {
     getChairById: async (req, res, next) => {
         const id = req.params.id
         try {
-            if(!id) return res.status(400).send({
+            if (!id) return res.status(400).send({
                 success: false,
                 message: 'khong tim thay id cua ghe'
             })
 
-            const chair = await Chair.findOne({_id: id})
-            if(!chair) return res.status(400).send({
+            const chair = await Chair.findOne({ _id: id })
+            if (!chair) return res.status(400).send({
                 success: false,
                 message: "khong tim thay ghe"
             })
@@ -93,6 +93,48 @@ const chairController = {
                 message: "tim thanh cong",
                 chair
             })
+        } catch (error) {
+            next(error)
+        }
+    },
+    updateChair: async (req, res, next) => {
+        const { addressIn, color, dateIn, name, numberAtIn, price, status, urlImg } = req.body
+        const { id } = req.params.id
+        try {
+            // verify isadmin
+            if (!addressIn || !color || !dateIn || !name || !numberAtIn || !price || !status || !urlImg) {
+                return res.status(400).send({
+                    success: false,
+                    message: "Yêu cầu nhập đầy đủ thông tin"
+                })
+            }
+
+            await Chair.findOneAndUpdate(
+                id,
+                {
+                    $set: {
+                        addressIn: addressIn,
+                        color: color,
+                        dateIn: dateIn,
+                        name: name,
+                        numberAtIn: numberAtIn,
+                        price: price,
+                        status: status,
+                        urlImg: urlImg
+                    }
+                },
+                { new: true }
+            )
+
+            const chairs = await Chair.find()
+
+            return res.status(200).send({
+                success: true,
+                message: 'Cập nhật thành công',
+                chairs
+            })
+
+
         } catch (error) {
             next(error)
         }

@@ -6,6 +6,8 @@ import cookieParser from 'cookie-parser'
 import { connectDB } from '../api/utils/connectDB.js'
 import authRouter from './routers/auth.route.js'
 import chairRouter from './routers/chair.route.js'
+import billRouter from './routers/bill.route.js'
+
 
 const port = process.env.PORT || 5000
 dotenv.config({
@@ -28,6 +30,7 @@ app.listen(port, () => {
 
 app.use('/api/auth', authRouter)
 app.use('/api/chair', chairRouter)
+app.use('/api/bill', billRouter)
 
 
 
