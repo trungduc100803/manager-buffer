@@ -73,6 +73,29 @@ const chairController = {
         } catch (error) {
             next(error)
         }
+    },
+    getChairById: async (req, res, next) => {
+        const id = req.params.id
+        try {
+            if(!id) return res.status(400).send({
+                success: false,
+                message: 'khong tim thay id cua ghe'
+            })
+
+            const chair = await Chair.findOne({_id: id})
+            if(!chair) return res.status(400).send({
+                success: false,
+                message: "khong tim thay ghe"
+            })
+
+            return res.status(200).send({
+                success: true,
+                message: "tim thanh cong",
+                chair
+            })
+        } catch (error) {
+            next(error)
+        }
     }
 }
 

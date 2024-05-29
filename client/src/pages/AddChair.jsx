@@ -12,14 +12,14 @@ import { setFailureAddChair, setPendingAddChair, setSuccessAddChair } from '../r
 
 export default function AddChair() {
   const dispatch = useDispatch()
-  const { listCurrentChair, loading, err } = useSelector(state => state.chair)
+  const { loading } = useSelector(state => state.chair)
   const [formData, setFormData] = useState({})
   const [file, setFile] = useState(null)
   const [fileUrl, setFileUrl] = useState([])
   const [imageFileUploadProgress, setImageFileUploadProgress] = useState(0)
   const [imageFileUploading, setImageFileUploading] = useState(false)
   const [imageFileUploadError, setImageFileUploadError] = useState(null)
-
+  const [errForm, setErrForm] = useState('')
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() })
@@ -37,6 +37,7 @@ export default function AddChair() {
     dispatch(setPendingAddChair())
     const chair = await handleRequestApi.addChair(formData)
     if (!chair.success) {
+      setErrForm(chair.message)
       dispatch(setFailureAddChair(chair.message))
       return
     }
@@ -45,7 +46,6 @@ export default function AddChair() {
   }
 
 
-  console.log(listCurrentChair)
 
   const uploadImage = async () => {
     //su dung storage trong firebase
@@ -138,14 +138,27 @@ export default function AddChair() {
             <input onChange={e => handleChangimg(e)} type="file" id='urlImg' accept='image/*' />
           </div>
 
-          <div className="showchair">
-            <img src={formData.urlImg} style={{ width: "30px", height: "30px" }} alt="" />
-          </div>
+          {
+            imageFileUploading && 
+            <div>
+              <p>{"Loading..."+ imageFileUploadProgress.toFixed()+"%"}</p>
+              <ReactLoading height={'40px'} width={'20px'} color='black' />
+            </div>
+          }
+            {
+              formData.urlImg && 
+                <div className="showchair">
+                  <img src={formData.urlImg} alt="" />
+                </div>
+            }
+            {
+              imageFileUploadError && <p className='err-img'>{imageFileUploadError}</p>
+            }
 
-          <button type="submit">{loading ? <ReactLoading height={'20px'} width={'20px'} color='white' /> : 'Thêm sản phẩm'}</button>
+          <button className='btn-addchair' type="submit">{loading ? <ReactLoading height={'20px'} width={'20px'} color='white' /> : 'Thêm sản phẩm'}</button>
         </form>
         {
-          err && <p>{err}</p>
+          errForm && <p className='err-addchair'>{errForm}</p>
         }
       </div>
     </>

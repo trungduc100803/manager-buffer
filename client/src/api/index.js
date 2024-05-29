@@ -71,6 +71,16 @@ const handleRequestApi = {
 
         const chairs = await res.json()
         return chairs
+    },
+    getChairById: async (id) => {
+        const res = await fetch(urlApi.getChairByIdUrl(id), {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+        const chair = await res.json()
+        return chair
     }
 
 }

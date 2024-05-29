@@ -1,3 +1,69 @@
 .addchair{
     padding: 70px 120px;
 }
+
+.addchair-title{
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.addchair-item{
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    
+}
+
+.addchair-item label{
+    width: 200px;
+    font-size: 1rem;
+    color: #646464;
+    font-weight: 600;
+}
+
+.addchair-item input{
+    border-radius: 10px;
+    outline: none;
+    width: 400px;
+}
+
+.showchair {
+    width: 200px;
+    height: 180px;
+    overflow: hidden;
+    border-radius: 10px;
+    position: relative;
+}
+
+.showchair img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.err-img{
+    font-size: 1rem;
+    color: red;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.err-addchair{
+    color: red;
+    margin-top: 10px;
+    font-size: 1rem;
+}
+
+.btn-addchair{
+    border-radius: 4px;
+    padding: 8px 20px;
+    background-color: aquamarine;
+    font-weight: 600;
+    margin-top: 20px;
+}
+
+.btn-addchair:hover{
+    transition: all ease 0.2s;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}

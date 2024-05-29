@@ -11,6 +11,7 @@ import DetailProduct from './pages/DetailProduct'
 import AdminRoute from './components/AdminRoute'
 import AddChair from './pages/AddChair'
 import AddTable from './pages/AddTable'
+import EditChair from './pages/EditChair';
 
 const App = () => {
 
@@ -21,6 +22,7 @@ const App = () => {
         <Route path='/sign-up' element={<SignUp />} />
         <Route path='/sign-in' element={<SignIn />} />
         <Route path='/detail-product' element={<DetailProduct />} />
+        <Route path='/edit-chair' element={<EditChair />} />
         <Route element={<PrivateRoute />}>
           <Route path='/' element={<MainLayout />} />
         </Route>

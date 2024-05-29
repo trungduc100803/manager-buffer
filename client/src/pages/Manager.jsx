@@ -107,7 +107,7 @@ const ChairComp = () => {
                   <div className="chaircomp-content-body-item color">{chair.color}</div>
                   <div className="chaircomp-content-body-item datein">{chair.dateIn}</div>
                   <div className="chaircomp-content-body-item tool">
-                    <Link className='edit-chaircomp' to={'#'}>Sửa</Link>
+                    <Link className='edit-chaircomp' to={`/edit-chair?id=${chair._id}&name=${chair.name}`}>Sửa</Link>
                     <span onClick={() => openModal(chair._id)}>Xóa</span>
                   </div>
                 </div>
