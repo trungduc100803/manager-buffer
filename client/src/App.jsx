@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import { ToastContainer } from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+import { useSelector } from 'react-redux'
 
+import { socket } from './socketIO';
 import MainLayout from './layout/MainLayout'
 import PrivateRoute from './components/PrivateRoute'
 import SignUp from './pages/SignUp'
@@ -12,8 +14,31 @@ import AdminRoute from './components/AdminRoute'
 import AddChair from './pages/AddChair'
 import AddTable from './pages/AddTable'
 import EditChair from './pages/EditChair';
+import handleRequestApi from './api';
+import './App.css'
+
+
 
 const App = () => {
+  const { currentUser } = useSelector(state => state.user)
+
+  useEffect(() => {
+    socket.on("connect", () => {
+      console.log(socket.id);
+      socket.emit('user-online', currentUser._id)
+      if (currentUser.isAdmin) {
+        socket.emit('admin-online', currentUser._id)
+      }
+
+      socket.on('recevie-export-chair', async data => {
+        const auth = await handleRequestApi.getAuthById(data.from)
+        if (auth) {
+          const dataAuth = await auth.auth
+          toast(<ToastRecevie dataAuth={dataAuth} />)
+        }
+      })
+    });
+  }, [])
 
   return (
     <BrowserRouter>
@@ -34,5 +59,16 @@ const App = () => {
     </BrowserRouter>
   )
 }
+
+
+const ToastRecevie = ({ dataAuth }) => {
+  return <>
+    <div className="toastRecevie">
+      <img src={dataAuth.urlImgProfile} alt="" />
+      <p>{dataAuth.username} <span>đã gửi yêu cầu phê duyệt xuất ghế khỏi kho.</span></p>
+    </div>
+  </>
+}
+
 
 export default App

@@ -2,12 +2,14 @@ import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
+import { createServer } from "http";
+import { Server } from "socket.io";
 
 import { connectDB } from '../api/utils/connectDB.js'
 import authRouter from './routers/auth.route.js'
 import chairRouter from './routers/chair.route.js'
 import billRouter from './routers/bill.route.js'
-
+import notifyProductReducer from './routers/notifyExportProduct.route.js'
 
 const port = process.env.PORT || 5000
 dotenv.config({
@@ -15,6 +17,8 @@ dotenv.config({
     credentials: true // Để cho phép cookie
 })
 const app = express()
+const httpServer = createServer(app);
+
 app.use(cors({
     origin: 'http://localhost:5173',
     credentials: true
@@ -22,15 +26,48 @@ app.use(cors({
 app.use(cookieParser())
 app.use(express.json())
 
+const io = new Server(httpServer, {
+    cors: {
+        origin: 'http://localhost:5173'
+    }
+});
+
+
+global.onlineUser = new Map()
+global.adminOnline = new Map()
+
+io.on("connection", (socket) => {
+    socket.on('user-online', user => {
+        onlineUser.set(user, socket.id)
+    })
+
+    socket.on('admin-online', user => {
+        adminOnline.set(user, socket.id)
+    })
+
+    socket.on('send-export-chair', dataExportChair => {
+        const adminRecevie = adminOnline.get(dataExportChair.idAdmin)
+        if (adminRecevie) {
+            socket.to(adminRecevie).emit('recevie-export-chair', {
+                from: dataExportChair.sender,
+                data: dataExportChair
+            })
+        }
+    })
+
+});
+
 
 connectDB()
-app.listen(port, () => {
+httpServer.listen(port, () => {
     console.log('server running on port ' + port)
 })
 
 app.use('/api/auth', authRouter)
 app.use('/api/chair', chairRouter)
 app.use('/api/bill', billRouter)
+app.use('/api/notify-product', notifyProductReducer)
+
 
 
 

@@ -9,6 +9,8 @@ import AccountPage from '../pages/AccountPage'
 import ChairPage from '../pages/ChairPage'
 import TablePage from '../pages/TablePage'
 import Manager from '../pages/Manager'
+import Revenue from '../pages/Revenue'
+import Notify from '../pages/Notify'
 
 const MainLayout = () => {
     const location = useLocation()
@@ -41,6 +43,13 @@ const MainLayout = () => {
                 {
                     tab === 'admin' && <Manager />
                 }
+                {
+                    tab === 'revenue' && <Revenue />
+                }
+                {
+                    tab === 'notify' && <Notify />
+                }
+
             </div>
         </div>
     )

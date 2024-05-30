@@ -4,8 +4,9 @@ import { Zoom } from 'react-slideshow-image';
 import { useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import Modal from 'react-modal';
+import { toast, useToast } from 'react-toastify';
 
-
+import { socket } from '../socketIO';
 import '../css/ChairDetail.css'
 import handleRequestApi from '../api';
 
@@ -28,6 +29,9 @@ export default function ChairDetail() {
   const { currentUser } = useSelector(state => state.user)
   const location = useLocation()
   const [chairData, setChairData] = useState({})
+  const [adminAccount, setAdminAccount] = useState({})
+  const [isDisableBtnExport, setIsDisableBtnExport] = useState(true)
+
   // const [tab, setTab] = useState('')
   const [modalIsOpen, setIsOpen] = useState(false);
   const [formExport, setFormExport] = useState({})
@@ -49,27 +53,72 @@ export default function ChairDetail() {
     const urlParams = new URLSearchParams(location.search)
     const idFromUrl = urlParams.get('id')
 
+    const getAdmin = async () => {
+      const admin = await handleRequestApi.getAccountAdmin()
+      setAdminAccount(admin.admin)
+    }
+
     const getChair = async (id) => {
       const chair = await handleRequestApi.getChairById(id)
       setChairData(chair.chair)
     }
     if (idFromUrl) {
       getChair(idFromUrl)
+      getAdmin()
     }
   }, [])
 
   const handleTotalprice = event => {
     event.preventDefault()
     setTotalPriceExportChair(formExport.number * chairData.price)
+    setIsDisableBtnExport(false)
   }
 
 
   const handleExportChair = async (event) => {
     event.preventDefault()
-    setFormExport({ ...formExport, totalPrice: totalPriceExportChair })
+    // setFormExport({ ...formExport, totalPrice: totalPriceExportChair })
+
+    if (!formExport.number || !formExport.dateOut) {
+      toast.warning('Hãy nhập đủ số lượng và ngày xuất kho')
+      return
+    }
+
+
+
+    const dataExport = {
+      content: 'Yêu cầu duyệt để xuất ghế trong kho',
+      sender: currentUser._id,
+      idProduct: chairData._id,
+      ...formExport,
+      totalPrice: totalPriceExportChair,
+      idAdmin: adminAccount._id
+    }
+
+    const dataNotiProduct = {
+      content: 'Yêu cầu duyệt để xuất ghế trong kho',
+      sender: currentUser._id,
+      idProduct: chairData._id,
+      totalPrice: totalPriceExportChair,
+      ...formExport
+    }
+
+    //add notify to database
+    const notify = await handleRequestApi.addNotifyExportProduct(dataNotiProduct)
+
+    if (!notify.success) {
+      toast.error(notify.message)
+      return
+    }
+
+    //neu admin on se thong bao toi admin
+    socket.emit("send-export-chair", dataExport)
+    toast.success("Đã gửi yêu cầu xuất kho, hãy chờ Admin duyệt nhé 😊😊")
+    setIsDisableBtnExport(true)
+    closeModal()
   }
 
-  console.log(formExport)
+
   return (
     <>
       <div className='chairdetail'>
@@ -151,8 +200,22 @@ export default function ChairDetail() {
                   <label htmlFor="">Tổng giá trị</label>
                   <input value={totalPriceExportChair + 'đ'} className='exportchair-total' type="text" name="" id="totalPrice" disabled />
                 </div>
+                {
+                  !currentUser.isAdmin &&
+                  <div className="exportchair-item">
+                    <label htmlFor="">Quản trị viên</label>
+                    <div className="admin-content">
+                      <img src={adminAccount.urlImgProfile} alt="" />
+                      <span>{adminAccount.username}</span>
+                    </div>
+                  </div>
+                }
                 <div className="btns-modal exportchair-btn">
-                  <button type='submit' className='btn-modal btn-modal-ok'>Gửi yêu cầu xuất kho</button>
+                  {
+                    isDisableBtnExport ?
+                      <button type='button' disabled className='btn-modal btn-modal-ok disable'>Gửi yêu cầu xuất kho</button> :
+                      <button type='submit' className='btn-modal btn-modal-ok'>Gửi yêu cầu xuất kho</button>
+                  }
                   <button onClick={closeModal} className='btn-modal btn-modal-cancel'>Hủy</button>
                 </div>
               </form>

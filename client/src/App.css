@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.toastRecevie {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+}
+
+.toastRecevie>img {
+    width: 30px;
+    height: 30px;
+    border-radius: 1000px;
+    overflow: hidden;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+.toastRecevie>p {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.toastRecevie span {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #7a7a7a;
+}

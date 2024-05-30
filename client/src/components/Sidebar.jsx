@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { HiHome, HiTable, HiAcademicCap, HiUser, HiLogout, HiDatabase } from 'react-icons/hi'
+import { HiHome, HiTable, HiAcademicCap, HiUser, HiLogout, HiDatabase, HiCalculator, HiBell } from 'react-icons/hi'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Modal from 'react-modal';
 import { useDispatch, useSelector } from 'react-redux'
@@ -88,10 +88,28 @@ const Sidebars = () => {
             </Link>
             {
                 currentUser.isAdmin &&
+                <Link to={`?tab=notify&name=${currentUser.username}`}>
+                    <div className={`sidebar-item ${tab === 'notify' ? 'active' : ''}`}>
+                        <HiBell className='sidebar-icon' />
+                        <p>Thông báo</p>
+                    </div>
+                </Link>
+            }
+            {
+                currentUser.isAdmin &&
                 <Link to={`?tab=admin&name=${currentUser.username}`}>
                     <div className={`sidebar-item ${tab === 'admin' ? 'active' : ''}`}>
                         <HiDatabase className='sidebar-icon' />
                         <p>Quản lý hàng hóa</p>
+                    </div>
+                </Link>
+            }
+            {
+                currentUser.isAdmin &&
+                <Link to={`?tab=revenue&name=${currentUser.username}`}>
+                    <div className={`sidebar-item ${tab === 'revenue' ? 'active' : ''}`}>
+                        <HiCalculator className='sidebar-icon' />
+                        <p>Doanh thu</p>
                     </div>
                 </Link>
             }

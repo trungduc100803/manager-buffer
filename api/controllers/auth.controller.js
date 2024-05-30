@@ -124,6 +124,40 @@ const authController = {
             next(error)
         }
     },
+    getAccountAdmin: async (req, res, next) => {
+        try {
+            const admin = await Auth.findOne({ isAdmin: true })
+            if (!admin) return res.status(400).send({
+                success: false,
+                message: "Không tìm thấy admin"
+            })
+
+            return res.status(200).send({
+                success: true,
+                message: "da tìm thấy admin",
+                admin
+            })
+        } catch (error) {
+            next(error)
+        }
+    },
+    getAuthById: async (req, res, next) => {
+        try {
+            const auth = await Auth.findOne({ _id: req.params.id })
+            if (!auth) return res.status(400).send({
+                success: false,
+                message: "Không tìm thấy auth"
+            })
+
+            return res.status(200).send({
+                success: true,
+                message: "da tìm thấy auth",
+                auth
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
 
 }
 
