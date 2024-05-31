@@ -138,6 +138,39 @@ const chairController = {
         } catch (error) {
             next(error)
         }
+    },
+    exportChair: async (req, res, next) => {
+        const { id } = req.params.id
+        const { number } = req.body
+        try {
+
+            const chairCurrent = await Chair.findOne(id)
+
+            if (!chairCurrent) return res.status(400).send({
+                success: false,
+                message: 'chair not found'
+            })
+
+
+            const newChair = await Chair.findOneAndUpdate(
+                id,
+                {
+                    $set: {
+                        numberCurrent: chairCurrent.numberCurrent - number
+                    }
+                },
+                { new: true }
+            )
+
+            return res.status(200).send({
+                success: true,
+                message: 'export chair successfully',
+                idChair: newChair._id,
+                numberCurrent: newChair.numberCurrent
+            })
+        } catch (error) {
+            next(error)
+        }
     }
 }
 

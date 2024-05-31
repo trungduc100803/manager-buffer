@@ -133,6 +133,39 @@ const handleRequestApi = {
         })
         const notifys = await res.json()
         return notifys
+    },
+    editStatusNotifyProduct: async (id) => {
+        const res = await fetch(urlApi.editStatusNotifyProductUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id })
+        })
+        const notifyProduct = await res.json()
+        return notifyProduct
+    },
+    addBill: async (formData) => {
+        const res = await fetch(urlApi.addBillUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData)
+        })
+        const bill = await res.json()
+        return bill
+    },
+    exportChair: async (chairData) => {
+        const res = await fetch(urlApi.exportChairUrl(chairData.id), {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ number: chairData.number })
+        })
+        const chair = await res.json()
+        return chair
     }
 
 }

@@ -25,6 +25,10 @@ const NotifyExportProductModel = mongoose.Schema({
     totalPrice: {
         type: Number,
         require: true
+    },
+    status: {
+        type: Boolean,
+        default: false
     }
 }, { timestamps: true })
 

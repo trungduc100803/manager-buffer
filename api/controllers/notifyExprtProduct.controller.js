@@ -41,6 +41,23 @@ const notifyExportProductController = {
         } catch (error) {
             next(error)
         }
+    },
+    editStatusById: async (req, res, next) => {
+        try {
+            // verify isadmin
+            await Notify.findOneAndUpdate({ _id: req.body.id }, {
+                $set: {
+                    status: true
+                }
+
+            }, { new: true })
+            return res.status(200).send({
+                success: true,
+                message: 'ok'
+            })
+        } catch (error) {
+            next(error)
+        }
     }
 }
 

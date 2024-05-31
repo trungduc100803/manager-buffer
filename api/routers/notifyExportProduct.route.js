@@ -5,5 +5,6 @@ import notifyExportProductController from '../controllers/notifyExprtProduct.con
 
 router.post('/add-notify-export-product', notifyExportProductController.addNotifyProduct)
 router.get('/get-all-notify-export-product', notifyExportProductController.getAllNotifyProduct)
+router.post('/edit-status-notify-export-product', notifyExportProductController.editStatusById)
 
 export default router

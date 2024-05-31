@@ -19,6 +19,11 @@ const urlApi = {
     },
     addNotifyProductUrl: baseUrl + 'notify-product/add-notify-export-product',
     getAllNotifyProductUrl: baseUrl + 'notify-product/get-all-notify-export-product',
+    editStatusNotifyProductUrl: baseUrl + 'notify-product/edit-status-notify-export-product',
+    addBillUrl: baseUrl + 'bill/add-bill',
+    exportChairUrl: (id) => {
+        return baseUrl + `chair/export-chair/${id}`
+    }
 
 }
 
