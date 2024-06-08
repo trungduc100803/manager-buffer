@@ -29,6 +29,56 @@ const billController = {
         } catch (error) {
             next(error)
         }
+    },
+    getAllBillToday: async (req, res, next) => {
+        try {
+            // verify isadmin
+            const today = req.query.today
+
+            const bills = await Bill.find({
+                date: {
+                    $gte: new Date(today),
+                }
+            })
+
+            if (bills.length > 1) {
+                bills.reverse()
+            }
+
+            return res.status(200).send({
+                success: true,
+                message: "OK",
+                bills
+            })
+        } catch (error) {
+            next(error)
+        }
+    },
+    getBillOption: async (req, res, next) => {
+
+        try {
+            const startDate = req.query.startDate
+            const endDate = req.query.endDate
+
+            const bills = await Bill.find({
+                date: {
+                    $gte: new Date(startDate),
+                    $lte: new Date(endDate)
+                }
+            })
+            if (bills.length > 1) {
+                bills.reverse()
+            }
+
+            return res.send({
+                bills,
+                success: true,
+                message: 'ok'
+            })
+
+        } catch (error) {
+            next(error)
+        }
     }
 }
 

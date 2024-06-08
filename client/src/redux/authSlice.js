@@ -17,12 +17,10 @@ const authSlice = createSlice({
             state.loading = false
         },
         setAuthPending: (state, actions) => {
-            state.currentUser = null
             state.error = null
             state.loading = true
         },
         setAuthFailure: (state, actions) => {
-            state.currentUser = null
             state.error = actions.payload
             state.loading = false
         },

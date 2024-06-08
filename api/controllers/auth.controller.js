@@ -157,6 +157,74 @@ const authController = {
         } catch (error) {
             next(error)
         }
+    },
+    verifyPassword: async (req, res, next) => {
+        const { password, id } = req.body
+        try {
+            if (!password || !id) return res.status(400).send({
+                success: false,
+                message: "Chưa nhập mật khẩu"
+            })
+
+
+            const auth = await Auth.findOne({ _id: id })
+
+            if (!auth) return res.status(400).send({
+                success: false,
+                message: "no auth"
+            })
+
+
+            const validPassword = await bcrypt.compare(password, auth.password)
+
+            if (!validPassword) return res.status(400).send({
+                success: false,
+                message: "Mật khẩu không đúng 😢😢"
+            })
+
+            return res.status(200).send({
+                success: true,
+                message: "ok"
+            })
+
+        } catch (error) {
+            next(error)
+        }
+    },
+    updateAuth: async (req, res, next) => {
+        try {
+            if (!req.body) return res.status(400).send({
+                success: false,
+                message: 'error'
+            })
+
+            const hashPassword = bcrypt.hashSync(req.body.password, 10);
+
+            const auth = await Auth.findOneAndUpdate(
+                { _id: req.body._id },
+                {
+                    $set: {
+                        ...req.body,
+                        password: hashPassword
+                    }
+                },
+                { new: true }
+            )
+
+
+            if (!auth) return res.status(400).send({
+                success: false,
+                message: 'no auth'
+            })
+
+            return res.status(200).send({
+                success: true,
+                message: "Cập nhật thành công",
+                auth
+            })
+        } catch (error) {
+            next(error)
+        }
     }
 
 }

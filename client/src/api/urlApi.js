@@ -21,9 +21,17 @@ const urlApi = {
     getAllNotifyProductUrl: baseUrl + 'notify-product/get-all-notify-export-product',
     editStatusNotifyProductUrl: baseUrl + 'notify-product/edit-status-notify-export-product',
     addBillUrl: baseUrl + 'bill/add-bill',
-    exportChairUrl: (id) => {
-        return baseUrl + `chair/export-chair/${id}`
-    }
+    exportChairUrl: () => {
+        return baseUrl + `chair/export-chair`
+    },
+    getBillTodayUrl: (today) => {
+        return baseUrl + `bill/get-bill-today?today=${today}`
+    },
+    getBillOption: (startDate, endDate) => {
+        return baseUrl + `bill/get-bill-option?startDate=${startDate}&endDate=${endDate}`
+    },
+    verifyPasswordUrl: baseUrl + 'auth/verify-password',
+    updateAuthUrl: baseUrl + 'auth/update-auth'
 
 }
 

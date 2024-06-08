@@ -157,15 +157,63 @@ const handleRequestApi = {
         return bill
     },
     exportChair: async (chairData) => {
-        const res = await fetch(urlApi.exportChairUrl(chairData.id), {
+        const res = await fetch(urlApi.exportChairUrl(), {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ number: chairData.number })
+            body: JSON.stringify({ number: chairData.number, id: chairData.id })
         })
         const chair = await res.json()
         return chair
+    },
+    getBillToday: async (today) => {
+        const res = await fetch(urlApi.getBillTodayUrl(today), {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+        const bills = await res.json()
+        return bills
+    },
+    getBillOption: async (startDate, endDate) => {
+        const res = await fetch(urlApi.getBillOption(startDate, endDate), {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+
+        const bills = await res.json()
+
+        return bills
+    },
+    verifyPassword: async (data) => {
+        const res = await fetch(urlApi.verifyPasswordUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data)
+        })
+
+        const auth = await res.json()
+
+        return auth
+    },
+    updateAuth: async (formData) => {
+        const res = await fetch(urlApi.updateAuthUrl, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData)
+        })
+
+        const auth = await res.json()
+
+        return auth
     }
 
 }

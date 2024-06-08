@@ -20,11 +20,12 @@ const customStyles = {
         transform: 'translate(-50%, -50%)',
         borderRadius: '10px',
         outLine: 'none',
-        minWidth: '400px'
+        minWidth: '400px',
+        zIndex: '1000'
     },
 };
 
-const Sidebars = () => {
+const Sidebars = ({ setActiveSidebar }) => {
     const location = useLocation()
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -59,6 +60,11 @@ const Sidebars = () => {
         }
     }
 
+    const handleLogout = () => {
+        setActiveSidebar(false)
+        openModal()
+    }
+
 
     return (
         <div className="sidebar">
@@ -67,20 +73,20 @@ const Sidebars = () => {
                 <img src={Logo} alt="" />
             </div>
 
-            <Link to={'?tab=home'}>
+            <Link to={'?tab=home'} onClick={() => setActiveSidebar(false)}>
                 <div className={`sidebar-item ${tab === 'home' || tab === '' ? 'active' : ''}`}>
                     <HiHome className='sidebar-icon' />
                     <p>Tổng quan</p>
                 </div>
             </Link>
 
-            <Link to={'?tab=chair'}>
+            <Link to={'?tab=chair'} onClick={() => setActiveSidebar(false)}>
                 <div className={`sidebar-item ${tab === 'chair' ? 'active' : ''}`}>
                     <HiTable className='sidebar-icon' />
                     <p>Ghế</p>
                 </div>
             </Link>
-            <Link to={'?tab=table'}>
+            <Link to={'?tab=table'} onClick={() => setActiveSidebar(false)}>
                 <div className={`sidebar-item ${tab === 'table' ? 'active' : ''}`}>
                     <HiAcademicCap className='sidebar-icon' />
                     <p>Bàn</p>
@@ -88,7 +94,7 @@ const Sidebars = () => {
             </Link>
             {
                 currentUser.isAdmin &&
-                <Link to={`?tab=notify&name=${currentUser.username}`}>
+                <Link to={`?tab=notify&name=${currentUser.username}`} onClick={() => setActiveSidebar(false)}>
                     <div className={`sidebar-item ${tab === 'notify' ? 'active' : ''}`}>
                         <HiBell className='sidebar-icon' />
                         <p>Thông báo</p>
@@ -97,7 +103,7 @@ const Sidebars = () => {
             }
             {
                 currentUser.isAdmin &&
-                <Link to={`?tab=admin&name=${currentUser.username}`}>
+                <Link to={`?tab=admin&name=${currentUser.username}`} onClick={() => setActiveSidebar(false)}>
                     <div className={`sidebar-item ${tab === 'admin' ? 'active' : ''}`}>
                         <HiDatabase className='sidebar-icon' />
                         <p>Quản lý hàng hóa</p>
@@ -106,7 +112,7 @@ const Sidebars = () => {
             }
             {
                 currentUser.isAdmin &&
-                <Link to={`?tab=revenue&name=${currentUser.username}`}>
+                <Link to={`?tab=revenue&name=${currentUser.username}`} onClick={() => setActiveSidebar(false)}>
                     <div className={`sidebar-item ${tab === 'revenue' ? 'active' : ''}`}>
                         <HiCalculator className='sidebar-icon' />
                         <p>Doanh thu</p>
@@ -114,13 +120,20 @@ const Sidebars = () => {
                 </Link>
             }
             <Link to={'?tab=account'}>
-                <div className={`sidebar-item ${tab === 'account' ? 'active' : ''}`}>
-                    <HiUser className='sidebar-icon' />
+                <div className={`sidebar-item ${tab === 'account' ? 'active' : ''}`} onClick={() => setActiveSidebar(false)}>
+                    {
+                        currentUser !== null ?
+                            <div className="avatar-user">
+                                <img src={currentUser.urlImgProfile} alt="" />
+                            </div>
+                            :
+                            <HiUser className='sidebar-icon' />
+                    }
                     <p>Tài khoản</p>
                 </div>
             </Link>
 
-            <div onClick={() => openModal()} className={`sidebar-item sidebar-item-logout `}>
+            <div onClick={handleLogout} className={`sidebar-item sidebar-item-logout `} >
                 <HiLogout className='sidebar-icon' />
                 <p>Đăng xuất</p>
             </div>

@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
 import { useDispatch, useSelector } from 'react-redux'
 import ReactLoading from 'react-loading'
+import { Link } from 'react-router-dom'
+import { HiArrowLeft } from 'react-icons/hi'
 import { toast } from 'react-toastify'
 
 
+import banner1 from '../assets/banner1.jpg'
 import { app } from '../firebase'
 import '../css/AddChair.css'
 import handleRequestApi from '../api/index'
@@ -14,8 +17,8 @@ export default function AddChair() {
   const dispatch = useDispatch()
   const { loading } = useSelector(state => state.chair)
   const [formData, setFormData] = useState({})
-  const [file, setFile] = useState(null)
   const [fileUrl, setFileUrl] = useState([])
+  const [file, setFile] = useState(null)
   const [imageFileUploadProgress, setImageFileUploadProgress] = useState(0)
   const [imageFileUploading, setImageFileUploading] = useState(false)
   const [imageFileUploadError, setImageFileUploadError] = useState(null)
@@ -48,17 +51,6 @@ export default function AddChair() {
 
 
   const uploadImage = async () => {
-    //su dung storage trong firebase
-    //     service firebase.storage {
-    //         match / b / { bucket } / o {
-    //             match / { allPaths=**} {
-    //   allow read;
-    //   allow write: if
-    //   request.resource.size < 2 * 1024 * 1024 &&
-    //                     request.resource.contentType.matches('image/.*')
-    // }
-    //         }
-    //     }
     setImageFileUploading(true)
     setImageFileUploadError(null)
     const storage = getStorage(app)
@@ -97,7 +89,13 @@ export default function AddChair() {
   }, [file])
 
   return (
-    <>
+    <div className='addchair-container' style={{ backgroundImage: `url(${banner1})` }}>
+      <div className="btn-back">
+        <Link className='btn-back-link' to={'/?tab=chair'}>
+          <HiArrowLeft className='btn-back-link-icon' />
+          <span>Quay lại</span>
+        </Link>
+      </div>
       <div className='addchair'>
         <p className="addchair-title">Điền đủ thông tin để thêm ghế vào kho</p>
         <form action="" onSubmit={e => handleSubmit(e)}>
@@ -139,21 +137,21 @@ export default function AddChair() {
           </div>
 
           {
-            imageFileUploading && 
+            imageFileUploading &&
             <div>
-              <p>{"Loading..."+ imageFileUploadProgress.toFixed()+"%"}</p>
+              <p>{"Loading..." + imageFileUploadProgress.toFixed() + "%"}</p>
               <ReactLoading height={'40px'} width={'20px'} color='black' />
             </div>
           }
-            {
-              formData.urlImg && 
-                <div className="showchair">
-                  <img src={formData.urlImg} alt="" />
-                </div>
-            }
-            {
-              imageFileUploadError && <p className='err-img'>{imageFileUploadError}</p>
-            }
+          {
+            formData.urlImg &&
+            <div className="showchair">
+              <img src={formData.urlImg} alt="" />
+            </div>
+          }
+          {
+            imageFileUploadError && <p className='err-img'>{imageFileUploadError}</p>
+          }
 
           <button className='btn-addchair' type="submit">{loading ? <ReactLoading height={'20px'} width={'20px'} color='white' /> : 'Thêm sản phẩm'}</button>
         </form>
@@ -161,6 +159,6 @@ export default function AddChair() {
           errForm && <p className='err-addchair'>{errForm}</p>
         }
       </div>
-    </>
+    </div>
   )
 }

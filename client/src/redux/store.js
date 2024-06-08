@@ -6,11 +6,15 @@ import persistStore from 'redux-persist/es/persistStore'
 import userReducer from './authSlice'
 import chairReducer from './chairSlice'
 import notifyProductReducer from './notifyProductSlice'
+import billReducer from './billSlice'
+
+
 
 const rootReducer = combineReducers({
     user: userReducer,
     chair: chairReducer,
     notifyP: notifyProductReducer,
+    bill: billReducer,
 })
 
 const persistConfig = {

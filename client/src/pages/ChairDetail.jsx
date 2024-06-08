@@ -33,9 +33,9 @@ export default function ChairDetail() {
   const [isDisableBtnExport, setIsDisableBtnExport] = useState(true)
 
   // const [tab, setTab] = useState('')
-  const [modalIsOpen, setIsOpen] = useState(false);
   const [formExport, setFormExport] = useState({})
   const [totalPriceExportChair, setTotalPriceExportChair] = useState(0)
+  const [modalIsOpen, setIsOpen] = useState(false);
 
   function openModal() {
     setIsOpen(true);
@@ -75,12 +75,20 @@ export default function ChairDetail() {
   }
 
 
+
   const handleExportChair = async (event) => {
     event.preventDefault()
     // setFormExport({ ...formExport, totalPrice: totalPriceExportChair })
 
     if (!formExport.number || !formExport.dateOut) {
       toast.warning('Hãy nhập đủ số lượng và ngày xuất kho')
+      return
+    }
+
+
+    if (chairData.numberCurrent - formExport.number < 0) {
+
+      toast.warning('Hiện tại loại ghế này chỉ còn ' + chairData.numberCurrent + ' chiếc')
       return
     }
 
@@ -110,6 +118,9 @@ export default function ChairDetail() {
       toast.error(notify.message)
       return
     }
+
+    console.log(notify)
+    console.log(dataExport)
 
     //neu admin on se thong bao toi admin
     socket.emit("send-export-chair", dataExport)

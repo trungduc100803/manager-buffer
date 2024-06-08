@@ -9,7 +9,7 @@ router.get('/get-all-chair', chairController.getAllChair)
 router.get('/get-chair-byId/:id', chairController.getChairById)
 router.delete('/delete-chair', chairController.deleteChair)
 router.put('/update-chair/:id', chairController.updateChair)
-router.put('/export-chair/:id', chairController.exportChair)
+router.put('/export-chair', chairController.exportChair)
 
 
 export default router

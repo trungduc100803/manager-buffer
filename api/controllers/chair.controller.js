@@ -140,11 +140,10 @@ const chairController = {
         }
     },
     exportChair: async (req, res, next) => {
-        const { id } = req.params.id
-        const { number } = req.body
+        const { number, id } = req.body
         try {
 
-            const chairCurrent = await Chair.findOne(id)
+            const chairCurrent = await Chair.findById(id)
 
             if (!chairCurrent) return res.status(400).send({
                 success: false,
@@ -153,7 +152,7 @@ const chairController = {
 
 
             const newChair = await Chair.findOneAndUpdate(
-                id,
+                { _id: id },
                 {
                     $set: {
                         numberCurrent: chairCurrent.numberCurrent - number

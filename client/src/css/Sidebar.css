@@ -5,6 +5,20 @@
     /* padding-top: 100px; */
 }
 
+.avatar-user {
+    width: 30px;
+    height: 30px;
+    border-radius: 1000px;
+    overflow: hidden;
+    margin-right: 8px;
+}
+
+.avatar-user>img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .sidebar-logo {
     width: 100%;
     height: 110px;

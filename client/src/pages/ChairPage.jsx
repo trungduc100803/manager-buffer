@@ -35,9 +35,9 @@ const ChairPage = () => {
                 <div className="chairpage-cards">
                     {
                         listCurrentChair.length > 0 ?
-                            listCurrentChair.map((chair) => (
+                            listCurrentChair.map((chair, i) => (
                                 <div className="chairpage-card-item">
-                                    <Card key={chair._id} data={chair} slug={slug.chair} />
+                                    <Card key={i} data={chair} slug={slug.chair} />
                                 </div>
                             )) :
                             <p>Chưa có ghế nào được thêm</p>

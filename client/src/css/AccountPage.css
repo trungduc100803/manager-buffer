@@ -83,3 +83,125 @@
     transition: all ease 0.2s;
     cursor: pointer;
 }
+
+.verify-user {
+    border-radius: 8px;
+    min-width: 600px;
+}
+
+.modal_edit>p,
+.verify-user>p {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.modal_edit--item,
+.verify-user-item {
+    display: flex;
+    align-items: center;
+}
+
+
+.modal_edit--item>label,
+.verify-user-item>label {
+    width: 15%;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #636161;
+}
+
+.modal_edit--item {
+    margin-top: 20px;
+}
+
+.modal_edit--item>input,
+.verify-user-item>input {
+    border-radius: 8px;
+    flex: 1;
+    outline: none;
+    border-color: rgb(3, 63, 63);
+}
+
+.modal_edit--btns,
+.verify-user-btns {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    margin: 0 -12px;
+    margin-top: 40px;
+}
+
+.modal_edit--btns>button,
+.verify-user-btns>button {
+    padding: 10px 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 6px;
+    margin: 0 12px;
+}
+
+.modal_edit--btns .ok,
+.verify-user-btns .ok {
+    background-color: aquamarine;
+}
+
+.modal_edit--btns .cancel,
+.verify-user-btns .cancel {
+    background-color: aliceblue;
+}
+
+.modal_edit {
+    min-width: 40vw;
+}
+
+.avatar {
+    flex-direction: column;
+    align-items: start;
+}
+
+.avatar>label {
+    margin-bottom: 12px;
+}
+
+.avatar>.avatar_img {
+    width: 100%;
+    height: 200px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.avatar_img>img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.progress {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #636161;
+    margin: 20px 0;
+}
+
+.message-error {
+    font-size: 1.2rem;
+    margin-top: 12px;
+    color: red;
+}
+
+.show-password {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.show-password>input {
+    margin-right: 12px;
+}
+
+.show-password>span {
+    font-size: 1rem;
+}

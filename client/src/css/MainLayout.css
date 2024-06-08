@@ -1,6 +1,7 @@
 .main-layout {
     display: flex;
     height: 100vh;
+    position: relative;
 }
 
 .side-layout {
@@ -9,8 +10,43 @@
 }
 
 .body-layout {
-
+    position: relative;
     padding: 100px 20px 50px 20px;
     flex: 1;
     overflow-y: scroll;
+}
+
+.body-layout .revenue .body-layout {
+    overflow-y: auto;
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 10px 20px;
+    background:
+        /* gradient can be an image */
+        linear-gradient(to left,
+            #0A4D68 0%,
+            #088395 12%,
+            #05BFDB 47%,
+            rgba(83, 0, 30, 1) 100%) white left bottom no-repeat;
+    background-size: 100% 5px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    display: none;
+}
+
+.menu {
+    cursor: pointer;
+}
+
+.menu-icon {
+    font-size: 3.6rem;
+}
+
+.menu-icon:hover {
+    color: #7e7c7c;
+    transition: all ease 0.2s;
 }

@@ -11,9 +11,6 @@ import { setAllNotifyProductSuccess } from '../redux/notifyProductSlice'
 export default function Notify() {
     const [tab, setTab] = useState(true)
 
-    useEffect(() => {
-        // get all notify
-    }, [])
 
     return (
         <div className='notify'>
@@ -85,6 +82,8 @@ const NotifyProduct = ({ notify }) => {
         getProductFromSender()
     }, [])
 
+    console.log(auth)
+
     const handleAccept = async () => {
         const billData = {
             sender: notify.sender,
@@ -99,8 +98,10 @@ const NotifyProduct = ({ notify }) => {
         }
         const chairData = {
             number: notify.number,
-            id: product._id
+            id: notify.idProduct
         }
+
+        console.log(chairData)
 
         //khi nhan dong y se them bill và tru di so luong ghe trong kho
         const bill = await handleRequestApi.addBill(billData)

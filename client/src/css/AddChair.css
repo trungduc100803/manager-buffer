@@ -1,28 +1,59 @@
-.addchair{
-    padding: 70px 120px;
+.addchair-container {
+    display: flex;
+    min-height: 100vh;
+    position: relative;
 }
 
-.addchair-title{
+.btn-back {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.btn-back-link {
+    display: flex;
+    align-items: center;
+    color: aquamarine;
+    font-weight: 600;
+}
+
+.btn-back-link>.btn-back-link-icon {
+    font-size: 1.8rem;
+    margin-right: 12px;
+}
+
+.btn-back-link>span {
+    font-size: 1.4rem;
+}
+
+.addchair {
+    margin: auto;
+    padding: 20px;
+    background-color: rgb(240, 241, 241);
+    border-radius: 8px;
+}
+
+.addchair-title {
     font-size: 1.6rem;
     font-weight: 600;
     margin-bottom: 20px;
 }
 
-.addchair-item{
+.addchair-item {
     display: flex;
     align-items: center;
     margin-bottom: 12px;
-    
+
 }
 
-.addchair-item label{
+.addchair-item label {
     width: 200px;
     font-size: 1rem;
     color: #646464;
     font-weight: 600;
 }
 
-.addchair-item input{
+.addchair-item input {
     border-radius: 10px;
     outline: none;
     width: 400px;
@@ -42,20 +73,20 @@
     object-fit: cover;
 }
 
-.err-img{
+.err-img {
     font-size: 1rem;
     color: red;
     margin-top: 10px;
     margin-bottom: 20px;
 }
 
-.err-addchair{
+.err-addchair {
     color: red;
     margin-top: 10px;
     font-size: 1rem;
 }
 
-.btn-addchair{
+.btn-addchair {
     border-radius: 4px;
     padding: 8px 20px;
     background-color: aquamarine;
@@ -63,7 +94,7 @@
     margin-top: 20px;
 }
 
-.btn-addchair:hover{
+.btn-addchair:hover {
     transition: all ease 0.2s;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }

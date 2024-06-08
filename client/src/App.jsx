@@ -16,6 +16,7 @@ import AddTable from './pages/AddTable'
 import EditChair from './pages/EditChair';
 import handleRequestApi from './api';
 import './App.css'
+import './responsive.css'
 
 
 

@@ -1,0 +1,199 @@
+.revenue>p {
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.revenue-body {
+    margin-bottom: 100px;
+}
+
+.revenue-filter {
+    display: flex;
+    margin-top: 40px;
+    padding-bottom: 50px;
+    border-bottom: 1px solid #757575;
+}
+
+.revenue-filter-left {
+    width: 50%;
+}
+
+.revenue-filter-right {
+    flex: 1;
+}
+
+.revenue-filter-rigth>p,
+.revenue-filter-left>p {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #5c5b5b;
+    margin-bottom: 20px;
+}
+
+.revenue-filter-item {
+    margin-right: 38px;
+}
+
+.revenue-filter-item>input {
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.revenue-filter-item>input:hover {
+    transition: all ease 0.2s;
+    border-color: aquamarine;
+}
+
+.revenue-filter-left-body {
+    display: flex;
+    align-items: center;
+}
+
+.revenue-filter-rigth-body {
+    display: flex;
+    align-items: center;
+}
+
+.revenue-filter-rigth-item {
+    margin-right: 40px;
+}
+
+.revenue-filter-rigth-item>label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    margin-right: 8px;
+}
+
+.revenue-filter-rigth-item>input {
+    border-radius: 7px;
+    outline: none;
+    min-width: 200px;
+}
+
+.btn-filter {
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 10px 30px;
+    background-color: aquamarine;
+}
+
+.revenue-body {
+    margin-top: 20px;
+}
+
+
+.revenue-head {
+    display: flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 6px;
+    background-color: aliceblue;
+    margin-bottom: 8px;
+    margin-top: 20px;
+}
+
+.revenue-head-item {
+    font-weight: 600;
+}
+
+.revenueComp-item.stt,
+.revenue-head-item.stt {
+    width: 5%;
+}
+
+
+.revenueComp-item.sender,
+.revenue-head-item.sender {
+    width: 15%;
+}
+
+.revenueComp-item.product,
+.revenue-head-item.product {
+    width: 20%;
+}
+
+.revenueComp-item.img,
+.revenue-head-item.img {
+    width: 200px;
+}
+
+
+.revenueComp-item.color,
+.revenue-head-item.color {
+    width: 100px;
+}
+
+
+.revenueComp-item.number,
+.revenue-head-item.number {
+    width: 100px;
+}
+
+
+.revenueComp-item.dateOut,
+.revenue-head-item.dateOut {
+    width: 170px;
+}
+
+
+.revenueComp-item.price,
+.revenue-head-item.price {
+    width: 150px;
+}
+
+.revenueComp-item.totalPrice,
+.revenue-head-item.totalPrice {
+    flex: 1;
+}
+
+
+
+.revenueComp {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #d3d3d3;
+}
+
+.revenueComp-item {
+    font-size: 1rem;
+}
+
+
+.revenueComp:hover {
+    border-radius: 6px;
+    transition: all ease 0.2s;
+    background-color: rgb(221, 221, 221);
+}
+
+.option-tile {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+
+.revenue-total {
+    position: fixed;
+    bottom: 20px;
+    right: 2%;
+    left: 14%;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: rgb(221, 221, 221);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.revenue-total-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+.revenue-total>span {
+    font-size: 2rem;
+    color: red;
+    font-weight: 600;
+}
