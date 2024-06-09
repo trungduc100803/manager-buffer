@@ -17,6 +17,7 @@ import EditChair from './pages/EditChair';
 import handleRequestApi from './api';
 import './App.css'
 import './responsive.css'
+import EditTable from './pages/EditTable';
 
 
 
@@ -38,6 +39,14 @@ const App = () => {
           toast(<ToastRecevie dataAuth={dataAuth} />)
         }
       })
+
+      socket.on('recevie-export-table', async data => {
+        const auth = await handleRequestApi.getAuthById(data.from)
+        if (auth) {
+          const dataAuth = await auth.auth
+          toast(<ToastRecevie dataAuth={dataAuth} />)
+        }
+      })
     });
   }, [])
 
@@ -49,6 +58,7 @@ const App = () => {
         <Route path='/sign-in' element={<SignIn />} />
         <Route path='/detail-product' element={<DetailProduct />} />
         <Route path='/edit-chair' element={<EditChair />} />
+        <Route path='/edit-table' element={<EditTable />} />
         <Route element={<PrivateRoute />}>
           <Route path='/' element={<MainLayout />} />
         </Route>

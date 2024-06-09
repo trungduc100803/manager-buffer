@@ -72,6 +72,18 @@ const handleRequestApi = {
         const chairs = await res.json()
         return chairs
     },
+    deleteTable: async (idTable) => {
+        const res = await fetch(urlApi.deleteTableUrl, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ idTable })
+        })
+
+        const tables = await res.json()
+        return tables
+    },
     getChairById: async (id) => {
         const res = await fetch(urlApi.getChairByIdUrl(id), {
             method: "GET",
@@ -84,6 +96,17 @@ const handleRequestApi = {
     },
     updateChair: async (formData, id) => {
         const res = await fetch(urlApi.updateChairUrl(id), {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData)
+        })
+        const chairs = await res.json()
+        return chairs
+    },
+    updateTable: async (formData, id) => {
+        const res = await fetch(urlApi.updateTableUrl(id), {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -156,6 +179,17 @@ const handleRequestApi = {
         const bill = await res.json()
         return bill
     },
+    addBillTable: async (formData) => {
+        const res = await fetch(urlApi.addBillTableUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData)
+        })
+        const bill = await res.json()
+        return bill
+    },
     exportChair: async (chairData) => {
         const res = await fetch(urlApi.exportChairUrl(), {
             method: "PUT",
@@ -163,6 +197,17 @@ const handleRequestApi = {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({ number: chairData.number, id: chairData.id })
+        })
+        const chair = await res.json()
+        return chair
+    },
+    exportTable: async (tableData) => {
+        const res = await fetch(urlApi.exportTableUrl, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ number: tableData.number, id: tableData.id })
         })
         const chair = await res.json()
         return chair
@@ -177,8 +222,30 @@ const handleRequestApi = {
         const bills = await res.json()
         return bills
     },
+    getBillTableToday: async (today) => {
+        const res = await fetch(urlApi.getBillTableTodayUrl(today), {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+        const bills = await res.json()
+        return bills
+    },
     getBillOption: async (startDate, endDate) => {
         const res = await fetch(urlApi.getBillOption(startDate, endDate), {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+
+        const bills = await res.json()
+
+        return bills
+    },
+    getBillTableOption: async (startDate, endDate) => {
+        const res = await fetch(urlApi.getBillTableOptionUrl(startDate, endDate), {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -214,6 +281,41 @@ const handleRequestApi = {
         const auth = await res.json()
 
         return auth
+    },
+    addTable: async (formData) => {
+        const res = await fetch(urlApi.addTableUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData)
+        })
+
+        const table = await res.json()
+
+        return table
+    },
+    getAllTable: async () => {
+        const res = await fetch(urlApi.getAllTableUrl, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+
+        const tables = await res.json()
+
+        return tables
+    },
+    getTableById: async (id) => {
+        const res = await fetch(urlApi.getTableByIdUrl(id), {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+        const table = await res.json()
+        return table
     }
 
 }

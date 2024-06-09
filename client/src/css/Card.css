@@ -5,6 +5,11 @@
     background-color: rgb(240, 241, 241)rgb(240, 241, 241);
 }
 
+.card .number{
+    font-size: 1rem;
+    color: #616060;
+}
+
 .card-img {
     padding-top: 80%;
     background-position: center;

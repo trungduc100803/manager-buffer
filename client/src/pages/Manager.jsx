@@ -6,6 +6,7 @@ import { toast } from 'react-toastify'
 
 import '../css/Manager.css'
 import handleRequestApi from '../api';
+import { setAllTable } from '../redux/tableSlice';
 import { setAllChair } from '../redux/chairSlice';
 
 
@@ -137,10 +138,88 @@ const ChairComp = () => {
   </>
 }
 
+
+
+
+
 const TableComp = () => {
+
+  const dispatch = useDispatch()
+  const { listCurrentTable } = useSelector(state => state.table)
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [idTableToDelete, setIdTableToDelete] = useState('')
+
+
+  function openModal(id) {
+    setIsOpen(true);
+    setIdTableToDelete("")
+    setIdTableToDelete(id)
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+    setIdTableToDelete('')
+  }
+
+
+  const handleDeleteTable = async () => {
+    const tables = await handleRequestApi.deleteTable(idTableToDelete)
+    if (!tables) {
+      toast.warning("Bàn chưa được xóa😢")
+      return
+    }
+    dispatch(setAllTable(tables.tables))
+    closeModal()
+    toast.success("Bàn đã được xoa xoá thành công 👌👌")
+  }
   return <>
     <div className="chaircomp">
-      ban comp
+      {
+        listCurrentTable.length > 0 ?
+          <div className="chaircomp-content">
+            <div className="chaircomp-content-header">
+              <div className="chaircomp-content-header-item stt">STT</div>
+              <div className="chaircomp-content-header-item name">Tên</div>
+              <div className="chaircomp-content-header-item quantity">Số lượng</div>
+              <div className="chaircomp-content-header-item color">Màu sắc</div>
+              <div className="chaircomp-content-header-item datein">Ngày nhập</div>
+              <div className="chaircomp-content-header-item tool">Thao tác</div>
+            </div>
+            {
+              listCurrentTable.map((table, i) => (
+                <div key={i} className="chaircomp-content-body">
+                  <div className="chaircomp-content-body-item stt">{i + 1}</div>
+                  <Link to={`/detail-product?type=table&id=${table._id}&product=${table.name}`} className="chaircomp-content-body-item name">{table.name}</Link>
+                  <div className="chaircomp-content-body-item quantity">{table.numberCurrent + '/' + table.number}</div>
+                  <div className="chaircomp-content-body-item color">{table.color}</div>
+                  <div className="chaircomp-content-body-item datein">{table.dateIn}</div>
+                  <div className="chaircomp-content-body-item tool">
+                    <Link className='edit-chaircomp' to={`/edit-table?id=${table._id}&name=${table.name}`}>Sửa</Link>
+                    <span onClick={() => openModal(table._id)}>Xóa</span>
+                  </div>
+                </div>
+              ))
+            }
+          </div> :
+          <p>Chưa có mẫu bàn nào</p>
+      }
+
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <>
+          <div className="modal-signout">
+            <p>Bạn chắc chắn muốn xóa bàn này?</p>
+            <div className="btns-modal">
+              <button onClick={handleDeleteTable} className='btn-modal btn-modal-ok'>Đúng vây</button>
+              <button onClick={closeModal} className='btn-modal btn-modal-cancel'>Không</button>
+            </div>
+          </div>
+        </>
+      </Modal>
     </div>
   </>
 }

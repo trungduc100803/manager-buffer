@@ -101,3 +101,19 @@
     background-color: #555555;
     transition: all ease 0.2s;
 }
+
+.tab-manager-item{
+    position: relative;
+}
+
+.tab-manager-item>span{
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    font-size: 0.9rem;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 1000px;
+    background-color: red;
+}

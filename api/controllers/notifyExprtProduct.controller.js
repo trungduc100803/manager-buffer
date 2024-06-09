@@ -3,10 +3,10 @@ import Notify from "../models/notifyExportProductModel.model.js"
 
 const notifyExportProductController = {
     addNotifyProduct: async (req, res, next) => {
-        const { content, sender, idProduct, number, dateOut, totalPrice } = req.body
+        const { content, sender, idProduct, number, dateOut, totalPrice, slug } = req.body
 
         try {
-            if (!content || !sender || !idProduct || !number || !dateOut || !totalPrice) {
+            if (!content || !sender || !idProduct || !number || !dateOut || !totalPrice || !slug) {
                 return res.status(400).send({
                     success: false,
                     message: "thiếu thông tin"
@@ -14,7 +14,7 @@ const notifyExportProductController = {
             }
 
             const newNotify = new Notify({
-                content, sender, idProduct, number, dateOut, totalPrice
+                content, sender, idProduct, number, dateOut, totalPrice, slug
             })
             await newNotify.save()
 

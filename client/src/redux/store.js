@@ -7,7 +7,8 @@ import userReducer from './authSlice'
 import chairReducer from './chairSlice'
 import notifyProductReducer from './notifyProductSlice'
 import billReducer from './billSlice'
-
+import tableReducer from './tableSlice'
+import billTableReducer from './billTableSlice'
 
 
 const rootReducer = combineReducers({
@@ -15,6 +16,8 @@ const rootReducer = combineReducers({
     chair: chairReducer,
     notifyP: notifyProductReducer,
     bill: billReducer,
+    table: tableReducer,
+    billTable: billTableReducer,
 })
 
 const persistConfig = {

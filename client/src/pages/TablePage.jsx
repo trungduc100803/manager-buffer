@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import {useDispatch, useSelector} from 'react-redux'
+import {toast} from 'react-toastify'
 
 import Card from '../components/Card'
 import '../css/TablePage.css'
 import slug from '../config/slug'
+import handleRequestApi from '../api'
+import {setAllTable} from '../redux/tableSlice'
 
 const dataTable = {
     name: 'Bàn Hồng Quân khổ 60*80',
@@ -12,20 +16,38 @@ const dataTable = {
 }
 
 const TablePage = () => {
+    const dispatch = useDispatch()
+    const { listCurrentTable } = useSelector(state => state.table)
+
+
+    useEffect(() => {
+        const getTables = async () => {
+            const tables = await handleRequestApi.getAllTable()
+            if(!tables.success){
+                toast.error("Gặp lỗi! Vui lòng load lại trang web")
+                return
+            }
+            dispatch(setAllTable(tables.tables))
+        }
+
+        getTables()
+    }, [])
+
+
     return (
         <>
             <div className='tablepage'>
                 <p className="tablepage-title">Các mẫu bàn</p>
                 <div className="tablepage-cards">
-                    <div className="tablepage-card-item">
-                        <Card data={dataTable} slug={slug.table} />
-                    </div>
-                    <div className="tablepage-card-item">
-                        <Card data={dataTable} slug={slug.table} />
-                    </div>
-                    <div className="tablepage-card-item">
-                        <Card data={dataTable} slug={slug.table} />
-                    </div>
+                {
+                        listCurrentTable.length > 0 ?
+                            listCurrentTable.map((table, i) => (
+                                <div className="tablepage-card-item">
+                                    <Card key={i} data={table} slug={slug.table} />
+                                </div>
+                            )) :
+                            <p>Chưa có bàn nào được thêm</p>
+                    }
                 </div>
             </div>
         </>

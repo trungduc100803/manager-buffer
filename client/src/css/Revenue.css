@@ -3,6 +3,10 @@
     font-weight: 600;
 }
 
+.tab-manager.revenu {
+    margin-bottom: 20px;
+}
+
 .revenue-body {
     margin-bottom: 100px;
 }
@@ -196,4 +200,11 @@
     font-size: 2rem;
     color: red;
     font-weight: 600;
+}
+
+.revenueComp-item.img>img{
+    width:80px;
+    height:80px;
+    object-fit: cover;
+    border-radius: 6px;
 }

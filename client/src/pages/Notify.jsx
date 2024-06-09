@@ -10,13 +10,30 @@ import { setAllNotifyProductSuccess } from '../redux/notifyProductSlice'
 
 export default function Notify() {
     const [tab, setTab] = useState(true)
+    const [numberNotify, setNumberNotify] = useState(0)
+    const { allNotifyProduct } = useSelector(state => state.notifyP)
 
+    useEffect(() => {
+        let number = 0
+        allNotifyProduct.forEach(notify => {
+            if(notify.status === false){
+                number++
+                return
+            }
+        });
+        setNumberNotify(number)
+    }, [allNotifyProduct])
+
+    console.log(numberNotify)
 
     return (
         <div className='notify'>
             <div className="tab-manager">
                 <div className={tab ? 'tab-manager-item active' : "tab-manager-item"} onClick={() => setTab(true)}>
                     <p>Phê duyệt</p>
+                    {
+                        numberNotify > 0 && <span>{numberNotify}</span>
+                    }
                 </div>
 
                 <div className={tab ? 'tab-manager-item' : 'tab-manager-item active'} onClick={() => setTab(false)}>
@@ -37,6 +54,8 @@ const Approve = () => {
     const dispatch = useDispatch()
     const { allNotifyProduct } = useSelector(state => state.notifyP)
 
+    
+
 
     useState(() => {
         const getNotifys = async () => {
@@ -54,7 +73,7 @@ const Approve = () => {
             allNotifyProduct.length > 0 ?
                 <div className="approve">
                     {
-                        allNotifyProduct && allNotifyProduct.map((notify, i) => <NotifyProduct notify={notify} key={i} />)
+                        allNotifyProduct.map((notify, i) => <NotifyProduct notify={notify} key={i} />)
                     }
                 </div> :
                 'chua cos thong baso'
@@ -73,47 +92,82 @@ const NotifyProduct = ({ notify }) => {
             const authData = await auth.auth
             setAuth(authData)
         }
-        const getProductFromSender = async () => {
+        const getChairFromSender = async () => {
             const chair = await handleRequestApi.getChairById(notify.idProduct)
             const chairData = await chair.chair
             setproduct(chairData)
         }
+
+        const getTableFromSender = async () => {
+            const table = await handleRequestApi.getTableById(notify.idProduct)
+            const tableData = await table.table
+            setproduct(tableData)
+        }
+
         getAuthSender()
-        getProductFromSender()
+        notify.slug === 'chair' ? getChairFromSender():
+        getTableFromSender()
     }, [])
 
-    console.log(auth)
 
     const handleAccept = async () => {
-        const billData = {
-            sender: notify.sender,
-            idChair: notify.idProduct,
-            number: notify.number,
-            dateOut: notify.dateOut,
-            totalPrice: notify.totalPrice,
-            nameChair: product.name,
-            priceChair: product.price,
-            urlImgChair: product.urlImg[0],
-            colorChair: product.color
-        }
-        const chairData = {
-            number: notify.number,
-            id: notify.idProduct
-        }
+        if(notify.slug === 'chair'){
+            const billData = {
+                sender: notify.sender,
+                idChair: notify.idProduct,
+                number: notify.number,
+                dateOut: notify.dateOut,
+                totalPrice: notify.totalPrice,
+                nameChair: product.name,
+                priceChair: product.price,
+                urlImgChair: product.urlImg[0],
+                colorChair: product.color
+            }
+            const chairData = {
+                number: notify.number,
+                id: notify.idProduct
+            }
 
-        console.log(chairData)
 
-        //khi nhan dong y se them bill và tru di so luong ghe trong kho
-        const bill = await handleRequestApi.addBill(billData)
-        const chair = await handleRequestApi.exportChair(chairData)
-        // khi thành cong sẽ cap nhat lai notify
-        if (bill.success && chair.success) {
-            await handleRequestApi.editStatusNotifyProduct(notify._id)
-            const allNotify = await handleRequestApi.getAllNotifyProduct()
-            dispatch(setAllNotifyProductSuccess(allNotify.notifyProducts))
-            toast.success('Phê duyệt thành công👌👌')
+            //khi nhan dong y se them bill và tru di so luong ghe trong kho
+            const bill = await handleRequestApi.addBill(billData)
+            const chair = await handleRequestApi.exportChair(chairData)
+            // khi thành cong sẽ cap nhat lai notify
+            if (bill.success && chair.success) {
+                await handleRequestApi.editStatusNotifyProduct(notify._id)
+                const allNotify = await handleRequestApi.getAllNotifyProduct()
+                dispatch(setAllNotifyProductSuccess(allNotify.notifyProducts))
+                toast.success('Phê duyệt thành công👌👌')
+            }
+        }else{
+            const billData = {
+                sender: notify.sender,
+                idTable: notify.idProduct,
+                number: notify.number,
+                dateOut: notify.dateOut,
+                totalPrice: notify.totalPrice,
+                nameTable: product.name,
+                priceTable: product.price,
+                urlImgTable: product.urlImgTable,
+                colorTable: product.color,
+                size: product.size
+            }
+            const tableData = {
+                number: notify.number,
+                id: notify.idProduct
+            }
+
+            //khi nhan dong y se them bill và tru di so luong ghe trong kho
+            const bill = await handleRequestApi.addBillTable(billData)
+            const table = await handleRequestApi.exportTable(tableData)
+            // khi thành cong sẽ cap nhat lai notify
+            if (bill.success && table.success) {
+                await handleRequestApi.editStatusNotifyProduct(notify._id)
+                const allNotify = await handleRequestApi.getAllNotifyProduct()
+                dispatch(setAllNotifyProductSuccess(allNotify.notifyProducts))
+                toast.success('Phê duyệt thành công👌👌')
+            }
         }
-
     }
 
     const handleCancel = async () => {
@@ -138,9 +192,15 @@ const NotifyProduct = ({ notify }) => {
                     </div>
                     <div className="notifyProduct-info-item">
                         <p>Hình ảnh:</p>
-                        <Link to={`/detail-product?type=chair&id=${product._id}&product=${product.name}`}>
-                            <img src={product.urlImg} alt="" />
-                        </Link>
+                        {
+                            notify.slug === 'chair' ?
+                            <Link to={`/detail-product?type=chair&id=${product._id}&product=${product.name}`}>
+                                <img src={product.urlImg} alt="" />
+                            </Link>:
+                            <Link to={`/detail-product?type=table&id=${product._id}&product=${product.name}`}>
+                                <img src={product.urlImgTable} alt="" />
+                            </Link>
+                        }
                     </div>
                     <div className="notifyProduct-info-item">
                         <p>Số lượng muốn xuất:</p>

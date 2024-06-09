@@ -29,6 +29,10 @@ const NotifyExportProductModel = mongoose.Schema({
     status: {
         type: Boolean,
         default: false
+    },
+    slug: {
+        type:String,
+        require: true
     }
 }, { timestamps: true })
 

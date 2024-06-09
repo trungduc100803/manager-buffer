@@ -108,6 +108,7 @@ export default function ChairDetail() {
       sender: currentUser._id,
       idProduct: chairData._id,
       totalPrice: totalPriceExportChair,
+      slug: 'chair',
       ...formExport
     }
 

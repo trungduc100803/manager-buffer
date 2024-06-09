@@ -2,23 +2,24 @@ import React, { useEffect, useState } from 'react'
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
 import { useDispatch, useSelector } from 'react-redux'
 import ReactLoading from 'react-loading'
-import { Link } from 'react-router-dom'
-import { HiArrowLeft } from 'react-icons/hi'
 import { toast } from 'react-toastify'
+import { useLocation } from 'react-router-dom'
 
 
-import table from '../assets/table.jpg'
 import { app } from '../firebase'
 import '../css/AddChair.css'
 import handleRequestApi from '../api/index'
-import { setPendingAddTable, setFailureAddTable, setSuccessAddTable } from '../redux/tableSlice'
+import { setAllTable, setFailureAddTable, setPendingAddTable } from '../redux/tableSlice'
 
-export default function AddTable() {
+
+
+export default function EditTable() {
+  const location = useLocation()
   const dispatch = useDispatch()
   const { loading } = useSelector(state => state.chair)
   const [formData, setFormData] = useState({})
-  const [fileUrl, setFileUrl] = useState([])
   const [file, setFile] = useState(null)
+  const [fileUrl, setFileUrl] = useState([])
   const [imageFileUploadProgress, setImageFileUploadProgress] = useState(0)
   const [imageFileUploading, setImageFileUploading] = useState(false)
   const [imageFileUploadError, setImageFileUploadError] = useState(null)
@@ -37,15 +38,18 @@ export default function AddTable() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    const urlParams = new URLSearchParams(location.search)
+    const idFromUrl = urlParams.get('id')
+
     dispatch(setPendingAddTable())
-    const table = await handleRequestApi.addTable(formData)
-    if (!table.success) {
-      setErrForm(table.message)
-      dispatch(setFailureAddTable(table.message))
+    const tables = await handleRequestApi.updateTable(formData, idFromUrl)
+    if (!tables.success) {
+      setErrForm(tables.message)
+      dispatch(setFailureAddTable(tables.message))
       return
     }
-    dispatch(setSuccessAddTable(table.table))
-    toast.success("Thêm sản phẩm thành công")
+    dispatch(setAllTable(tables.tables))
+    toast.success("Cập nhật sản phẩm thành công")
   }
 
 
@@ -65,7 +69,7 @@ export default function AddTable() {
         setImageFileUploadProgress(progress)
       },
       error => {
-        setImageFileUploadError('Không thể tải lên ảnh quá 2MB')
+        setImageFileUploadError('Cound not upload image ( File must be less than 2MB )')
         setImageFileUploadProgress(null)
         setFile(null)
         setFileUrl(null)
@@ -88,60 +92,72 @@ export default function AddTable() {
     }
   }, [file])
 
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search)
+    const idFromUrl = urlParams.get('id')
+    const getTable = async (id) => {
+      const table = await handleRequestApi.getTableById(id)
+      if (!table.success) {
+        setErrForm('Không tìm thấy bàn')
+        return
+      }
+      setFormData(table.table)
+    }
+
+    if (idFromUrl) {
+      getTable(idFromUrl)
+    }
+  }, [])
+
   return (
-    <div className='addchair-container' style={{ backgroundImage: `url(${table})` }}>
-      <div className="btn-back">
-        <Link className='btn-back-link' to={'/?tab=table'}>
-          <HiArrowLeft className='btn-back-link-icon' />
-          <span>Quay lại</span>
-        </Link>
-      </div>
+    <>
       <div className='addchair'>
-        <p className="addchair-title">Điền đủ thông tin để thêm bàn vào kho</p>
+        <p className="addchair-title">Chỉnh sửa thông tin của bàn</p>
         <form action="" onSubmit={e => handleSubmit(e)}>
           <div className="addchair-item">
             <label htmlFor="">Tên bàn</label>
-            <input onChange={e => handleChange(e)} type="text" id='name' />
+            <input value={formData.name} onChange={e => handleChange(e)} type="text" id='name' />
           </div>
 
           <div className="addchair-item">
             <label htmlFor="">Giá</label>
-            <input onChange={e => handleChange(e)} type="text" id='price' />
+            <input value={formData.price} onChange={e => handleChange(e)} type="text" id='price' />
           </div>
 
           <div className="addchair-item">
             <label htmlFor="">Màu sắc</label>
-            <input onChange={e => handleChange(e)} type="text" id='color' />
+            <input value={formData.color} onChange={e => handleChange(e)} type="text" id='color' />
+          </div>
+
+          <div className="addchair-item">
+            <label htmlFor="">Kích thước</label>
+            <input value={formData.size} onChange={e => handleChange(e)} type="text" id='size' />
           </div>
 
           <div className="addchair-item">
             <label htmlFor="">Ngày nhập</label>
-            <input onChange={e => handleChange(e)} type="date" id='dateIn' />
+            <input value={formData.dateIn} onChange={e => handleChange(e)} type="date" id='dateIn' />
           </div>
 
           <div className="addchair-item">
             <label htmlFor="">Số lượng lúc nhập</label>
-            <input onChange={e => handleChange(e)} type="number" id='number' />
+            <input value={formData.number} onChange={e => handleChange(e)} type="number" id='numberAtIn' />
           </div>
           <div className="addchair-item">
             <label htmlFor="">Địa chỉ nhập</label>
-            <input onChange={e => handleChange(e)} type="text" id='addressIn' />
+            <input onChange={e => handleChange(e)} type="text" id='addressIn' value={formData.addressIn} />
           </div>
           <div className="addchair-item">
             <label htmlFor="">Tình trạng lúc nhập</label>
-            <input onChange={e => handleChange(e)} type="text" id='status' />
+            <input onChange={e => handleChange(e)} type="text" id='status' value={formData.status} />
           </div>
           <div className="addchair-item">
-            <label htmlFor="">Kích thước</label>
-            <input onChange={e => handleChange(e)} type="text" id='size' />
+            <label htmlFor="">Ghi chú</label>
+            <input value={formData.note} onChange={e => handleChange(e)} type="text" id='note' />
           </div>
           <div className="addchair-item">
-            <label htmlFor="">Ghi chú(không bắt buộc)</label>
-            <input onChange={e => handleChange(e)} type="text" id='note' />
-          </div>
-          <div className="addchair-item">
-            <label htmlFor="">Hình ảnh bàn</label>
-            <input onChange={e => handleChangimg(e)} type="file" id='urlImgTable' accept='image/*' />
+            <label htmlFor="">Hình ảnh ghế</label>
+            <input onChange={e => handleChangimg(e)} type="file" id='urlImg' accept='image/*' />
           </div>
 
           {
@@ -161,12 +177,12 @@ export default function AddTable() {
             imageFileUploadError && <p className='err-img'>{imageFileUploadError}</p>
           }
 
-          <button className='btn-addchair' type="submit">{loading ? <ReactLoading height={'20px'} width={'20px'} color='white' /> : 'Thêm sản phẩm'}</button>
+          <button className='btn-addchair' type="submit">{loading ? <ReactLoading height={'20px'} width={'20px'} color='white' /> : 'Cập nhật thông tin'}</button>
         </form>
         {
           errForm && <p className='err-addchair'>{errForm}</p>
         }
       </div>
-    </div>
+    </>
   )
 }

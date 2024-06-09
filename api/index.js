@@ -4,12 +4,19 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import { createServer } from "http";
 import { Server } from "socket.io";
+import path from 'path'
+
+
 
 import { connectDB } from '../api/utils/connectDB.js'
 import authRouter from './routers/auth.route.js'
 import chairRouter from './routers/chair.route.js'
 import billRouter from './routers/bill.route.js'
 import notifyProductReducer from './routers/notifyExportProduct.route.js'
+import tableReducer from './routers/table.route.js'
+import billTableReducer from './routers/billTable.route.js'
+
+
 
 const port = process.env.PORT || 5000
 dotenv.config({
@@ -55,6 +62,16 @@ io.on("connection", (socket) => {
         }
     })
 
+    socket.on('send-export-table', dataExportTable => {
+        const adminRecevie = adminOnline.get(dataExportTable.idAdmin)
+        if (adminRecevie) {
+            socket.to(adminRecevie).emit('recevie-export-table', {
+                from: dataExportTable.sender,
+                data: dataExportTable
+            })
+        }
+    })
+
 });
 
 
@@ -67,8 +84,16 @@ app.use('/api/auth', authRouter)
 app.use('/api/chair', chairRouter)
 app.use('/api/bill', billRouter)
 app.use('/api/notify-product', notifyProductReducer)
+app.use('/api/table', tableReducer)
+app.use('/api/bill-table', billTableReducer)
 
 
+const __dirname = path.resolve()
+
+app.use(express.static(path.join(__dirname, '/client/dist')))
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
+})
 
 
 
