@@ -21,14 +21,12 @@ import billTableReducer from './routers/billTable.route.js'
 const port = process.env.PORT || 5000
 dotenv.config({
     origin: 'http://localhost:5173', // Thay thế bằng domain của bạn
-    credentials: true // Để cho phép cookie
 })
 const app = express()
 const httpServer = createServer(app);
 
 app.use(cors({
     origin: 'http://localhost:5173',
-    credentials: true
 }))
 app.use(cookieParser())
 app.use(express.json())
