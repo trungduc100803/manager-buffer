@@ -74,7 +74,7 @@ io.on("connection", (socket) => {
 
 
 connectDB()
-httpServer.listen(port, () => {
+httpServer.listen(5000, () => {
     console.log('server running on port ' + port)
 })
 
