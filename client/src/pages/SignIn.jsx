@@ -21,7 +21,7 @@ const SignIn = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault()
-        // dispatch(setAuthPending())
+        dispatch(setAuthPending())
         const auth = await handleRequestApi.signin(formData)
 
         if (!auth.success) {
