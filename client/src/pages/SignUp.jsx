@@ -20,7 +20,7 @@ const SignUp = () => {
 
     const handleSubmit = async event => {
         event.preventDefault()
-        dispatch(setAuthPending())
+        // dispatch(setAuthPending())
         const auth = await handleRequestApi.singup(formData)
         if (!auth.success) {
             dispatch(setAuthFailure(auth.message))
