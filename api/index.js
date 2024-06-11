@@ -24,14 +24,14 @@ const app = express()
 const httpServer = createServer(app);
 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: 'https://quanlykhohang.onrender.com',
 }))
 app.use(cookieParser())
 app.use(express.json())
 
 const io = new Server(httpServer, {
     cors: {
-        origin: 'http://localhost:5173',
+        origin: 'https://quanlykhohang.onrender.com',
         methods: ["GET", "POST", "DELETE", "PUT"],
         credentials: true
     }
@@ -74,10 +74,6 @@ io.on("connection", (socket) => {
 
 
 connectDB()
-httpServer.listen(5000, () => {
-    console.log('server running on port ' + port)
-})
-
 app.use('/api/auth', authRouter)
 app.use('/api/chair', chairRouter)
 app.use('/api/bill', billRouter)
@@ -91,6 +87,12 @@ const __dirname = path.resolve()
 app.use(express.static(path.join(__dirname, '/client/dist')))
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
+})
+
+
+
+httpServer.listen(5000, () => {
+    console.log('server running on port ' + port)
 })
 
 
