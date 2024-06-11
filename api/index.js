@@ -23,11 +23,6 @@ dotenv.config()
 const app = express()
 const httpServer = createServer(app);
 
-app.use(cors({
-    origin: 'http://localhost:5173',
-}))
-app.use(cookieParser())
-app.use(express.json())
 
 const io = new Server(httpServer, {
     cors: {
@@ -35,6 +30,13 @@ const io = new Server(httpServer, {
         methods: ["GET", "POST", "DELETE", "PUT"],
     }
 });
+
+
+app.use(cors({
+    origin: 'http://localhost:5173',
+}))
+app.use(cookieParser())
+app.use(express.json())
 
 
 global.onlineUser = new Map()
