@@ -12,7 +12,8 @@ import handleRequestApi from '../api/index';
 const SignIn = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const { error, loading } = useSelector(state => state.user)
+    const { error } = useSelector(state => state.user)
+    const [loading, setLoading] = useState(false)
     const [formData, setFormData] = useState({})
 
     const handleChange = (e) => {
@@ -22,14 +23,17 @@ const SignIn = () => {
     const handleSubmit = async (event) => {
         event.preventDefault()
         dispatch(setAuthPending())
+        setLoading(true)
         const auth = await handleRequestApi.signin(formData)
 
         if (!auth.success) {
             dispatch(setAuthFailure(auth.message))
+            setLoading(false)
             return
         }
 
         dispatch(setAuthSuccess(auth.auth))
+        setLoading(false)
         navigate('/')
 
     }
