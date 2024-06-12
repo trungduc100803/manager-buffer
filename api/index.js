@@ -18,20 +18,21 @@ import billTableReducer from './routers/billTable.route.js'
 
 
 
-const port = process.env.PORT || 5000
+const port = 5000
 dotenv.config()
 const app = express()
 const httpServer = createServer(app);
 
 
 const io = new Server(httpServer, {
-    origin: '*',
-    methods: ["GET", "POSt"]
+    origin: 'https://quanlykhohang.onrender.com',
+    methods: ["GET", "POST"]
 });
 
 
 app.use(cors({
-    origin: '*'
+    origin: 'https://quanlykhohang.onrender.com',
+    methods: ["GET", "POST"]
 }))
 app.use(cookieParser())
 app.use(express.json())
@@ -90,7 +91,7 @@ app.get('*', (req, res) => {
 
 
 
-httpServer.listen(5000, () => {
+httpServer.listen(port, () => {
     console.log('server running on port ' + port)
 })
 
