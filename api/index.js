@@ -24,10 +24,15 @@ const app = express()
 const httpServer = createServer(app);
 
 
-const io = new Server(httpServer);
+const io = new Server(httpServer, {
+    origin: 'https://quanlykhohang.onrender.com',
+    methods: ["GET", "POSt"]
+});
 
 
-app.use(cors())
+app.use(cors({
+    origin: 'https://quanlykhohang.onrender.com'
+}))
 app.use(cookieParser())
 app.use(express.json())
 
