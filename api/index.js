@@ -25,13 +25,13 @@ const httpServer = createServer(app);
 
 
 const io = new Server(httpServer, {
-    origin: 'https://quanlykhohang.onrender.com',
+    origin: '*',
     methods: ["GET", "POSt"]
 });
 
 
 app.use(cors({
-    origin: 'https://quanlykhohang.onrender.com'
+    origin: '*'
 }))
 app.use(cookieParser())
 app.use(express.json())
