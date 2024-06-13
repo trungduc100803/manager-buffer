@@ -1,4 +1,4 @@
-const baseUrl = 'http://localhost:5000/api/'
+const baseUrl = 'https://quanlykhohangokc.onrender.com/'
 
 const urlApi = {
     signupUrl: baseUrl + 'auth/sign-up',
