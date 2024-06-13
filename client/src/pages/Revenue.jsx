@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import {toast} from 'react-toastify'
+import { toast } from 'react-toastify'
 
 
 import '../css/Revenue.css'
@@ -22,10 +22,10 @@ export default function Revenue() {
             </div>
         </div>
         {
-            tab ? <RevenueChair/> : <RevenueTable/>
+            tab ? <RevenueChair /> : <RevenueTable />
         }
     </>
-    
+
 }
 
 
@@ -85,7 +85,7 @@ const RevenueChair = () => {
 
     const handleFilter = async (e) => {
         e.preventDefault()
-        if(startDate=== null || endDate === null){
+        if (startDate === null || endDate === null) {
             toast.warning('Yêu cầu nhập đủ ngày tháng để tìm kiếm😊')
             return
         }
@@ -168,7 +168,7 @@ const RevenueChair = () => {
                                     <div className="revenue-head-item totalPrice">Tổng</div>
                                 </div>
                                 {
-                                    allBill.map((bill, i) => <RevenueComp revenue={bill} stt={i + 1} key={i} />)
+                                    allBill && allBill.map((bill, i) => <RevenueComp revenue={bill} stt={i + 1} key={i} />)
                                 }
 
                                 <div className="revenue-total">
@@ -241,7 +241,7 @@ const RevenueTable = () => {
     const handleFilter = async (e) => {
         e.preventDefault()
 
-        if(startDate=== null || endDate === null){
+        if (startDate === null || endDate === null) {
             toast.warning('Yêu cầu nhập đủ ngày tháng để tìm kiếm😊')
             return
         }
@@ -305,7 +305,7 @@ const RevenueTable = () => {
                     </div>
                     {
                         loading ? 'loading ....' :
-                        allBillTable &&
+                            allBillTable &&
                             <div className="revenue-body">
                                 {
                                     startDate && endDate ?
@@ -324,7 +324,7 @@ const RevenueTable = () => {
                                     <div className="revenue-head-item totalPrice">Tổng</div>
                                 </div>
                                 {
-                                    allBillTable.map((bill, i) => <RevenueComp revenue={bill} stt={i + 1} key={i} />)
+                                    allBillTable && allBillTable.map((bill, i) => <RevenueComp revenue={bill} stt={i + 1} key={i} />)
                                 }
 
                                 <div className="revenue-total">
@@ -347,11 +347,11 @@ const RevenueComp = ({ revenue, stt }) => {
     useEffect(() => {
         const getAuthSender = async (id) => {
             const auth = await handleRequestApi.getAuthById(id)
-            if(auth.success){
+            if (auth.success) {
                 setAuthSender(auth.auth)
                 return
             }
-        } 
+        }
 
         getAuthSender(revenue.sender)
     }, [revenue])

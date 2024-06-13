@@ -2,9 +2,9 @@ import Table from '../models/tableModel.model.js'
 
 const tableController = {
     addTable: async (req, res, next) => {
-        const {name, number, size, color, dateIn, addressIn, status, urlImgTable, price} = req.body
+        const { name, number, size, color, dateIn, addressIn, status, urlImgTable, price } = req.body
         try {
-            if(!name || !number || !size || !color || !dateIn || !addressIn || !status || !urlImgTable || !price ){
+            if (!name || !number || !size || !color || !dateIn || !addressIn || !status || !urlImgTable || !price) {
                 return res.status(400).send({
                     success: false,
                     message: "Yêu cầu nhập đầy đủ các thông tin"
@@ -19,7 +19,7 @@ const tableController = {
             const table = await newTable.save()
 
             return res.status(200).send({
-                message: "Bàn đã được thêm thành công ❤❤" ,
+                message: "Bàn đã được thêm thành công ❤❤",
                 success: true,
                 table
             })
@@ -41,7 +41,7 @@ const tableController = {
                 message: "Lấy tất cả bàn thành công",
                 tables: allTable
             })
-            
+
         } catch (error) {
             next(error)
         }
@@ -153,6 +153,28 @@ const tableController = {
             })
 
 
+        } catch (error) {
+            next(error)
+        }
+    },
+    countTable: async (req, res, next) => {
+        try {
+            const allTable = await Table.find()
+            if (!allTable) return res.status(400).send({
+                success: false,
+                message: 'get failure'
+            })
+
+            let count = 0
+            allTable.forEach((table) => {
+                count += table.numberCurrent
+            })
+
+            return res.status(200).send({
+                success: true,
+                message: "Lấy tất cả ban thành công",
+                count
+            })
         } catch (error) {
             next(error)
         }

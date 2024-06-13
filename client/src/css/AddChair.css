@@ -27,6 +27,7 @@
 }
 
 .addchair {
+    height: 100vh;
     margin: auto;
     padding: 20px;
     background-color: rgb(240, 241, 241);

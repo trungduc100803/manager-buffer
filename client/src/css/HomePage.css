@@ -2,6 +2,17 @@
     min-height: 100vh;
 }
 
+.home-page>.title {
+    margin-top: 50px;
+}
+
+.revenuehome-title {
+    margin-top: 30px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #686666;
+}
+
 .home-page>p {
     font-size: 1.8rem;
     font-weight: 600;

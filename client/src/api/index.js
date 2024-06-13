@@ -84,6 +84,28 @@ const handleRequestApi = {
         const tables = await res.json()
         return tables
     },
+    countChair: async () => {
+        const res = await fetch(urlApi.countChairUrl, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+
+        const count = await res.json()
+        return count
+    },
+    countTable: async () => {
+        const res = await fetch(urlApi.countTableUrl, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+
+        const count = await res.json()
+        return count
+    },
     getChairById: async (id) => {
         const res = await fetch(urlApi.getChairByIdUrl(id), {
             method: "GET",

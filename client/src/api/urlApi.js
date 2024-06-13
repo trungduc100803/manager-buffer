@@ -1,10 +1,13 @@
 const baseUrl = 'https://quanlykhohangokc.onrender.com/api/'
+// const baseUrl = 'http://localhost:5000/api/'
 
 const urlApi = {
     signupUrl: baseUrl + 'auth/sign-up',
     signInUrl: baseUrl + 'auth/sign-in',
     signOutUrl: baseUrl + 'auth/sign-out',
     addChairUrl: baseUrl + 'chair/add-chair',
+    countChairUrl: baseUrl + 'chair/count-chair',
+    countTableUrl: baseUrl + 'table/count-table',
     getAllChairUrl: baseUrl + 'chair/get-all-chair',
     deleteChairUrl: baseUrl + 'chair/delete-chair',
     deleteTableUrl: baseUrl + 'table/delete-table',
@@ -32,7 +35,7 @@ const urlApi = {
     exportChairUrl: () => {
         return baseUrl + `chair/export-chair`
     },
-    exportTableUrl: baseUrl + 'table/export-table' ,
+    exportTableUrl: baseUrl + 'table/export-table',
     getBillTodayUrl: (today) => {
         return baseUrl + `bill/get-bill-today?today=${today}`
     },
@@ -47,7 +50,7 @@ const urlApi = {
     },
     verifyPasswordUrl: baseUrl + 'auth/verify-password',
     updateAuthUrl: baseUrl + 'auth/update-auth',
-    addTableUrl: baseUrl+ 'table/add-table',
+    addTableUrl: baseUrl + 'table/add-table',
     getAllTableUrl: baseUrl + 'table/get-all-table'
 
 }

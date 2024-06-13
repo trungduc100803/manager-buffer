@@ -250,12 +250,71 @@
     .account-address>span {
         font-size: 1.4rem;
     }
+
+    .addchair {
+        padding: 150px 50px 100px 50px;
+    }
+
+    .addchair-title {
+        margin-bottom: 60px;
+        font-size: 2.5rem;
+        text-align: center;
+    }
+
+    .showchair {
+        margin-top: 20px;
+        width: 100%;
+        height: 30vh;
+    }
+
+    .addchair-item input {
+        width: 100%;
+    }
+
+    .addchair-item>label {
+        font-size: 1.1rem;
+    }
+
+    .btn-addchair {
+        margin-top: 50px;
+        width: 100%;
+        padding: 12px 0px;
+        font-size: 2rem;
+    }
 }
 
 
 
 /* mobile  */
 @media (max-width: 739px) {
+    .verify-user {
+        min-width: 0;
+    }
+
+    .modal_edit--item,
+    .verify-user-item {
+        align-items: start;
+        flex-direction: column;
+    }
+
+    .modal_edit--item>label,
+    .verify-user-item>label {
+        width: 100%;
+        margin-bottom: 12px;
+    }
+
+    .modal_edit--item>input,
+    .verify-user-item>input {
+        width: 100%;
+    }
+
+    .sign-up form,
+    .sign-in form {
+        min-width: 0;
+        width: 95vw;
+        padding: 12px;
+    }
+
     .side-layout {
         transform: translateX(-100%);
         display: none;

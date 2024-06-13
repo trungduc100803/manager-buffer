@@ -16,7 +16,7 @@ export default function Notify() {
     useEffect(() => {
         let number = 0
         allNotifyProduct.forEach(notify => {
-            if(notify.status === false){
+            if (notify.status === false) {
                 number++
                 return
             }
@@ -24,7 +24,6 @@ export default function Notify() {
         setNumberNotify(number)
     }, [allNotifyProduct])
 
-    console.log(numberNotify)
 
     return (
         <div className='notify'>
@@ -54,7 +53,7 @@ const Approve = () => {
     const dispatch = useDispatch()
     const { allNotifyProduct } = useSelector(state => state.notifyP)
 
-    
+
 
 
     useState(() => {
@@ -70,7 +69,7 @@ const Approve = () => {
 
     return <>
         {
-            allNotifyProduct.length > 0 ?
+            allNotifyProduct && allNotifyProduct.length > 0 ?
                 <div className="approve">
                     {
                         allNotifyProduct.map((notify, i) => <NotifyProduct notify={notify} key={i} />)
@@ -105,13 +104,13 @@ const NotifyProduct = ({ notify }) => {
         }
 
         getAuthSender()
-        notify.slug === 'chair' ? getChairFromSender():
-        getTableFromSender()
+        notify.slug === 'chair' ? getChairFromSender() :
+            getTableFromSender()
     }, [])
 
 
     const handleAccept = async () => {
-        if(notify.slug === 'chair'){
+        if (notify.slug === 'chair') {
             const billData = {
                 sender: notify.sender,
                 idChair: notify.idProduct,
@@ -139,7 +138,7 @@ const NotifyProduct = ({ notify }) => {
                 dispatch(setAllNotifyProductSuccess(allNotify.notifyProducts))
                 toast.success('Phê duyệt thành công👌👌')
             }
-        }else{
+        } else {
             const billData = {
                 sender: notify.sender,
                 idTable: notify.idProduct,
@@ -194,12 +193,12 @@ const NotifyProduct = ({ notify }) => {
                         <p>Hình ảnh:</p>
                         {
                             notify.slug === 'chair' ?
-                            <Link to={`/detail-product?type=chair&id=${product._id}&product=${product.name}`}>
-                                <img src={product.urlImg} alt="" />
-                            </Link>:
-                            <Link to={`/detail-product?type=table&id=${product._id}&product=${product.name}`}>
-                                <img src={product.urlImgTable} alt="" />
-                            </Link>
+                                <Link to={`/detail-product?type=chair&id=${product._id}&product=${product.name}`}>
+                                    <img src={product.urlImg} alt="" />
+                                </Link> :
+                                <Link to={`/detail-product?type=table&id=${product._id}&product=${product.name}`}>
+                                    <img src={product.urlImgTable} alt="" />
+                                </Link>
                         }
                     </div>
                     <div className="notifyProduct-info-item">

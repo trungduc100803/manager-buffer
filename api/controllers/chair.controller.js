@@ -170,6 +170,28 @@ const chairController = {
         } catch (error) {
             next(error)
         }
+    },
+    countChair: async (req, res, next) => {
+        try {
+            const allChair = await Chair.find()
+            if (!allChair) return res.status(400).send({
+                success: false,
+                message: 'get failure'
+            })
+
+            let count = 0
+            allChair.forEach((chair) => {
+                count += chair.numberCurrent
+            })
+
+            return res.status(200).send({
+                success: true,
+                message: "Lấy tất cả ghế thành công",
+                count
+            })
+        } catch (error) {
+            next(error)
+        }
     }
 }
 
