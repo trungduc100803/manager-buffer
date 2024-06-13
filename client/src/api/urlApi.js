@@ -1,4 +1,4 @@
-const baseUrl = 'https://quanlykhohangokc.onrender.com/'
+const baseUrl = 'https://quanlykhohangokc.onrender.com/api/'
 
 const urlApi = {
     signupUrl: baseUrl + 'auth/sign-up',
