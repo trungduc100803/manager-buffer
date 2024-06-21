@@ -6,6 +6,38 @@
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
+
+.chair-info-more>p,
+.chair-infos>span {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #525151;
+}
+
+.chair-info-more {
+    margin-left: 30px;
+}
+
+
+.chair-info-morechair-num,
+.chair-info-morechair-desc,
+.chair-info-morechair {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.chair-info-morechair-num>span,
+.chair-info-morechair-desc>span {
+    margin-left: 6px;
+}
+
+.chair-info-morechair-desc {}
+
+.chair-info-morechair-num {
+    margin-right: 50px;
+}
+
 .slider {
     border-radius: 12px;
     overflow: hidden;

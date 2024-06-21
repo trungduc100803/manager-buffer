@@ -9,6 +9,7 @@ import { toast, useToast } from 'react-toastify';
 import { socket } from '../socketIO';
 import '../css/ChairDetail.css'
 import handleRequestApi from '../api';
+import { formatNumberWithDots, formatDate, getNumberChairNew } from '../utils/index';
 
 
 const customStyles = {
@@ -31,6 +32,7 @@ export default function ChairDetail() {
   const [chairData, setChairData] = useState({})
   const [adminAccount, setAdminAccount] = useState({})
   const [isDisableBtnExport, setIsDisableBtnExport] = useState(true)
+
 
   // const [tab, setTab] = useState('')
   const [formExport, setFormExport] = useState({})
@@ -131,6 +133,7 @@ export default function ChairDetail() {
   }
 
 
+
   return (
     <>
       <div className='chairdetail'>
@@ -145,12 +148,44 @@ export default function ChairDetail() {
 
         <div className="chaircontent">
           <p className="namechair">{chairData.name}</p>
-          <p className="pricechair">{chairData.price}đ</p>
+          <p className="pricechair">{chairData.price && formatNumberWithDots(chairData.price)}đ</p>
 
           <div className="chair-infos">
             <div className="chair-info">
-              <p className="chair-info-title">Số lượng hiện tại:</p>
+              <p className="chair-info-title">Số lượng hiện tại bao gồm cả ghế đẹp và lỗi nếu có:</p>
               <span>{chairData.numberCurrent}</span>
+            </div>
+            <span>Bao gồm:</span>
+            <div className="chair-info-more">
+              <div className="chair-info">
+                <p className="chair-info-title">Số lượng ghế đẹp:</p>
+                <span>{
+                  chairData.moreStatus && chairData.moreStatus[0].numberChairStatus > 0 ?
+                    getNumberChairNew(chairData.moreStatus, chairData.numberCurrent) :
+                    chairData.numberCurrent
+                }</span>
+              </div>
+              {
+                chairData.moreStatus && chairData.moreStatus[0].numberChairStatus > 0 ?
+                  <p>Ghế lỗi</p> :
+                  <></>
+              }
+              {
+                chairData.moreStatus && chairData.moreStatus.map((moreChair) => {
+                  if (moreChair.numberChairStatus > 0) {
+                    return <div className="chair-info-morechair">
+                      <div className="chair-info-morechair-num">
+                        <p className="chair-info-title">Số lượng: </p>
+                        <span>{moreChair.numberChairStatus}</span>
+                      </div>
+                      <div className="chair-info-morechair-desc">
+                        <p className="chair-info-title">Tình trạng lỗi: </p>
+                        <span>{moreChair.statusChair}</span>
+                      </div>
+                    </div>
+                  }
+                })
+              }
             </div>
             <div className="chair-info">
               <p className="chair-info-title">Màu sắc:</p>
@@ -158,7 +193,7 @@ export default function ChairDetail() {
             </div>
             <div className="chair-info">
               <p className="chair-info-title">Ngày nhập về kho:</p>
-              <span>{chairData.dateIn}</span>
+              <span>{chairData.dateIn && formatDate(chairData.dateIn)}</span>
             </div>
             <div className="chair-info">
               <p className="chair-info-title">Số lượng lúc nhập:</p>

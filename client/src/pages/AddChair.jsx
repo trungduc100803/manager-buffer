@@ -3,7 +3,7 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/
 import { useDispatch, useSelector } from 'react-redux'
 import ReactLoading from 'react-loading'
 import { Link } from 'react-router-dom'
-import { HiArrowLeft } from 'react-icons/hi'
+import { HiArrowLeft, HiPlus } from 'react-icons/hi'
 import { toast } from 'react-toastify'
 
 
@@ -16,7 +16,10 @@ import { setFailureAddChair, setPendingAddChair, setSuccessAddChair } from '../r
 export default function AddChair() {
   const dispatch = useDispatch()
   const { loading } = useSelector(state => state.chair)
+  const [showMoreChair, setShowMoreChair] = useState(false)
+  const [numberChairMore, setNumberChaiMore] = useState([])
   const [formData, setFormData] = useState({})
+  const [moreStatus, setMoreStatus] = useState([{ numberChairStatus: 0, statusChair: '' }])
   const [fileUrl, setFileUrl] = useState([])
   const [file, setFile] = useState(null)
   const [imageFileUploadProgress, setImageFileUploadProgress] = useState(0)
@@ -28,6 +31,16 @@ export default function AddChair() {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() })
   }
 
+  const handleChangemoreChair = (e, index) => {
+    const { id, value } = e.target;
+    const newMoreStatus = [...moreStatus];
+    newMoreStatus[index] = {
+      ...newMoreStatus[index],
+      [id]: value
+    };
+    setMoreStatus(newMoreStatus)
+  }
+
   const handleChangimg = e => {
     const fileElement = e.target.files[0]
     if (fileElement) {
@@ -37,8 +50,15 @@ export default function AddChair() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    const finalData = {
+      ...formData,
+      moreStatus: [...moreStatus]
+    }
+
+    console.log(finalData)
     dispatch(setPendingAddChair())
-    const chair = await handleRequestApi.addChair(formData)
+    const chair = await handleRequestApi.addChair(finalData)
     if (!chair.success) {
       setErrForm(chair.message)
       dispatch(setFailureAddChair(chair.message))
@@ -88,6 +108,45 @@ export default function AddChair() {
     }
   }, [file])
 
+  const handleAddMorechair = () => {
+    setNumberChaiMore([...numberChairMore, 1])
+    setShowMoreChair(true)
+  }
+
+  const handleCloseChairMore = () => {
+    setNumberChaiMore([])
+    setShowMoreChair(false)
+  }
+
+  const removeChairMore = () => {
+    if (numberChairMore.length === 1) {
+      setShowMoreChair(false)
+      setNumberChaiMore([])
+
+      //khi remove 1 truong de nhap cac loai ghe loi thi se xoa trong state morechair
+      setMoreStatus(prevArr => {
+        const newArr = [...prevArr];
+        newArr.pop();
+        return newArr;
+      }
+      )
+    } else {
+      setNumberChaiMore(prevArr => {
+        const newArr = [...prevArr];
+        newArr.pop();
+        return newArr;
+      }
+      )
+      //khi remove 1 truong de nhap cac loai ghe loi thi se xoa trong state morechair
+      setMoreStatus(prevArr => {
+        const newArr = [...prevArr];
+        newArr.pop();
+        return newArr;
+      }
+      )
+    }
+  }
+
   return (
     <div className='addchair-container' style={{ backgroundImage: `url(${banner1})` }}>
       <div className="btn-back">
@@ -123,6 +182,30 @@ export default function AddChair() {
             <label htmlFor="">Số lượng lúc nhập</label>
             <input onChange={e => handleChange(e)} type="number" id='numberAtIn' />
           </div>
+
+          <div className="show-more-statuschair">
+            <HiPlus onClick={handleAddMorechair} />
+            <span>Thêm chi tiết về tình trạng của ghế</span>
+          </div>
+
+          {
+            numberChairMore.length > 0 ? numberChairMore.map((c, i) => (
+              <div className={showMoreChair == false ? 'addchair-more' : 'addchair-more active'}>
+                <div className="addchair-more-item">
+                  <label htmlFor="">Số lượng</label>
+                  <input type="number" onChange={e => handleChangemoreChair(e, i)} name="" id="numberChairStatus" />
+                </div>
+                <div className="addchair-more-item">
+                  <label htmlFor="">Tình trạng</label>
+                  <input type="text" onChange={e => handleChangemoreChair(e, i)} name="" id="statusChair" />
+                </div>
+              </div>
+            )) : <></>
+          }
+
+          <button className={showMoreChair === true ? 'btn-close-morechair active' : 'btn-close-morechair'} onClick={handleCloseChairMore}>Đóng</button>
+          <button className={showMoreChair === true ? 'btn-close-morechair active' : 'btn-close-morechair'} onClick={removeChairMore}>Đóng</button>
+
           <div className="addchair-item">
             <label htmlFor="">Địa chỉ nhập</label>
             <input onChange={e => handleChange(e)} type="text" id='addressIn' />

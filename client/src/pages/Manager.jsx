@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import Modal from 'react-modal';
@@ -8,6 +8,7 @@ import '../css/Manager.css'
 import handleRequestApi from '../api';
 import { setAllTable } from '../redux/tableSlice';
 import { setAllChair } from '../redux/chairSlice';
+import { formatDate } from '../utils/index'
 
 
 const customStyles = {
@@ -60,7 +61,20 @@ const ChairComp = () => {
   const { listCurrentChair } = useSelector(state => state.chair)
   const [modalIsOpen, setIsOpen] = useState(false);
   const [idChairToDelete, setIdChairToDelete] = useState('')
+  const [showOption, setShowOption] = useState(false)
+  const [indexShow, setIndexShow] = useState(null)
+  const optionRef = useRef(null);
 
+  useEffect(() => {
+    const getAllChair = async () => {
+      const chairs = await handleRequestApi.getAllChair()
+      if (!chairs.success) {
+        return
+      }
+      dispatch(setAllChair(chairs.chairs))
+    }
+    getAllChair()
+  }, [])
 
   function openModal(id) {
     setIsOpen(true);
@@ -85,6 +99,30 @@ const ChairComp = () => {
     toast.success("Ghế đã được xoa xoá thành công 👌👌")
   }
 
+  const handleShow = (index) => {
+    setShowOption(true)
+    setIndexShow(index)
+  }
+
+  const handleClickOutside = (event) => {
+    if (optionRef.current && !optionRef.current.contains(event.target)) {
+      setShowOption(false);
+    }
+  };
+
+  useEffect(() => {
+    if (showOption) {
+      document.addEventListener('click', handleClickOutside);
+    } else {
+      document.removeEventListener('click', handleClickOutside);
+    }
+
+    // Cleanup event listener on component unmount
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [showOption]);
+
 
   return <>
     <div className="chaircomp">
@@ -94,7 +132,9 @@ const ChairComp = () => {
             <div className="chaircomp-content-header">
               <div className="chaircomp-content-header-item stt">STT</div>
               <div className="chaircomp-content-header-item name">Tên</div>
-              <div className="chaircomp-content-header-item quantity">Số lượng</div>
+              <div className="chaircomp-content-header-item quantity">Tổng số lượng</div>
+              <div className="chaircomp-content-header-item quantity-left">Số lượng còn lại</div>
+              <div className="chaircomp-content-header-item quantity-sold">Số lượng ghế đã bán</div>
               <div className="chaircomp-content-header-item color">Màu sắc</div>
               <div className="chaircomp-content-header-item datein">Ngày nhập</div>
               <div className="chaircomp-content-header-item tool">Thao tác</div>
@@ -104,12 +144,23 @@ const ChairComp = () => {
                 <div key={i} className="chaircomp-content-body">
                   <div className="chaircomp-content-body-item stt">{i + 1}</div>
                   <Link to={`/detail-product?type=chair&id=${chair._id}&product=${chair.name}`} className="chaircomp-content-body-item name">{chair.name}</Link>
-                  <div className="chaircomp-content-body-item quantity">{chair.numberCurrent + '/' + chair.numberAtIn}</div>
+                  <div className="chaircomp-content-body-item quantity">{chair.numberAtIn}</div>
+                  <div className="chaircomp-content-body-item quantity-left">{chair.numberCurrent}</div>
+                  <div className="chaircomp-content-body-item quantity-sold">{chair.numberCurrent + '/' + chair.numberAtIn}</div>
                   <div className="chaircomp-content-body-item color">{chair.color}</div>
-                  <div className="chaircomp-content-body-item datein">{chair.dateIn}</div>
+                  <div className="chaircomp-content-body-item datein">{chair.dateIn && formatDate(chair.dateIn)}</div>
                   <div className="chaircomp-content-body-item tool">
-                    <Link className='edit-chaircomp' to={`/edit-chair?id=${chair._id}&name=${chair.name}`}>Sửa</Link>
+                    {/* <Link className='edit-chaircomp' to={`/edit-chair?id=${chair._id}&name=${chair.name}`}>Sửa</Link> */}
                     <span onClick={() => openModal(chair._id)}>Xóa</span>
+                    <div className='optionChair' ref={optionRef}>
+                      <p onClick={() => handleShow(i)}>Chức năng</p>
+                      <div className={showOption === true && i === indexShow ? 'optionChair-body active' : 'optionChair-body'}>
+                        <Link className='optionChair-item' to={'/'}>Sửa tên ghế</Link>
+                        <Link className='optionChair-item' to={'/'}>Thêm số lượng ghế</Link>
+                        <Link className='optionChair-item' to={'/'}>Sửa các ghế đang lỗi</Link>
+                        <Link className='optionChair-item' to={'/'}>Sửa nơi nhập ghế về</Link>
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))

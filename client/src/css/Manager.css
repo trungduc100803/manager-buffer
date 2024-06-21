@@ -99,8 +99,10 @@
     flex: 1;
 }
 
+.chaircomp-content-header-item.quantity-left,
+.chaircomp-content-header-item.quantity-sold,
 .chaircomp-content-header-item.quantity {
-    width: 10%;
+    width: 12%;
 }
 
 .chaircomp-content-header-item.color {
@@ -108,11 +110,11 @@
 }
 
 .chaircomp-content-header-item.datein {
-    width: 15%;
+    width: 18%;
 }
 
 .chaircomp-content-header-item.tool {
-    width: 20%;
+    width: 10%;
 }
 
 
@@ -147,8 +149,11 @@
     text-decoration: underline;
 }
 
+
+.chaircomp-content-body-item.quantity-left,
+.chaircomp-content-body-item.quantity-sold,
 .chaircomp-content-body-item.quantity {
-    width: 10%;
+    width: 12%;
 }
 
 .chaircomp-content-body-item.color {
@@ -156,11 +161,11 @@
 }
 
 .chaircomp-content-body-item.datein {
-    width: 15%;
+    width: 18%;
 }
 
 .chaircomp-content-body-item.tool {
-    width: 20%;
+    width: 10%;
 }
 
 .chaircomp-content-body-item>.edit-chaircomp {
@@ -175,17 +180,62 @@
     transition: all ease 0.2s;
 }
 
+.chaircomp-content-body-item.tool {
+    display: flex;
+    align-items: center;
+}
+
 .chaircomp-content-body-item>span {
     color: red;
     font-size: 1rem;
     font-weight: 600;
+    margin-right: 16px;
 }
 
+.optionChair {
+    position: relative;
+}
+
+.optionChair>p {
+    color: rgb(24, 163, 206);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+
+.optionChair>p:hover,
 .chaircomp-content-body-item>span:hover {
     text-decoration: underline;
     transition: all ease 0.2s;
     cursor: pointer;
 }
 
+
+.optionChair-body {
+    z-index: 10;
+    position: absolute;
+    display: none;
+    top: -3px;
+    right: 100%;
+    background-color: #f0f0f0;
+    border-radius: 6px;
+    min-width: 300px;
+}
+
+.optionChair-body.active {
+    display: flex;
+    flex-direction: column;
+}
+
+.optionChair-item {
+    padding: 10px 0px 10px 10px;
+    font-size: 1rem;
+}
+
+.optionChair-item:hover {
+    transition: all ease-in 0.2s;
+    background-color: #dfdfdf;
+    padding-left: 14px;
+}
 
 /* table */

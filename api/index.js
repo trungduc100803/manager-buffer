@@ -19,22 +19,31 @@ import billTableReducer from './routers/billTable.route.js'
 
 
 const port = 5000
-dotenv.config()
+dotenv.config({
+    origin: 'http://localhost:5173', // Thay thế bằng domain của bạn
+    credentials: true // Để cho phép cookie
+})
 const app = express()
 const httpServer = createServer(app);
 
 
 const io = new Server(httpServer, {
-    origin: 'https://quanlykhohangokc.onrender.com',
+    // origin: 'https://quanlykhohangokc.onrender.com',
     // origin: "http://localhost:5173",
-    methods: ["GET", "POST"]
+    // methods: ["GET", "POST"]
+    cors: {
+        origin: 'http://localhost:5173'
+    }
 });
 
 
 app.use(cors({
-    origin: 'https://quanlykhohangokc.onrender.com',
+    // origin: 'https://quanlykhohangokc.onrender.com',
     // origin: "http://localhost:5173",
-    methods: ["GET", "POST"]
+    // methods: ["GET", "POST"]
+
+    origin: 'http://localhost:5173',
+    credentials: true
 }))
 app.use(cookieParser())
 app.use(express.json())
@@ -75,6 +84,13 @@ io.on("connection", (socket) => {
 });
 
 
+
+httpServer.listen(port, () => {
+    console.log('server running on port ' + port)
+})
+
+
+
 connectDB()
 app.use('/api/auth', authRouter)
 app.use('/api/chair', chairRouter)
@@ -91,11 +107,6 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
 })
 
-
-
-httpServer.listen(port, () => {
-    console.log('server running on port ' + port)
-})
 
 
 

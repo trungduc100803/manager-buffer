@@ -99,3 +99,30 @@
     transition: all ease 0.2s;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
+
+.addchair-more {
+    display: none;
+}
+
+.addchair-more-item {
+    width: 50%;
+    padding: 0 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.addchair-more.active {
+    display: flex;
+    margin: 12px -12px 20px 20px;
+}
+
+
+.btn-close-morechair {
+    display: none;
+}
+
+
+.btn-close-morechair.active {
+    display: block;
+    margin-bottom: 30px;
+}
