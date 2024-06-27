@@ -127,6 +127,28 @@ const handleRequestApi = {
         const chairs = await res.json()
         return chairs
     },
+    editNameChairById: async (id, name) => {
+        const res = await fetch(urlApi.editNameChairByIdUrl(id), {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ name })
+        })
+        const chairs = await res.json()
+        return chairs
+    },
+    addNumberChairById: async (id, formData) => {
+        const res = await fetch(urlApi.addNumberChairUrl(id), {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData)
+        })
+        const chairs = await res.json()
+        return chairs
+    },
     updateTable: async (formData, id) => {
         const res = await fetch(urlApi.updateTableUrl(id), {
             method: "PUT",
@@ -232,6 +254,18 @@ const handleRequestApi = {
             body: JSON.stringify({ number: tableData.number, id: tableData.id })
         })
         const chair = await res.json()
+        return chair
+    },
+    removeNumberChairErr: async (id, formData) => {
+        const res = await fetch(urlApi.removeNumberChairErrUrl(id), {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ formData })
+        })
+        const chair = await res.json()
+
         return chair
     },
     getBillToday: async (today) => {

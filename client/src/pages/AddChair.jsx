@@ -211,10 +211,6 @@ export default function AddChair() {
             <input onChange={e => handleChange(e)} type="text" id='addressIn' />
           </div>
           <div className="addchair-item">
-            <label htmlFor="">Tình trạng lúc nhập</label>
-            <input onChange={e => handleChange(e)} type="text" id='status' />
-          </div>
-          <div className="addchair-item">
             <label htmlFor="">Hình ảnh ghế</label>
             <input onChange={e => handleChangimg(e)} type="file" id='urlImg' accept='image/*' />
           </div>

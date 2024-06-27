@@ -160,7 +160,7 @@ export default function ChairDetail() {
               <div className="chair-info">
                 <p className="chair-info-title">Số lượng ghế đẹp:</p>
                 <span>{
-                  chairData.moreStatus && chairData.moreStatus[0].numberChairStatus > 0 ?
+                  chairData.moreStatus && chairData.moreStatus.length > 1 ?
                     getNumberChairNew(chairData.moreStatus, chairData.numberCurrent) :
                     chairData.numberCurrent
                 }</span>
@@ -202,10 +202,6 @@ export default function ChairDetail() {
             <div className="chair-info">
               <p className="chair-info-title">Địa chỉ nhập hàng:</p>
               <span>{chairData.addressIn}</span>
-            </div>
-            <div className="chair-info">
-              <p className="chair-info-title">Tình trạng ghế:</p>
-              <span>{chairData.status}</span>
             </div>
           </div>
 

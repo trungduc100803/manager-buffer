@@ -24,8 +24,17 @@ const urlApi = {
     updateChairUrl: (id) => {
         return baseUrl + `chair/update-chair/${id}`
     },
+    editNameChairByIdUrl: (id) => {
+        return baseUrl + `chair/edit-name-chair/${id}`
+    },
+    addNumberChairUrl: (id) => {
+        return baseUrl + `chair/add-number-chair/${id}`
+    },
     updateTableUrl: (id) => {
         return baseUrl + `table/update-table/${id}`
+    },
+    removeNumberChairErrUrl: (id) => {
+        return baseUrl + `chair/remove-number-chair-error/${id}`
     },
     addNotifyProductUrl: baseUrl + 'notify-product/add-notify-export-product',
     getAllNotifyProductUrl: baseUrl + 'notify-product/get-all-notify-export-product',

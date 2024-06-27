@@ -5,11 +5,11 @@ const chairController = {
         const {
             name, price, urlImg,
             color, dateIn, numberAtIn,
-            addressIn, status, moreStatus
+            addressIn, moreStatus
         } = req.body
 
         try {
-            if (!name || !price || !urlImg || !color || !dateIn || !numberAtIn || !addressIn || !status || !moreStatus) {
+            if (!name || !price || !urlImg || !color || !dateIn || !numberAtIn || !addressIn || !moreStatus) {
                 return res.status(400).send({
                     message: "Bạn hãy nhập đủ các thông tin",
                     success: false
@@ -17,7 +17,7 @@ const chairController = {
             }
 
             const chair = new Chair({
-                name, price, urlImg, color, dateIn, numberAtIn, addressIn, status, numberCurrent: numberAtIn, moreStatus
+                name, price, urlImg, color, dateIn, numberAtIn, addressIn, numberCurrent: numberAtIn, moreStatus
             })
             await chair.save()
 
@@ -191,6 +191,101 @@ const chairController = {
             })
         } catch (error) {
             next(error)
+        }
+    },
+    editNameChairById: async (req, res, next) => {
+        const { name } = req.body
+        try {
+            if (!name) return res.status(400).send({
+                success: false,
+                message: 'invalid fields'
+            })
+
+            const chair = await Chair.findById({ _id: req.params.id })
+
+            if (!chair) return res.status(400).send({
+                success: false,
+                message: 'not find fields'
+            })
+
+            chair.name = name || chair.name
+            await chair.save()
+            const chairs = await Chair.find()
+
+            return res.status(200).send({
+                success: true,
+                message: 'Sửa tên ghế thành công',
+                chairs
+            })
+
+        } catch (error) {
+            next(error)
+        }
+    },
+    addNumberChair: async (req, res, next) => {
+        const { numberAtIn, moreStatus } = req.body
+        const { id } = req.params
+        try {
+
+            if (!numberAtIn) return res.status(400).send({
+                success: false,
+                message: 'require fields'
+            })
+
+            const chair = await Chair.findById({ _id: id })
+
+            if (!moreStatus) {
+                chair.numberAtIn = chair.numberAtIn + Number.parseInt(numberAtIn)
+                chair.numberCurrent += Number.parseInt(numberAtIn)
+            } else {
+                chair.numberAtIn = chair.numberAtIn + Number.parseInt(numberAtIn)
+                chair.numberCurrent += Number.parseInt(numberAtIn)
+                chair.moreStatus = [...chair.moreStatus, ...moreStatus]
+            }
+            await chair.save()
+            const chairs = await Chair.find()
+
+            return res.status(200).send({
+                success: true,
+                message: 'Thêm số lượng ghế thành công',
+                chairs
+            })
+
+
+        } catch (error) {
+            next(error)
+        }
+    },
+    removeNumberChairErr: async (req, res, next) => {
+        const { id } = req.params
+        const { formData } = req.body
+        try {
+
+            console.log(req.body)
+            if (!formData) return res.status(400).send({
+                success: false,
+                message: "require fields"
+            })
+
+            const chair = await Chair.findById(id)
+            if (!chair) return res.status(400).send({
+                success: false,
+                message: "no find chair"
+            })
+
+            chair.moreStatus.forEach(c => {
+                formData.forEach(data => {
+                    if (c.statusChair === data.currentStatusChair) {
+                        const num = Number.parseInt(c.numberChairStatus) - Number.parseInt(data.numberwantedit)
+                        c.numberChairStatus = num
+                    }
+                })
+            })
+
+            await chair.save()
+
+        } catch (error) {
+
         }
     }
 }
