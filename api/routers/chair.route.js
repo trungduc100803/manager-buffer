@@ -12,6 +12,7 @@ router.delete('/delete-chair', chairController.deleteChair)
 router.put('/edit-name-chair/:id', chairController.editNameChairById)
 router.put('/add-number-chair/:id', chairController.addNumberChair)
 router.put('/export-chair', chairController.exportChair)
+router.put('/edit-number-chair-beautifull/:id', chairController.editNumberChairBeautifull)
 router.delete('/remove-number-chair-error/:id', chairController.removeNumberChairErr)
 
 

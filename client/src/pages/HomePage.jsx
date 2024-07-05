@@ -1,51 +1,79 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-
+import { Chart } from "react-google-charts";
 
 import '../css/HomePage.css'
 import CardHomeDash from '../components/CardHomeDash'
 import handleRequestApi from '../api'
-import { setAllBillFailure, setAllBillPending, setAllBillSuccess } from '../redux/billSlice'
-import { setAllBillTableFailure, setAllBillTablePending, setAllBillTableSuccess } from '../redux/billTableSlice'
+// import { setAllBillFailure, setAllBillPending, setAllBillSuccess } from '../redux/billSlice'
+// import { setAllBillTableFailure, setAllBillTablePending, setAllBillTableSuccess } from '../redux/billTableSlice'
+import { getDataChartChair, getDataChartTable } from '../utils/index'
 
+
+export const data = [
+    ["Element", "Density", { role: "style" }],
+    ["Copper", 8.94, "#b87333"], // RGB value
+    ["Silver", 10.49, "silver"], // English color name
+    ["Gold", 19.3, "gold"],
+    ["Platinum", 100.45, "color: #e5e4e2"], // CSS-style declaration
+    ["Platinum", 100.45, "color: #e5e4e2"], // CSS-style declaration
+    ["Platinum", 100.45, "color: #e5e4e2"], // CSS-style declaration
+    ["Platinum", 100.45, "color: #e5e4e2"], // CSS-style declaration
+    ["Platinum", 100.45, "color: #e5e4e2"], // CSS-style declaration
+    ["Platinum", 100.45, "color: #e5e4e2"], // CSS-style declaration
+];
 
 const HomePage = () => {
 
     const [numberChair, setNumberChair] = useState(0)
     const [numberTable, setNumberTable] = useState(0)
+    const [monthlyChair, setMonthlyChair] = useState([])
+    const [monthlyTable, setMonthlyTable] = useState([])
 
-    const dispatch = useDispatch()
-    const { allBill, loading } = useSelector(state => state.bill)
-    const { allBillTable } = useSelector(state => state.billTable)
+    // const dispatch = useDispatch()
+    // const { allBill, loading } = useSelector(state => state.bill)
+    // const { allBillTable } = useSelector(state => state.billTable)
 
-    const getBillTableToday = async () => {
-        const date = new Date()
-        const day = date.getDate()
-        const month = date.getMonth() + 1
-        const year = date.getFullYear()
-        const formattedDate = year + '-' + month + '-' + day
-        dispatch(setAllBillTablePending())
-        const bills = await handleRequestApi.getBillTableToday(formattedDate)
-        if (!bills.success) {
-            dispatch(setAllBillTableFailure(bills.message))
-            return
-        }
-        dispatch(setAllBillTableSuccess(bills.bills))
+    // const getBillTableToday = async () => {
+    //     const date = new Date()
+    //     const day = date.getDate()
+    //     const month = date.getMonth() + 1
+    //     const year = date.getFullYear()
+    //     const formattedDate = year + '-' + month + '-' + day
+    //     dispatch(setAllBillTablePending())
+    //     const bills = await handleRequestApi.getBillTableToday(formattedDate)
+    //     if (!bills.success) {
+    //         dispatch(setAllBillTableFailure(bills.message))
+    //         return
+    //     }
+    //     dispatch(setAllBillTableSuccess(bills.bills))
+    // }
+
+    // const getBillToday = async () => {
+    //     const date = new Date()
+    //     const day = date.getDate()
+    //     const month = date.getMonth() + 1
+    //     const year = date.getFullYear()
+    //     const formattedDate = year + '-' + month + '-' + day
+    //     dispatch(setAllBillPending())
+    //     const bills = await handleRequestApi.getBillToday(formattedDate)
+    //     if (!bills.success) {
+    //         dispatch(setAllBillFailure(bills.message))
+    //         return
+    //     }
+    //     dispatch(setAllBillSuccess(bills.bills))
+    // }
+
+    const getMonthChair = async () => {
+        const chairs = await handleRequestApi.getMonthlyBill()
+        if (!chairs.success) return
+        setMonthlyChair(chairs.monthlyBills[0].bills)
     }
 
-    const getBillToday = async () => {
-        const date = new Date()
-        const day = date.getDate()
-        const month = date.getMonth() + 1
-        const year = date.getFullYear()
-        const formattedDate = year + '-' + month + '-' + day
-        dispatch(setAllBillPending())
-        const bills = await handleRequestApi.getBillToday(formattedDate)
-        if (!bills.success) {
-            dispatch(setAllBillFailure(bills.message))
-            return
-        }
-        dispatch(setAllBillSuccess(bills.bills))
+    const getMonthTable = async () => {
+        const tables = await handleRequestApi.getMonthlyBillTable()
+        if (!tables.success) return
+        setMonthlyTable(tables.monthlyBills[0].bills)
     }
 
 
@@ -68,8 +96,10 @@ const HomePage = () => {
         }
         getCountChair()
         getCountTable()
-        getBillToday()
-        getBillTableToday()
+        // getBillToday()
+        // getBillTableToday()
+        getMonthChair()
+        getMonthTable()
     }, [])
 
     return (
@@ -84,61 +114,13 @@ const HomePage = () => {
                 </div>
             </div>
 
-            <p className='title'>Doanh thu trong ngày</p>
-            <div className="revenuehome">
-                <div className="revenuehome-chair">
-                    <p className="revenuehome-title">Doanh thu ghế</p>
-                    <div className="revenue">
-                        {
-                            loading ? 'loading ....' :
-                                allBill ?
-                                    <div className="revenue-body">
-                                        <div className="revenue-head">
-                                            <div className="revenue-head-item stt">STT</div>
-                                            <div className="revenue-head-item sender">Người bán</div>
-                                            <div className="revenue-head-item product">Sản phẩm</div>
-                                            <div className="revenue-head-item img">Hình ảnh</div>
-                                            <div className="revenue-head-item color">Màu sắc</div>
-                                            <div className="revenue-head-item number">Số lượng</div>
-                                            <div className="revenue-head-item dateOut">Ngày xuất</div>
-                                            <div className="revenue-head-item price">Đơn giá</div>
-                                            <div className="revenue-head-item totalPrice">Tổng</div>
-                                        </div>
-                                        {
-                                            allBill && allBill.map((bill, i) => <RevenueComp revenue={bill} stt={i + 1} key={i} />)
-                                        }
-                                    </div> :
-                                    <p>chuaw cos hoa down</p>
-                        }
-                    </div>
-                </div>
+            <p className='title'>Số lượng các mẫu ghế đã bán ra trong vòng 30 ngày kể từ hôm nay</p>
+            {monthlyChair && <Chart chartType="ColumnChart" className="chart" data={getDataChartChair(monthlyChair)} />}
 
-                <div className="revenuehome-table">
-                    <p className="revenuehome-title">Doanh thu bàn</p>
-                    <div className="revenue">
-                        {
-                            allBillTable &&
-                            <div className="revenue-body">
-                                <div className="revenue-head">
-                                    <div className="revenue-head-item stt">STT</div>
-                                    <div className="revenue-head-item sender">Người bán</div>
-                                    <div className="revenue-head-item product">Sản phẩm</div>
-                                    <div className="revenue-head-item img">Hình ảnh</div>
-                                    <div className="revenue-head-item color">Màu sắc</div>
-                                    <div className="revenue-head-item number">Số lượng</div>
-                                    <div className="revenue-head-item dateOut">Ngày xuất</div>
-                                    <div className="revenue-head-item price">Đơn giá</div>
-                                    <div className="revenue-head-item totalPrice">Tổng</div>
-                                </div>
-                                {
-                                    allBillTable && allBillTable.map((bill, i) => <RevenueComp revenue={bill} stt={i + 1} key={i} />)
-                                }
-                            </div>
-                        }
-                    </div>
+            <p className='title'>Số lượng các mẫu bàn đã bán ra trong vòng 30 ngày kể từ hôm nay</p>
+            {monthlyTable && <Chart chartType="ColumnChart" className="chart" data={getDataChartTable(monthlyTable)} />}
 
-                </div>
-            </div>
+
         </div>
     )
 }

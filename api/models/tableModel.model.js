@@ -20,10 +20,10 @@ const tableSchema = mongoose.Schema({
         type: String,
         require: true
     },
-    color: {
-        type: String,
-        require: true
-    },
+    // color: {
+    //     type: String,
+    //     require: true
+    // },
     //ok
     dateIn: {
         type: String,
@@ -49,13 +49,17 @@ const tableSchema = mongoose.Schema({
         type: Number,
         require: true
     },
+    sold: {
+        type: Number,
+        default: 0
+    },
     //ok
     note: {
         type: String,
         default: ''
     }
 
-}, { timestamps: true})
+}, { timestamps: true })
 
 const Table = mongoose.model('table', tableSchema)
 export default Table

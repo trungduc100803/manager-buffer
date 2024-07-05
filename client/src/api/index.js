@@ -372,7 +372,91 @@ const handleRequestApi = {
         })
         const table = await res.json()
         return table
-    }
+    },
+    editNumberChairBeautifull: async (id, number) => {
+        const res = await fetch(urlApi.editNumberChairBeautifullUrl(id), {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(number)
+        })
+        const chairs = await res.json()
+        return chairs
+    },
+    getWeeklyBill: async () => {
+        const res = await fetch(urlApi.getWeeklyBillUrl, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+        const bills = await res.json()
+        return bills
+    },
+    getMonthlyBill: async () => {
+        const res = await fetch(urlApi.getMonthlyBillUrl, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+        const bills = await res.json()
+        return bills
+    },
+    getWeeklyBillTable: async () => {
+        const res = await fetch(urlApi.getWeeklyBillTableUrl, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+        const bills = await res.json()
+        return bills
+    },
+    getMonthlyBillTable: async () => {
+        const res = await fetch(urlApi.getMonthlyBillTableUrl, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+        const bills = await res.json()
+        return bills
+    },
+    editNameTableById: async (name, id) => {
+        const res = await fetch(urlApi.editNameTableUrl(id), {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ name })
+        })
+        const tables = await res.json()
+        return tables
+    },
+    addNumberTableById: async (numberNew, id) => {
+        const res = await fetch(urlApi.addNumberTableUrl(id), {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ numberNew })
+        })
+        const tables = await res.json()
+        return tables
+    },
+    minusNumberTableById: async (numberNew, id) => {
+        const res = await fetch(urlApi.minusNumberTableUrl(id), {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ numberNew })
+        })
+        const tables = await res.json()
+        return tables
+    },
 
 }
 

@@ -6,7 +6,9 @@ import { toast } from 'react-toastify'
 
 import '../css/Notify.css'
 import handleRequestApi from '../api'
+import { formatNumberWithDots, formatDate } from '../utils/index'
 import { setAllNotifyProductSuccess } from '../redux/notifyProductSlice'
+import NotNotify from '../assets/noNotify.webp'
 
 export default function Notify() {
     const [tab, setTab] = useState(true)
@@ -35,13 +37,13 @@ export default function Notify() {
                     }
                 </div>
 
-                <div className={tab ? 'tab-manager-item' : 'tab-manager-item active'} onClick={() => setTab(false)}>
+                {/* <div className={tab ? 'tab-manager-item' : 'tab-manager-item active'} onClick={() => setTab(false)}>
                     <p>Thông báo</p>
-                </div>
+                </div> */}
             </div>
             <div className="notify-content">
                 {
-                    tab ? <Approve /> :
+                    tab && tab ? <Approve /> :
                         <Noti />
                 }
             </div>
@@ -75,7 +77,10 @@ const Approve = () => {
                         allNotifyProduct.map((notify, i) => <NotifyProduct notify={notify} key={i} />)
                     }
                 </div> :
-                'chua cos thong baso'
+                <div className='img_notNotify'>
+                    <img src={NotNotify} alt="" />
+                </div>
+
         }
     </>
 }
@@ -148,7 +153,7 @@ const NotifyProduct = ({ notify }) => {
                 nameTable: product.name,
                 priceTable: product.price,
                 urlImgTable: product.urlImgTable,
-                colorTable: product.color,
+                // colorTable: product.color,
                 size: product.size
             }
             const tableData = {
@@ -174,6 +179,7 @@ const NotifyProduct = ({ notify }) => {
         const allNotify = await handleRequestApi.getAllNotifyProduct()
         dispatch(setAllNotifyProductSuccess(allNotify.notifyProducts))
     }
+
 
     return auth && <div className="notifyProduct">
         <div className="notifyProduct-body">
@@ -205,10 +211,19 @@ const NotifyProduct = ({ notify }) => {
                         <p>Số lượng muốn xuất:</p>
                         <span>{notify.number}</span>
                     </div>
+                    {
+                        notify.status &&
+                        <div className="notifyProduct-info-item">
+                            <p>Ngày xuất:</p>
+                            <span>{formatDate(notify.dateOut)}</span>
+                        </div>
+                    }
                     <div className="notifyProduct-info-item">
                         <p>Tổng giá trị:</p>
-                        <span>{notify.totalPrice}</span>
+                        <span>{formatNumberWithDots(notify.totalPrice)}</span>
                     </div>
+
+
 
                     {
                         !notify.status &&

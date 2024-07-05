@@ -6,6 +6,7 @@ import Card from '../components/Card'
 import slug from '../config/slug'
 import handleRequestApi from '../api'
 import { setAllChair } from '../redux/chairSlice'
+import noProduct from '../assets/noproductfound.png'
 
 const ChairPage = () => {
     const dispatch = useDispatch()
@@ -33,9 +34,11 @@ const ChairPage = () => {
                                     <Card key={i} data={chair} slug={slug.chair} />
                                 </div>
                             )) :
-                            <p>Chưa có ghế nào được thêm</p>
+                            <div className='img_nochair'>
+                                <img src={noProduct} alt="" />
+                            </div>
                     }
-                    
+
                 </div>
             </div>
         </>

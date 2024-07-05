@@ -110,11 +110,6 @@ export default function AddTable() {
           </div>
 
           <div className="addchair-item">
-            <label htmlFor="">Màu sắc</label>
-            <input onChange={e => handleChange(e)} type="text" id='color' />
-          </div>
-
-          <div className="addchair-item">
             <label htmlFor="">Ngày nhập</label>
             <input onChange={e => handleChange(e)} type="date" id='dateIn' />
           </div>

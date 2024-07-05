@@ -9,6 +9,8 @@ import { toast, useToast } from 'react-toastify';
 import { socket } from '../socketIO';
 import '../css/ChairDetail.css'
 import handleRequestApi from '../api';
+import { formatNumberWithDots } from '../utils/index'
+
 
 
 const customStyles = {
@@ -132,43 +134,39 @@ export default function TableDetail() {
         <div className="slider">
           {/* <Zoom scale={0.4} autoplay={true} duration={2500} indicators={true} transitionDuration={1000}> */}
           <div>
-            <img style={{ width: '100%' }} src={tableData.urlImgTable} />
+            <img style={{ width: '100%' }} src={tableData && tableData.urlImgTable} />
           </div>
           {/* </Zoom> */}
         </div>
 
         <div className="chaircontent">
-          <p className="namechair">{tableData.name}</p>
-          <p className="pricechair">{tableData.price}đ</p>
+          <p className="namechair">{tableData && tableData.name}</p>
+          <p className="pricechair">{tableData && tableData.price}đ</p>
 
           <div className="chair-infos">
             <div className="chair-info">
               <p className="chair-info-title">Số lượng hiện tại:</p>
-              <span>{tableData.numberCurrent}</span>
-            </div>
-            <div className="chair-info">
-              <p className="chair-info-title">Màu sắc:</p>
-              <span>{tableData.color}</span>
+              <span>{tableData && tableData.numberCurrent}</span>
             </div>
             <div className="chair-info">
               <p className="chair-info-title">Kích thước:</p>
-              <span>{tableData.size}</span>
+              <span>{tableData && tableData.size}</span>
             </div>
             <div className="chair-info">
               <p className="chair-info-title">Ngày nhập về kho:</p>
-              <span>{tableData.dateIn}</span>
+              <span>{tableData && tableData.dateIn}</span>
             </div>
             <div className="chair-info">
               <p className="chair-info-title">Số lượng lúc nhập:</p>
-              <span>{tableData.number}</span>
+              <span>{tableData && tableData.number}</span>
             </div>
             <div className="chair-info">
               <p className="chair-info-title">Địa chỉ nhập hàng:</p>
-              <span>{tableData.addressIn}</span>
+              <span>{tableData && tableData.addressIn}</span>
             </div>
             <div className="chair-info">
               <p className="chair-info-title">Tình trạng bàn:</p>
-              <span>{tableData.status}</span>
+              <span>{tableData && tableData.status}</span>
             </div>
           </div>
 
@@ -208,15 +206,15 @@ export default function TableDetail() {
                 <button onClick={e => handleTotalprice(e)} className='btn-modal btn-modal-caculator'>Tính tổng giá trị</button>
                 <div className="exportchair-item">
                   <label htmlFor="">Tổng giá trị</label>
-                  <input value={totalPriceExportChair + 'đ'} className='exportchair-total' type="text" name="" id="totalPrice" disabled />
+                  <input value={formatNumberWithDots(totalPriceExportChair) + 'đ'} className='exportchair-total' type="text" name="" id="totalPrice" disabled />
                 </div>
                 {
                   !currentUser.isAdmin &&
                   <div className="exportchair-item">
                     <label htmlFor="">Quản trị viên</label>
                     <div className="admin-content">
-                      <img src={adminAccount.urlImgProfile} alt="" />
-                      <span>{adminAccount.username}</span>
+                      <img src={adminAccount?.urlImgProfile} alt="" />
+                      <span>{adminAccount?.username}</span>
                     </div>
                   </div>
                 }

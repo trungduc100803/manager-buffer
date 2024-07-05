@@ -20,7 +20,8 @@ import billTableReducer from './routers/billTable.route.js'
 
 const port = 5000
 dotenv.config({
-    origin: 'http://localhost:5173', // Thay thế bằng domain của bạn
+    // origin: 'http://localhost:5173', // Thay thế bằng domain của bạn
+    origin: 'https://quanlykhohangokc.onrender.com',
     credentials: true // Để cho phép cookie
 })
 const app = express()
@@ -32,17 +33,19 @@ const io = new Server(httpServer, {
     // origin: "http://localhost:5173",
     // methods: ["GET", "POST"]
     cors: {
-        origin: 'http://localhost:5173'
+        // origin: 'http://localhost:5173'
+        origin: 'https://quanlykhohangokc.onrender.com',
+        methods: ["GET", "POST"]
+
     }
 });
 
 
 app.use(cors({
-    // origin: 'https://quanlykhohangokc.onrender.com',
-    // origin: "http://localhost:5173",
-    // methods: ["GET", "POST"]
+    origin: 'https://quanlykhohangokc.onrender.com',
+    methods: ["GET", "POST"],
 
-    origin: 'http://localhost:5173',
+    // origin: 'http://localhost:5173',
     credentials: true
 }))
 app.use(cookieParser())

@@ -155,7 +155,8 @@ const chairController = {
                 { _id: id },
                 {
                     $set: {
-                        numberCurrent: chairCurrent.numberCurrent - number
+                        numberCurrent: chairCurrent.numberCurrent - number,
+                        sold: chairCurrent.sold + number
                     }
                 },
                 { new: true }
@@ -229,7 +230,7 @@ const chairController = {
 
             if (!numberAtIn) return res.status(400).send({
                 success: false,
-                message: 'require fields'
+                message: 'Nhập số lượng ghế'
             })
 
             const chair = await Chair.findById({ _id: id })
@@ -261,7 +262,6 @@ const chairController = {
         const { formData } = req.body
         try {
 
-            console.log(req.body)
             if (!formData) return res.status(400).send({
                 success: false,
                 message: "require fields"
@@ -284,8 +284,45 @@ const chairController = {
 
             await chair.save()
 
+            return res.status(200).send({
+                success: true,
+                message: "OK"
+            })
+
         } catch (error) {
 
+        }
+    },
+    editNumberChairBeautifull: async (req, res, next) => {
+        const { id } = req.params
+        const { number } = req.body
+        try {
+            if (!number || !id) return res.status(400).send({
+                success: false,
+                message: "KO du du lieu"
+            })
+
+            const chair = await Chair.findById(id)
+
+            if (!chair) return res.status(400).send({
+                success: false,
+                message: "Ko tim thay ghe"
+            })
+
+            chair.numberAtIn -= Number.parseInt(number)
+            chair.numberCurrent -= Number.parseInt(number)
+
+            await chair.save()
+
+            const chairs = await Chair.find()
+
+            return res.status(200).send({
+                success: true,
+                message: "Sửa thành công ❤❤",
+                chairs
+            })
+        } catch (error) {
+            next(error)
         }
     }
 }

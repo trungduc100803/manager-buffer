@@ -102,11 +102,11 @@
     transition: all ease 0.2s;
 }
 
-.tab-manager-item{
+.tab-manager-item {
     position: relative;
 }
 
-.tab-manager-item>span{
+.tab-manager-item>span {
     position: absolute;
     top: 50%;
     right: 10px;
@@ -116,4 +116,14 @@
     padding: 3px 8px;
     border-radius: 1000px;
     background-color: red;
+}
+
+.img_notNotify {
+    display: flex;
+    align-items: center;
+}
+
+.img_notNotify>img {
+    margin: auto;
+    width: 500px;
 }

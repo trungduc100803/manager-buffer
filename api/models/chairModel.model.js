@@ -40,6 +40,10 @@ const chairModel = mongoose.Schema({
         type: String,
         default: ''
     },
+    sold: {
+        type: Number,
+        default: 0
+    },
     moreStatus: [
         {
             numberChairStatus: {

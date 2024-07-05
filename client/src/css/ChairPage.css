@@ -16,3 +16,15 @@
     padding: 0 16px;
     margin-bottom: 20px;
 }
+
+.img_nochair {
+    display: flex;
+    align-items: center;
+    width: 100vw;
+}
+
+.img_nochair>img {
+    width: 500px;
+    margin: auto;
+
+}

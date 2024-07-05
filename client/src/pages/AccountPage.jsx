@@ -248,7 +248,7 @@ const AccountPage = () => {
                             <input value={dataAuth && dataAuth.email} onChange={e => handleChange(e)} type="email" name="" id="email" />
                         </div>
 
-                        <div className="modal_edit--item">
+                        {/* <div className="modal_edit--item">
                             <label htmlFor="">Mật khẩu</label>
                             <input value={dataAuth && dataAuth.password} onChange={e => handleChange(e)} type={visiblePassword ? 'text' : "password"} name="" id="password" />
                         </div>
@@ -256,7 +256,7 @@ const AccountPage = () => {
                         <div className="show-password">
                             <input onClick={handleVisiblePassword} type="checkbox" name="" id="" />
                             <span>Hiện mật khẩu</span>
-                        </div>
+                        </div> */}
 
                         <div className="modal_edit--item avatar">
                             <label htmlFor="">Ảnh đại diện</label>

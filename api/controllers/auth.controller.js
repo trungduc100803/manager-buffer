@@ -198,14 +198,14 @@ const authController = {
                 message: 'error'
             })
 
-            const hashPassword = bcrypt.hashSync(req.body.password, 10);
+            // const hashPassword = bcrypt.hashSync(req.body.password, 10);
 
             const auth = await Auth.findOneAndUpdate(
                 { _id: req.body._id },
                 {
                     $set: {
                         ...req.body,
-                        password: hashPassword
+                        // password: hashPassword
                     }
                 },
                 { new: true }

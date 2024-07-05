@@ -2,9 +2,9 @@ import Table from '../models/tableModel.model.js'
 
 const tableController = {
     addTable: async (req, res, next) => {
-        const { name, number, size, color, dateIn, addressIn, status, urlImgTable, price } = req.body
+        const { name, number, size, dateIn, addressIn, status, urlImgTable, price } = req.body
         try {
-            if (!name || !number || !size || !color || !dateIn || !addressIn || !status || !urlImgTable || !price) {
+            if (!name || !number || !size || !dateIn || !addressIn || !status || !urlImgTable || !price) {
                 return res.status(400).send({
                     success: false,
                     message: "Yêu cầu nhập đầy đủ các thông tin"
@@ -85,7 +85,8 @@ const tableController = {
                 { _id: id },
                 {
                     $set: {
-                        numberCurrent: tableCurrent.numberCurrent - number
+                        numberCurrent: tableCurrent.numberCurrent - Number.parseInt(number),
+                        sold: tableCurrent.sold + Number.parseInt(number)
                     }
                 },
                 { new: true }
@@ -125,11 +126,11 @@ const tableController = {
         }
     },
     updateTable: async (req, res, next) => {
-        const { addressIn, color, dateIn, name, number, price, status, urlImgTable, size } = req.body
-        const { id } = req.params.id
+        const { addressIn, dateIn, name, number, price, status, urlImgTable, size } = req.body
+        const { id } = req.params
         try {
             // verify isadmin
-            if (!addressIn || !color || !dateIn || !name || !number || !price || !status || !urlImgTable || !size) {
+            if (!addressIn || !dateIn || !name || !number || !price || !status || !urlImgTable || !size) {
                 return res.status(400).send({
                     success: false,
                     message: "Yêu cầu nhập đầy đủ thông tin"
@@ -174,6 +175,99 @@ const tableController = {
                 success: true,
                 message: "Lấy tất cả ban thành công",
                 count
+            })
+        } catch (error) {
+            next(error)
+        }
+    },
+    editNameTable: async (req, res, next) => {
+        const { id } = req.params
+        const { name } = req.body
+        try {
+            if (!id || !name) return res.status(400).send({
+                success: false,
+                message: "thieu thong tin"
+            })
+
+            const table = await Table.findById(id)
+            if (!table) return res.status(400).send({
+                success: false,
+                message: "ko tim thay ban"
+            })
+
+            table.name = name
+            await table.save()
+
+            const tables = await Table.find()
+
+            return res.status(200).send({
+                success: true,
+                message: "Đã sửa tên thành công❤❤",
+                tables
+            })
+
+
+        } catch (error) {
+            next(error)
+        }
+    },
+    addNumberTable: async (req, res, next) => {
+        const { id } = req.params
+        const { numberNew } = req.body
+        try {
+            if (!id || !numberNew) return res.status(400).send({
+                success: false,
+                message: "thieu thong tin"
+            })
+
+            const table = await Table.findById(id)
+            if (!table) return res.status(400).send({
+                success: false,
+                message: "ko tim thay ban"
+            })
+
+            table.numberCurrent += Number.parseInt(numberNew)
+            table.number += Number.parseInt(numberNew)
+
+            await table.save()
+
+            const tables = await Table.find()
+
+            return res.status(200).send({
+                success: true,
+                message: "Đã thêm số lượng bàn thành công❤❤",
+                tables
+            })
+        } catch (error) {
+            next(error)
+        }
+    },
+    minusNumberTable: async (req, res, next) => {
+        const { id } = req.params
+        const { numberNew } = req.body
+        try {
+            if (!id || !numberNew) return res.status(400).send({
+                success: false,
+                message: "thieu thong tin"
+            })
+
+            const table = await Table.findById(id)
+            if (!table) return res.status(400).send({
+                success: false,
+                message: "ko tim thay ban"
+            })
+
+            table.numberCurrent -= Number.parseInt(numberNew)
+            table.number -= Number.parseInt(numberNew)
+
+            await table.save()
+
+            const tables = await Table.find()
+
+            return res.status(200).send({
+                success: true,
+                message: "Đã bớt số lượng bàn thành công❤❤",
+                tables
             })
         } catch (error) {
             next(error)

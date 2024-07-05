@@ -4,8 +4,9 @@ import { toast } from 'react-toastify'
 
 
 import '../css/Revenue.css'
+import { formatDate, formatNumberWithDots } from '../utils/index'
 import handleRequestApi from '../api'
-import { setAllBillFailure, setAllBillPending, setAllBillSuccess } from '../redux/billSlice'
+import billSlice, { setAllBillFailure, setAllBillPending, setAllBillSuccess } from '../redux/billSlice'
 import { setAllBillTableFailure, setAllBillTablePending, setAllBillTableSuccess } from '../redux/billTableSlice'
 
 export default function Revenue() {
@@ -22,7 +23,7 @@ export default function Revenue() {
             </div>
         </div>
         {
-            tab ? <RevenueChair /> : <RevenueTable />
+            tab && tab ? <RevenueChair /> : <RevenueTable />
         }
     </>
 
@@ -52,15 +53,31 @@ const RevenueChair = () => {
         dispatch(setAllBillSuccess(bills.bills))
     }
 
+    const getWeeklyBill = async () => {
+        const bills = await handleRequestApi.getWeeklyBill()
+        if (!bills.success) {
+            return
+        }
+        dispatch(setAllBillSuccess((bills.weeklyBills[0].bills).reverse()))
+    }
+
+    const getMonthlyBill = async () => {
+        const bills = await handleRequestApi.getMonthlyBill()
+        if (!bills.success) {
+            return
+        }
+        dispatch(setAllBillSuccess((bills.monthlyBills[0].bills).reverse()))
+    }
+
 
     useEffect(() => {
         if (stateFilter === 'week') {
-            console.log('fetch week')
+            getWeeklyBill()
             return
         }
 
         if (stateFilter === 'month') {
-            console.log('fetch month')
+            getMonthlyBill()
             return
         }
 
@@ -80,7 +97,11 @@ const RevenueChair = () => {
     }
 
     const handleChangeEndDate = (e) => {
-        setEndDate(e.target.value)
+        const date = new Date(e.target.value)
+        const day = Number.parseInt(e.target.value.split('-')[2]) + 1
+        date.setDate(day)
+        const newDate = date.toISOString().slice(0, 10)
+        setEndDate(newDate)
     }
 
     const handleFilter = async (e) => {
@@ -108,10 +129,31 @@ const RevenueChair = () => {
         setTotalRevenue(total)
     }, [allBill])
 
+    const groupedByDateOut = allBill.reduce((acc, item) => {
+
+        if (!acc[item.dateOut]) {
+            acc[item.dateOut] = [];
+        }
+        acc[item.dateOut].push(item);
+        return acc;
+    }, {});
+    const arrayBill = Object.values(groupedByDateOut)
+
+    const handleTotalItem = (item) => {
+        const priceArr = item.map((bill) => bill.totalPrice)
+        let total = 0
+        for (let i = 0; i < priceArr.length; i++) {
+            total += priceArr[i]
+        }
+        return formatNumberWithDots(total)
+    }
+
+
     return (
+
         <>
             {
-                <div className="revenue">
+                <div div className="revenue" >
                     <p>Toàn bộ doanh thu ghế</p>
                     <div className="revenue-filter">
                         <div className="revenue-filter-left">
@@ -123,11 +165,11 @@ const RevenueChair = () => {
                                 </div>
                                 <div className="revenue-filter-item">
                                     <input type="radio" name="a" id="week" checked={stateFilter === 'week' ? true : false} onChange={e => handlechange(e)} />
-                                    <label htmlFor="">Tuần này</label>
+                                    <label htmlFor="">1 tuần trước</label>
                                 </div>
                                 <div className="revenue-filter-item">
                                     <input type="radio" name="a" id="month" checked={stateFilter === 'month' ? true : false} onChange={e => handlechange(e)} />
-                                    <label htmlFor="">Tháng này</label>
+                                    <label htmlFor="">1 tháng trước</label>
                                 </div>
                             </form>
                         </div>
@@ -149,35 +191,47 @@ const RevenueChair = () => {
                     </div>
                     {
                         loading ? 'loading ....' :
-                            allBill &&
-                            <div className="revenue-body">
+                            arrayBill &&
+                            <>
                                 {
-                                    startDate && endDate ?
-                                        <p className='option-tile'>Doanh thu từ {startDate} đến {endDate}</p> :
-                                        <></>
-                                }
-                                <div className="revenue-head">
-                                    <div className="revenue-head-item stt">STT</div>
-                                    <div className="revenue-head-item sender">Người bán</div>
-                                    <div className="revenue-head-item product">Sản phẩm</div>
-                                    <div className="revenue-head-item img">Hình ảnh</div>
-                                    <div className="revenue-head-item color">Màu sắc</div>
-                                    <div className="revenue-head-item number">Số lượng</div>
-                                    <div className="revenue-head-item dateOut">Ngày xuất</div>
-                                    <div className="revenue-head-item price">Đơn giá</div>
-                                    <div className="revenue-head-item totalPrice">Tổng</div>
-                                </div>
-                                {
-                                    allBill && allBill.map((bill, i) => <RevenueComp revenue={bill} stt={i + 1} key={i} />)
-                                }
+                                    arrayBill.map((b) => {
+                                        return <div className="revenue-body">
+                                            {
+                                                startDate && endDate ?
+                                                    <p className='option-tile'>Doanh thu {b[0] && formatDate(b[0].dateOut)}</p> :
+                                                    <></>
+                                            }
+                                            <div className="revenue-head">
+                                                <div className="revenue-head-item stt">STT</div>
+                                                <div className="revenue-head-item sender">Người bán</div>
+                                                <div className="revenue-head-item product">Sản phẩm</div>
+                                                <div className="revenue-head-item img">Hình ảnh</div>
+                                                <div className="revenue-head-item color">Màu sắc</div>
+                                                <div className="revenue-head-item number">Số lượng</div>
+                                                <div className="revenue-head-item dateOut">Ngày xuất</div>
+                                                <div className="revenue-head-item price">Đơn giá</div>
+                                                <div className="revenue-head-item totalPrice">Tổng</div>
+                                            </div>
+                                            {
+                                                b && b.map((bill, i) => <RevenueComp revenue={bill} stt={i + 1} key={i} />)
+                                            }
 
-                                <div className="revenue-total">
-                                    <p className='revenue-total-title'>Tổng hóa đơn:</p>
-                                    <span>{totalRevenue}</span>
-                                </div>
-                            </div>
+                                            <div className="revenue-total-item">
+                                                <p className='revenue-total-title-item'>Tổng hóa đơn:</p>
+                                                <span>{handleTotalItem(b)}</span>
+                                            </div>
+
+
+                                            <div className="revenue-total">
+                                                <p className='revenue-total-title'>Tổng hóa đơn:</p>
+                                                <span>{formatNumberWithDots(totalRevenue)}</span>
+                                            </div>
+                                        </div>
+                                    })
+                                }
+                            </>
                     }
-                </div>
+                </div >
             }
         </>
     )
@@ -207,15 +261,34 @@ const RevenueTable = () => {
         dispatch(setAllBillTableSuccess(bills.bills))
     }
 
+    const getWeeklyBillTable = async () => {
+        const bills = await handleRequestApi.getWeeklyBillTable()
+        console.log(bills)
+
+        if (!bills.success) {
+            return
+        }
+        dispatch(setAllBillTableSuccess((bills.weeklyBills).reverse()))
+    }
+
+    const getMonthlyBillTable = async () => {
+        const bills = await handleRequestApi.getMonthlyBillTable()
+        console.log(bills)
+        if (!bills.success) {
+            return
+        }
+        dispatch(setAllBillTableSuccess((bills.monthlyBills[0].bills).reverse()))
+    }
+
 
     useEffect(() => {
         if (stateFilter === 'week') {
-            console.log('fetch week')
+            getWeeklyBillTable()
             return
         }
 
         if (stateFilter === 'month') {
-            console.log('fetch month')
+            getMonthlyBillTable()
             return
         }
 
@@ -235,7 +308,11 @@ const RevenueTable = () => {
     }
 
     const handleChangeEndDate = (e) => {
-        setEndDate(e.target.value)
+        const date = new Date(e.target.value)
+        const day = Number.parseInt(e.target.value.split('-')[2]) + 1
+        date.setDate(day)
+        const newDate = date.toISOString().slice(0, 10)
+        setEndDate(newDate)
     }
 
     const handleFilter = async (e) => {
@@ -264,6 +341,25 @@ const RevenueTable = () => {
         setTotalRevenue(total)
     }, [allBillTable])
 
+    const groupedByDateOut = allBillTable.reduce((acc, item) => {
+
+        if (!acc[item.dateOut]) {
+            acc[item.dateOut] = [];
+        }
+        acc[item.dateOut].push(item);
+        return acc;
+    }, {});
+    const arrayBill = Object.values(groupedByDateOut)
+
+    const handleTotalItem = (item) => {
+        const priceArr = item.map((bill) => bill.totalPrice)
+        let total = 0
+        for (let i = 0; i < priceArr.length; i++) {
+            total += priceArr[i]
+        }
+        return formatNumberWithDots(total)
+    }
+
     return (
         <>
             {
@@ -279,11 +375,11 @@ const RevenueTable = () => {
                                 </div>
                                 <div className="revenue-filter-item">
                                     <input type="radio" name="a" id="week" checked={stateFilter === 'week' ? true : false} onChange={e => handlechange(e)} />
-                                    <label htmlFor="">Tuần này</label>
+                                    <label htmlFor="">1 tuần trước</label>
                                 </div>
                                 <div className="revenue-filter-item">
                                     <input type="radio" name="a" id="month" checked={stateFilter === 'month' ? true : false} onChange={e => handlechange(e)} />
-                                    <label htmlFor="">Tháng này</label>
+                                    <label htmlFor="">1 tháng trước</label>
                                 </div>
                             </form>
                         </div>
@@ -305,33 +401,49 @@ const RevenueTable = () => {
                     </div>
                     {
                         loading ? 'loading ....' :
-                            allBillTable &&
-                            <div className="revenue-body">
+                            arrayBill &&
+                            <>
                                 {
-                                    startDate && endDate ?
-                                        <p className='option-tile'>Doanh thu từ {startDate} đến {endDate}</p> :
-                                        <></>
-                                }
-                                <div className="revenue-head">
-                                    <div className="revenue-head-item stt">STT</div>
-                                    <div className="revenue-head-item sender">Người bán</div>
-                                    <div className="revenue-head-item product">Sản phẩm</div>
-                                    <div className="revenue-head-item img">Hình ảnh</div>
-                                    <div className="revenue-head-item color">Màu sắc</div>
-                                    <div className="revenue-head-item number">Số lượng</div>
-                                    <div className="revenue-head-item dateOut">Ngày xuất</div>
-                                    <div className="revenue-head-item price">Đơn giá</div>
-                                    <div className="revenue-head-item totalPrice">Tổng</div>
-                                </div>
-                                {
-                                    allBillTable && allBillTable.map((bill, i) => <RevenueComp revenue={bill} stt={i + 1} key={i} />)
-                                }
+                                    arrayBill.map((b) => {
+                                        return <div className="revenue-body">
+                                            {
+                                                startDate && endDate ?
+                                                    <p className='option-tile'>Doanh thu {b[0] && formatDate(b[0].dateOut)}</p> :
+                                                    <></>
+                                            }
+                                            <div className="revenue-head">
+                                                <div className="revenue-head-item stt">STT</div>
+                                                <div className="revenue-head-item sender">Người bán</div>
+                                                <div className="revenue-head-item product">Sản phẩm</div>
+                                                <div className="revenue-head-item img">Hình ảnh</div>
+                                                <div className="revenue-head-item color">Màu sắc</div>
+                                                <div className="revenue-head-item number">Số lượng</div>
+                                                <div className="revenue-head-item dateOut">Ngày xuất</div>
+                                                <div className="revenue-head-item price">Đơn giá</div>
+                                                <div className="revenue-head-item totalPrice">Tổng</div>
+                                            </div>
+                                            {
+                                                b && b.map((bill, i) => <RevenueComp revenue={bill} stt={i + 1} key={i} />)
+                                            }
 
-                                <div className="revenue-total">
-                                    <p className='revenue-total-title'>Tổng hóa đơn:</p>
-                                    <span>{totalRevenue}</span>
-                                </div>
-                            </div>
+                                            <div className="revenue-total-item">
+                                                <p className='revenue-total-title-item'>Tổng hóa đơn:</p>
+                                                <span>{handleTotalItem(b)}</span>
+                                            </div>
+
+                                            {
+                                                totalRevenue &&
+                                                <div className="revenue-total">
+                                                    <p className='revenue-total-title'>Tổng hóa đơn:</p>
+                                                    <span>{formatNumberWithDots(totalRevenue)}</span>
+                                                </div>
+                                            }
+
+
+                                        </div>
+                                    })
+                                }
+                            </>
                     }
                 </div>
             }
@@ -367,8 +479,18 @@ const RevenueComp = ({ revenue, stt }) => {
             <div className="revenueComp-item color">{revenue.colorChair || revenue.colorTable}</div>
             <div className="revenueComp-item number">{revenue.number}</div>
             <div className="revenueComp-item dateOut">{revenue.dateOut}</div>
-            <div className="revenueComp-item price">{revenue.priceChair || revenue.priceTable}</div>
-            <div className="revenueComp-item totalPrice">{revenue.totalPrice}</div>
+            {
+                revenue.priceChair &&
+                <div className="revenueComp-item price">{formatNumberWithDots(revenue.priceChair)}</div>
+            }
+            {
+                revenue.priceTable &&
+                <div className="revenueComp-item price">{formatNumberWithDots(revenue.priceTable)}</div>
+            }
+            {
+                revenue.totalPrice &&
+                <div className="revenueComp-item totalPrice">{formatNumberWithDots(revenue.totalPrice)}</div>
+            }
         </div>
     </>
 }

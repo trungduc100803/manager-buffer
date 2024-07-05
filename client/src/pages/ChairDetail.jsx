@@ -122,9 +122,6 @@ export default function ChairDetail() {
       return
     }
 
-    console.log(notify)
-    console.log(dataExport)
-
     //neu admin on se thong bao toi admin
     socket.emit("send-export-chair", dataExport)
     toast.success("Đã gửi yêu cầu xuất kho, hãy chờ Admin duyệt nhé 😊😊")
@@ -132,7 +129,7 @@ export default function ChairDetail() {
     closeModal()
   }
 
-
+  console.log(adminAccount)
 
   return (
     <>
@@ -160,7 +157,7 @@ export default function ChairDetail() {
               <div className="chair-info">
                 <p className="chair-info-title">Số lượng ghế đẹp:</p>
                 <span>{
-                  chairData.moreStatus && chairData.moreStatus.length > 1 ?
+                  chairData.moreStatus && chairData.moreStatus.length >= 1 ?
                     getNumberChairNew(chairData.moreStatus, chairData.numberCurrent) :
                     chairData.numberCurrent
                 }</span>
@@ -248,8 +245,8 @@ export default function ChairDetail() {
                   <div className="exportchair-item">
                     <label htmlFor="">Quản trị viên</label>
                     <div className="admin-content">
-                      <img src={adminAccount.urlImgProfile} alt="" />
-                      <span>{adminAccount.username}</span>
+                      <img src={adminAccount?.urlImgProfile} alt="" />
+                      <span>{adminAccount?.username}</span>
                     </div>
                   </div>
                 }

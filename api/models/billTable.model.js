@@ -25,10 +25,10 @@ const billTableModel = mongoose.Schema({
         type: String,
         require: true
     },
-    colorTable: {
-        type: String,
-        require: true
-    },
+    // colorTable: {
+    //     type: String,
+    //     require: true
+    // },
     size: {
         type: String,
         require: true

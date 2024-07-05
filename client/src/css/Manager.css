@@ -247,6 +247,7 @@
 .optionChair-item {
     padding: 10px 0px 10px 10px;
     font-size: 1rem;
+    cursor: pointer;
 }
 
 .optionChair-item:hover {
@@ -263,6 +264,107 @@
 .errchair-left {
     display: flex;
     flex-direction: column;
+}
+
+
+.modal-addnumberTable>p,
+.modal-editNameTable>p,
+.modal-errchair>p,
+.modal-editNumberChairBeautiful>p,
+.modal-addNumberChair>p,
+.modal-editnameChair>p {
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.addnumberTable-item,
+.editNameTable-item,
+.editNumberChairBeautiful-item,
+.addNumberChair-item,
+.editnameChair-item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.errchair-left {
+    margin-bottom: 20px;
+}
+
+
+.addnumberTable-item>label,
+.editNameTable-item>label,
+.errchair-left>label,
+.editNumberChairBeautiful-item>label,
+.addchair-more-item>label,
+.addNumberChair-item>label,
+.editnameChair-item>label {
+    margin-bottom: 4px;
+    font-weight: 600;
+    color: #7c7a7a;
+}
+
+
+.addnumberTable-item>input,
+.editNameTable-item>input,
+.errchair-left>input,
+.editNumberChairBeautiful-item>input,
+.addchair-more-item>input,
+.addNumberChair-item>input,
+.editnameChair-item>input {
+    border-radius: 6px;
+    outline: none;
+
+}
+
+
+.handleAddNumberChair-add {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.addNumberChair-icon {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.handleAddNumberChair-add:hover>span {
+    font-weight: 600;
+    transition: all ease 0.2s;
+    color: #7c7a7a;
+}
+
+.btns-close-morechair {
+    display: flex;
+    align-items: center;
+}
+
+.btn-close-morechair {
+    padding: 10px 20px;
+    border-radius: 6px;
+}
+
+.btn-close-morechair.close {
+    margin-right: 10px;
+    color: white;
+    background-color: #7c7a7a;
+}
+
+.btn-close-morechair.close:hover {
+    transition: all ease 0.2s;
+    background-color: #636262;
+}
+
+.btn-close-morechair.del {
+    outline: 2px solid #7c7a7a;
+}
+
+.btn-close-morechair.del:hover {
+    transition: all ease 0.2s;
+    outline: 2px solid #636262;
 }
 
 /* table */

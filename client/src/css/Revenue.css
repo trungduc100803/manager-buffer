@@ -202,9 +202,27 @@
     font-weight: 600;
 }
 
-.revenueComp-item.img>img{
-    width:80px;
-    height:80px;
+.revenueComp-item.img>img {
+    width: 80px;
+    height: 80px;
     object-fit: cover;
     border-radius: 6px;
+}
+
+.revenue-total-item {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.revenue-total-title-item {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-right: 10px;
+}
+
+.revenue-total-item>span {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: red;
 }
