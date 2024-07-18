@@ -119,8 +119,10 @@ const ChairComp = () => {
     setModalEditNameChairIsOpen(true)
   }
 
+
   function closeModalEditNameChair() {
     setModalEditNameChairIsOpen(false)
+    setIdChair('')
   }
 
   function openModalEditNumberChair() {
@@ -129,6 +131,7 @@ const ChairComp = () => {
 
   function closeModalEditNumberChair() {
     setModalEditNumberChair(false)
+    setIdChair('')
   }
   function openModalEditChairErr() {
     setModalEditChairErr(true)
@@ -137,6 +140,7 @@ const ChairComp = () => {
   function closeModalEditChairErr() {
     setModalEditChairErr(false)
     setNumberChairErr([])
+    setIdChair('')
   }
 
   function openModalEditNumberChairBeautiful() {
@@ -145,6 +149,7 @@ const ChairComp = () => {
 
   function closeModalEditNumberChairBeautiful() {
     setModalEditNumberChairBeautiful(false)
+    setIdChair('')
   }
 
 
@@ -638,6 +643,7 @@ const TableComp = () => {
 
   const closeModalEditNameTable = () => {
     setModalEditNameTable(false)
+    setIdTable('')
   }
 
   const openModalAddNumberTable = () => {
@@ -647,6 +653,7 @@ const TableComp = () => {
 
   const closeModalAddNumberTable = () => {
     setAddNumberTable(false)
+    setIdTable('')
   }
 
   const openModalMinusNumberTable = () => {
@@ -656,6 +663,7 @@ const TableComp = () => {
 
   const closeModalMinusNumberTable = () => {
     setModalMinusNumberTable(false)
+    setIdTable('')
   }
 
 

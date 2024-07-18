@@ -183,8 +183,8 @@ export default function AddChair() {
             <input onChange={e => handleChange(e)} type="number" id='numberAtIn' />
           </div>
 
-          <div className="show-more-statuschair">
-            <HiPlus onClick={handleAddMorechair} />
+          <div className="show-more-statuschair" onClick={handleAddMorechair}>
+            <HiPlus className='statuschair-icon' />
             <span>Thêm chi tiết về tình trạng của ghế</span>
           </div>
 
@@ -203,13 +203,16 @@ export default function AddChair() {
             )) : <></>
           }
 
-          <button className={showMoreChair === true ? 'btn-close-morechair active' : 'btn-close-morechair'} onClick={handleCloseChairMore}>Đóng</button>
-          <button className={showMoreChair === true ? 'btn-close-morechair active' : 'btn-close-morechair'} onClick={removeChairMore}>Đóng</button>
+          <div className="morechair_btns">
 
-          <div className="addchair-item">
+            <button className={showMoreChair === true ? 'btn-close-morechair active' : 'btn-close-morechair'} onClick={handleCloseChairMore}>Xóa tất</button>
+            <button className={showMoreChair === true ? 'btn-close-morechair active' : 'btn-close-morechair'} onClick={removeChairMore}>Xóa 1 hàng</button>
+          </div>
+
+          {/* <div className="addchair-item">
             <label htmlFor="">Địa chỉ nhập</label>
             <input onChange={e => handleChange(e)} type="text" id='addressIn' />
-          </div>
+          </div> */}
           <div className="addchair-item">
             <label htmlFor="">Hình ảnh ghế</label>
             <input onChange={e => handleChangimg(e)} type="file" id='urlImg' accept='image/*' />

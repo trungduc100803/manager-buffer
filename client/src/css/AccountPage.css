@@ -78,7 +78,11 @@
     font-weight: 600;
 }
 
-.account-edit:hover {
+.account-edit>span {
+    margin-left: 16px;
+}
+
+.account-edit>span:hover {
     text-decoration: underline;
     transition: all ease 0.2s;
     cursor: pointer;

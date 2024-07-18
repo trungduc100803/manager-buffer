@@ -5,11 +5,11 @@ const chairController = {
         const {
             name, price, urlImg,
             color, dateIn, numberAtIn,
-            addressIn, moreStatus
+            moreStatus
         } = req.body
 
         try {
-            if (!name || !price || !urlImg || !color || !dateIn || !numberAtIn || !addressIn || !moreStatus) {
+            if (!name || !price || !urlImg || !color || !dateIn || !numberAtIn || !moreStatus) {
                 return res.status(400).send({
                     message: "Bạn hãy nhập đủ các thông tin",
                     success: false
@@ -17,7 +17,7 @@ const chairController = {
             }
 
             const chair = new Chair({
-                name, price, urlImg, color, dateIn, numberAtIn, addressIn, numberCurrent: numberAtIn, moreStatus
+                name, price, urlImg, color, dateIn, numberAtIn, numberCurrent: numberAtIn, moreStatus
             })
             await chair.save()
 

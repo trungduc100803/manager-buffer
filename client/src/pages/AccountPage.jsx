@@ -33,11 +33,15 @@ const AccountPage = () => {
     const dispatch = useDispatch()
     const { currentUser } = useSelector(state => state.user)
     const [modalIsOpen, setIsOpen] = useState(false);
+    const [modalEditPassIsOpen, setModalEditPassIsOpen] = useState(false);
     const [modalEdit, setModalEdit] = useState(false)
+    const [modalEditPass, setModalEditPass] = useState(false)
     const [password, setPassword] = useState('')
+    const [passwordEdit, setPasswordEdit] = useState('')
     const [loading, setLoading] = useState(false)
     const [dataAuth, setDataAuth] = useState(null)
     const [visiblePassword, setVisiblePassword] = useState(false)
+    const [dataNewPassword, setDataNewPassword] = useState(null)
 
     const [file, setFile] = useState(null)
     const [fileUrl, setFileUrl] = useState([])
@@ -104,6 +108,13 @@ const AccountPage = () => {
         setIsOpen(false);
     }
 
+    function openModalEditPass() {
+        setModalEditPassIsOpen(true);
+    }
+
+    function closeModalEditPass() {
+        setModalEditPassIsOpen(false);
+    }
     function openModalEdit() {
         setModalEdit(true);
     }
@@ -112,9 +123,22 @@ const AccountPage = () => {
         setModalEdit(false);
     }
 
+    function openModalEditPassNew() {
+        setModalEditPass(true);
+    }
+
+    function closeModalEditPassNew() {
+        setModalEditPass(false);
+    }
+
     const handleCloseModalVerify = event => {
         event.preventDefault()
         closeModal()
+    }
+
+    const handleCloseModalVerifyEditPass = event => {
+        event.preventDefault()
+        closeModalEditPass()
     }
 
     const handleVerifyPassword = async event => {
@@ -144,6 +168,25 @@ const AccountPage = () => {
         setDataAuth(a.auth)
     }
 
+    const handleVerifyPasswordEdit = async event => {
+        event.preventDefault()
+        const data = {
+            password: passwordEdit,
+            id: currentUser._id
+        }
+        //fetch to verify password: if true else closeModal and openModalEdit
+        setLoading(true)
+        const auth = await handleRequestApi.verifyPassword(data)
+
+        if (!auth.success) {
+            setLoading(false)
+            toast.error(auth.message)
+            return
+        }
+        closeModalEditPass()
+        openModalEditPassNew()
+    }
+
     const handleChange = event => {
         setDataAuth({ ...dataAuth, [event.target.id]: event.target.value })
     }
@@ -166,6 +209,37 @@ const AccountPage = () => {
         e.preventDefault()
         closeModalEdit()
     }
+
+    const handleChangePassword = async event => {
+        event.preventDefault()
+        if (dataNewPassword !== null) {
+            if (dataNewPassword.newpass === '' || dataNewPassword.repeatnewpass === '') {
+                toast.warning('Hẫy điền đầy đủ thông tin')
+                return
+            }
+
+            if (dataNewPassword.newpass != dataNewPassword.repeatnewpass) {
+                toast.warning('Mật khẩu không khớp nhau😢😢')
+                return
+            }
+        }
+
+        const auth = await handleRequestApi.changPassword(dataNewPassword.newpass, currentUser._id)
+        if (!auth.success) {
+            toast.warning(auth.message)
+            return
+        }
+
+        dispatch(setAuthSuccess(auth.auth))
+        closeModalEditPassNew()
+        toast(auth.message)
+    }
+
+    const handleChangeDataPassword = event => {
+        setDataNewPassword({ ...dataNewPassword, [event.target.id]: event.target.value })
+    }
+
+
 
     return (
         <div className='accountpage'>
@@ -198,7 +272,10 @@ const AccountPage = () => {
                             </span>
                         </div>
 
-                        <span onClick={() => openModal()} className="account-edit">Sửa</span>
+                        <div className="account-edit">
+                            <span onClick={() => openModal()} >Sửa</span>
+                            <span onClick={() => openModalEditPass()} >Đổi mật khẩu</span>
+                        </div>
                     </div>
                 </div>
             </>
@@ -211,7 +288,7 @@ const AccountPage = () => {
             >
                 <>
                     <form className="verify-user">
-                        <p>Mời bạn nhập lại mật khẩu đăng nhập</p>
+                        <p>Mời bạn nhập lại mật khẩu đăng nhập để thay đổi thông tin</p>
                         <div className="verify-user-item">
                             <label htmlFor="">Mật khẩu</label>
                             <input onChange={event => setPassword(event.target.value)} type="password" name="" id="password" />
@@ -224,6 +301,32 @@ const AccountPage = () => {
                                 }
                             </button>
                             <button onClick={e => handleCloseModalVerify(e)} className="verify-user-btn cancel">Hủy</button>
+                        </div>
+                    </form>
+                </>
+            </Modal>
+
+            <Modal
+                isOpen={modalEditPassIsOpen}
+                onRequestClose={closeModalEditPass}
+                style={customStyles}
+                contentLabel="Example Modal"
+            >
+                <>
+                    <form className="verify-user">
+                        <p>Mời bạn nhập lại mật khẩu đăng nhập hiện tại</p>
+                        <div className="verify-user-item">
+                            <label htmlFor="">Mật khẩu</label>
+                            <input onChange={event => setPasswordEdit(event.target.value)} type="password" name="" id="password" />
+                        </div>
+
+                        <div className="verify-user-btns">
+                            <button onClick={e => handleVerifyPasswordEdit(e)} className="verify-user-btn ok">
+                                {
+                                    loading ? 'loading...' : 'Kiểm tra'
+                                }
+                            </button>
+                            <button onClick={e => handleCloseModalVerifyEditPass(e)} className="verify-user-btn cancel">Hủy</button>
                         </div>
                     </form>
                 </>
@@ -280,6 +383,30 @@ const AccountPage = () => {
                         }
                     </form>
                 </>
+            </Modal>
+
+            <Modal
+                isOpen={modalEditPass}
+                onRequestClose={closeModalEditPassNew}
+                style={customStyles}
+                contentLabel="Example Modal"
+            >
+                <form action="" className="modal_edit_pass">
+                    <p className="modal_edit_title">Thay đổi mật khẩu</p>
+                    <div className="modal_edit_pass_input">
+                        <label htmlFor="">Nhập mật khẩu muốn thay đổi</label>
+                        <input type="password" name="" id="newpass" onChange={e => handleChangeDataPassword(e)} />
+                    </div>
+                    <div className="modal_edit_pass_input">
+                        <label htmlFor="">Nhập lại mật khẩu mật khẩu</label>
+                        <input type="password" name="" id="repeatnewpass" onChange={e => handleChangeDataPassword(e)} />
+                    </div>
+
+                    <div className="modal_edit_pass_btns">
+                        <button className='modal_edit--btn ok' onClick={e => handleChangePassword(e)}>Thay đổi</button>
+                        <button className='modal_edit--btn cancel'>Hủy</button>
+                    </div>
+                </form>
             </Modal>
         </div>
     )

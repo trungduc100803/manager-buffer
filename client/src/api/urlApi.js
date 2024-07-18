@@ -1,5 +1,5 @@
-const baseUrl = 'https://quanlykhohangokc.onrender.com/api/'
-// const baseUrl = 'http://localhost:5000/api/'
+// const baseUrl = 'https://quanlykhohangokc.onrender.com/api/'
+const baseUrl = 'http://localhost:5000/api/'
 
 const urlApi = {
     signupUrl: baseUrl + 'auth/sign-up',
@@ -18,6 +18,9 @@ const urlApi = {
     getMonthlyBillTableUrl: baseUrl + 'bill-table/get-monthly-bill-table',
     getAuthByIdUrl: (id) => {
         return baseUrl + `auth/get-auth-by-id/${id}`
+    },
+    changePasswordUrl: (id) => {
+        return baseUrl + `auth/change-password/${id}`
     },
     getChairByIdUrl: (id) => {
         return baseUrl + `chair/get-chair-byId/${id}`

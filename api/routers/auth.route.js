@@ -11,5 +11,6 @@ router.post('/verify-password', authController.verifyPassword)
 router.get('/get-account-admin', authController.getAccountAdmin)
 router.get('/get-auth-by-id/:id', authController.getAuthById)
 router.put('/update-auth', authController.updateAuth)
+router.put('/change-password/:id', authController.changPassword)
 
 export default router

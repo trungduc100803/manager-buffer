@@ -126,3 +126,35 @@
     display: block;
     margin-bottom: 30px;
 }
+
+.show-more-statuschair {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.statuschair-icon {
+    font-size: 1.2rem;
+    margin-right: 20px;
+}
+
+.morechair_btns {
+    display: flex;
+    align-items: center;
+}
+
+.btn-close-morechair {
+    font-weight: 600;
+}
+
+.btn-close-morechair.active:first-child {
+    margin-right: 20px;
+    border: 2px solid #555454;
+    color: #555454;
+}
+
+.btn-close-morechair.active:last-child {
+    background-color: #555454;
+    color: white;
+}

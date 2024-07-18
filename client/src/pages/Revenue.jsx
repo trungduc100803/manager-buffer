@@ -196,11 +196,8 @@ const RevenueChair = () => {
                                 {
                                     arrayBill.map((b) => {
                                         return <div className="revenue-body">
-                                            {
-                                                startDate && endDate ?
-                                                    <p className='option-tile'>Doanh thu {b[0] && formatDate(b[0].dateOut)}</p> :
-                                                    <></>
-                                            }
+                                            <p className='option-tile'>Doanh thu {b[0] && formatDate(b[0].dateOut)}</p>
+
                                             <div className="revenue-head">
                                                 <div className="revenue-head-item stt">STT</div>
                                                 <div className="revenue-head-item sender">Người bán</div>
@@ -406,11 +403,7 @@ const RevenueTable = () => {
                                 {
                                     arrayBill.map((b) => {
                                         return <div className="revenue-body">
-                                            {
-                                                startDate && endDate ?
-                                                    <p className='option-tile'>Doanh thu {b[0] && formatDate(b[0].dateOut)}</p> :
-                                                    <></>
-                                            }
+                                            <p className='option-tile'>Doanh thu {b[0] && formatDate(b[0].dateOut)}</p>
                                             <div className="revenue-head">
                                                 <div className="revenue-head-item stt">STT</div>
                                                 <div className="revenue-head-item sender">Người bán</div>

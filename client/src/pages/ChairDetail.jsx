@@ -129,7 +129,6 @@ export default function ChairDetail() {
     closeModal()
   }
 
-  console.log(adminAccount)
 
   return (
     <>
@@ -196,10 +195,10 @@ export default function ChairDetail() {
               <p className="chair-info-title">Số lượng lúc nhập:</p>
               <span>{chairData.numberAtIn}</span>
             </div>
-            <div className="chair-info">
+            {/* <div className="chair-info">
               <p className="chair-info-title">Địa chỉ nhập hàng:</p>
               <span>{chairData.addressIn}</span>
-            </div>
+            </div> */}
           </div>
 
           <div className="chair-tool">

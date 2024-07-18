@@ -225,6 +225,42 @@ const authController = {
         } catch (error) {
             next(error)
         }
+    },
+    changPassword: async (req, res, next) => {
+        const { newPass } = req.body
+        const { id } = req.params
+        try {
+            if (!id || !newPass) return res.status(400).send({
+                success: false,
+                message: 'thieu thong tin'
+            })
+
+            const auth = await Auth.findById(id)
+            if (!auth) return res.status(400).send({
+                success: false,
+                message: 'khong tim thay tai khoan'
+            })
+
+            const validPassword = await bcrypt.compare(newPass, auth.password)
+
+            if (validPassword) return res.status(200).send({
+                success: false,
+                message: 'Bạn nhập mật khẩu trùng với mật khẩu cũ'
+            })
+
+            const hashPassword = bcrypt.hashSync(newPass, 10);
+            auth.password = hashPassword
+            await auth.save()
+
+            return res.status(200).send({
+                success: true,
+                message: 'Đổi mật khẩu thành công',
+                auth
+            })
+
+        } catch (error) {
+            next(error)
+        }
     }
 
 }

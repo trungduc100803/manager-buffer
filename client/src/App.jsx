@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 import { socket } from './socketIO';
 import MainLayout from './layout/MainLayout'
@@ -18,11 +18,13 @@ import handleRequestApi from './api';
 import './App.css'
 import './responsive.css'
 import EditTable from './pages/EditTable';
+import { setAllChair } from './redux/chairSlice'
 
 
 
 const App = () => {
   const { currentUser } = useSelector(state => state.user)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     socket.on("connect", () => {
@@ -46,6 +48,17 @@ const App = () => {
           const dataAuth = await auth.auth
           toast(<ToastRecevie dataAuth={dataAuth} />)
         }
+      })
+
+      socket.on('received-res-export-chair', async data => {
+        const auth = await handleRequestApi.getAuthById(data.from)
+        if (!auth.success) {
+          return
+        }
+
+        const allChair = await handleRequestApi.getAllChair()
+        dispatch(setAllChair(allChair.chairs))
+        toast.success('ok')
       })
     });
   }, [])

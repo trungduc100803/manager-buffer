@@ -457,6 +457,18 @@ const handleRequestApi = {
         const tables = await res.json()
         return tables
     },
+    changPassword: async (newPassword, id) => {
+        const res = await fetch(urlApi.changePasswordUrl(id), {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ newPass: newPassword })
+        })
+        const auth = await res.json()
+        return auth
+    },
+
 
 }
 

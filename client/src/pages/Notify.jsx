@@ -9,6 +9,7 @@ import handleRequestApi from '../api'
 import { formatNumberWithDots, formatDate } from '../utils/index'
 import { setAllNotifyProductSuccess } from '../redux/notifyProductSlice'
 import NotNotify from '../assets/noNotify.webp'
+import { socket } from '../socketIO'
 
 export default function Notify() {
     const [tab, setTab] = useState(true)
@@ -90,6 +91,8 @@ const NotifyProduct = ({ notify }) => {
     const [auth, setAuth] = useState(null)
     const dispatch = useDispatch()
     const [product, setproduct] = useState(null)
+    const { currentUser } = useSelector(state => state.user)
+
     useEffect(() => {
         const getAuthSender = async () => {
             const auth = await handleRequestApi.getAuthById(notify.sender)
@@ -141,6 +144,11 @@ const NotifyProduct = ({ notify }) => {
                 await handleRequestApi.editStatusNotifyProduct(notify._id)
                 const allNotify = await handleRequestApi.getAllNotifyProduct()
                 dispatch(setAllNotifyProductSuccess(allNotify.notifyProducts))
+                const data = {
+                    from: currentUser._id,
+                    to: notify.sender
+                }
+                socket.emit('accept-export-chair', data)
                 toast.success('Phê duyệt thành công👌👌')
             }
         } else {

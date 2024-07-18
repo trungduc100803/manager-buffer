@@ -2,9 +2,9 @@ import Table from '../models/tableModel.model.js'
 
 const tableController = {
     addTable: async (req, res, next) => {
-        const { name, number, size, dateIn, addressIn, status, urlImgTable, price } = req.body
+        const { name, number, size, dateIn, status, urlImgTable, price } = req.body
         try {
-            if (!name || !number || !size || !dateIn || !addressIn || !status || !urlImgTable || !price) {
+            if (!name || !number || !size || !dateIn || !status || !urlImgTable || !price) {
                 return res.status(400).send({
                     success: false,
                     message: "Yêu cầu nhập đầy đủ các thông tin"
