@@ -159,6 +159,7 @@ const AccountPage = () => {
 
 
         closeModal()
+        setLoading(false)
         openModalEdit()
         const a = await handleRequestApi.getAuthById(currentUser._id)
         if (!a.success) {
@@ -183,6 +184,8 @@ const AccountPage = () => {
             toast.error(auth.message)
             return
         }
+
+        setLoading(false)
         closeModalEditPass()
         openModalEditPassNew()
     }
@@ -237,6 +240,11 @@ const AccountPage = () => {
 
     const handleChangeDataPassword = event => {
         setDataNewPassword({ ...dataNewPassword, [event.target.id]: event.target.value })
+    }
+
+    const handleCancelChangePass = event => {
+        event.preventDefault()
+        closeModalEditPassNew()
     }
 
 
@@ -404,7 +412,7 @@ const AccountPage = () => {
 
                     <div className="modal_edit_pass_btns">
                         <button className='modal_edit--btn ok' onClick={e => handleChangePassword(e)}>Thay đổi</button>
-                        <button className='modal_edit--btn cancel'>Hủy</button>
+                        <button className='modal_edit--btn cancel' onClick={e => handleCancelChangePass(e)}>Hủy</button>
                     </div>
                 </form>
             </Modal>

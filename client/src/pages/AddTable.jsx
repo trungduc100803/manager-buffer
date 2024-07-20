@@ -109,10 +109,10 @@ export default function AddTable() {
             <input onChange={e => handleChange(e)} type="text" id='price' />
           </div>
 
-          <div className="addchair-item">
+          {/* <div className="addchair-item">
             <label htmlFor="">Ngày nhập</label>
             <input onChange={e => handleChange(e)} type="date" id='dateIn' />
-          </div>
+          </div> */}
 
           <div className="addchair-item">
             <label htmlFor="">Số lượng lúc nhập</label>

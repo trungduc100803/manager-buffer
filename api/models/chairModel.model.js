@@ -24,10 +24,10 @@ const chairModel = mongoose.Schema({
         type: String,
         require: true
     },
-    dateIn: {
-        type: String,
-        require: true
-    },
+    // dateIn: {
+    //     type: String,
+    //     require: true
+    // },
     numberAtIn: {
         type: Number,
         require: true

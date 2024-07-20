@@ -4,12 +4,12 @@ const chairController = {
     addChair: async (req, res, next) => {
         const {
             name, price, urlImg,
-            color, dateIn, numberAtIn,
+            color, numberAtIn,
             moreStatus
         } = req.body
 
         try {
-            if (!name || !price || !urlImg || !color || !dateIn || !numberAtIn || !moreStatus) {
+            if (!name || !price || !urlImg || !color || !numberAtIn || !moreStatus) {
                 return res.status(400).send({
                     message: "Bạn hãy nhập đủ các thông tin",
                     success: false
@@ -17,7 +17,7 @@ const chairController = {
             }
 
             const chair = new Chair({
-                name, price, urlImg, color, dateIn, numberAtIn, numberCurrent: numberAtIn, moreStatus
+                name, price, urlImg, color, numberAtIn, numberCurrent: numberAtIn, moreStatus
             })
             await chair.save()
 

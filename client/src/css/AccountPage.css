@@ -209,3 +209,46 @@
 .show-password>span {
     font-size: 1rem;
 }
+
+.modal_edit_title {
+    font-size: 1.2rem;
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+
+.modal_edit_pass_input {
+    margin-bottom: 24px;
+}
+
+.modal_edit_pass_input>label {
+    font-weight: 600;
+    color: #636161;
+}
+
+.modal_edit_pass_input>input {
+    margin-top: 10px;
+    width: 100%;
+    border-radius: 6px;
+}
+
+.modal_edit_pass_btns {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+
+.modal_edit--btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.modal_edit--btn.cancel {
+    border: 2px solid #333;
+    margin-left: 20px;
+}
+
+.modal_edit--btn.ok {
+    background-color: aquamarine;
+}

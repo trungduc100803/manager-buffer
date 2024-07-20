@@ -173,10 +173,10 @@ export default function AddChair() {
             <input onChange={e => handleChange(e)} type="text" id='color' />
           </div>
 
-          <div className="addchair-item">
+          {/* <div className="addchair-item">
             <label htmlFor="">Ngày nhập</label>
             <input onChange={e => handleChange(e)} type="date" id='dateIn' />
-          </div>
+          </div> */}
 
           <div className="addchair-item">
             <label htmlFor="">Số lượng lúc nhập</label>
@@ -185,7 +185,7 @@ export default function AddChair() {
 
           <div className="show-more-statuschair" onClick={handleAddMorechair}>
             <HiPlus className='statuschair-icon' />
-            <span>Thêm chi tiết về tình trạng của ghế</span>
+            <span>Thêm chi tiết về tình trạng của ghế nếu có ghế lỗi</span>
           </div>
 
           {

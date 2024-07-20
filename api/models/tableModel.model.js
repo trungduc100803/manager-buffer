@@ -25,10 +25,10 @@ const tableSchema = mongoose.Schema({
     //     require: true
     // },
     //ok
-    dateIn: {
-        type: String,
-        require: true
-    },
+    // dateIn: {
+    //     type: String,
+    //     require: true
+    // },
     //ok
     addressIn: {
         type: String,

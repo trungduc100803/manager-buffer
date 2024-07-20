@@ -117,6 +117,7 @@ const ChairComp = () => {
 
   function openModalEditNameChair() {
     setModalEditNameChairIsOpen(true)
+    setShowOption(false)
   }
 
 
@@ -127,6 +128,7 @@ const ChairComp = () => {
 
   function openModalEditNumberChair() {
     setModalEditNumberChair(true)
+    setShowOption(false)
   }
 
   function closeModalEditNumberChair() {
@@ -135,6 +137,8 @@ const ChairComp = () => {
   }
   function openModalEditChairErr() {
     setModalEditChairErr(true)
+    setShowOption(false)
+
   }
 
   function closeModalEditChairErr() {
@@ -145,6 +149,8 @@ const ChairComp = () => {
 
   function openModalEditNumberChairBeautiful() {
     setModalEditNumberChairBeautiful(true)
+    setShowOption(false)
+
   }
 
   function closeModalEditNumberChairBeautiful() {
