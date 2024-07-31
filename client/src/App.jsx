@@ -28,7 +28,6 @@ const App = () => {
 
   useEffect(() => {
     socket.on("connect", () => {
-      console.log(socket.id);
       socket.emit('user-online', currentUser._id)
       if (currentUser.isAdmin) {
         socket.emit('admin-online', currentUser._id)

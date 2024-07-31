@@ -67,13 +67,13 @@ const HomePage = () => {
     const getMonthChair = async () => {
         const chairs = await handleRequestApi.getMonthlyBill()
         if (!chairs.success) return
-        setMonthlyChair(chairs.monthlyBills[0].bills)
+        setMonthlyChair(chairs.monthlyBills[0]?.bills)
     }
 
     const getMonthTable = async () => {
         const tables = await handleRequestApi.getMonthlyBillTable()
         if (!tables.success) return
-        setMonthlyTable(tables.monthlyBills[0].bills)
+        setMonthlyTable(tables.monthlyBills[0]?.bills)
     }
 
 

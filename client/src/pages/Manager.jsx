@@ -101,7 +101,9 @@ const ChairComp = () => {
       setChairData(res.chair)
     }
 
-    getChairById(idChair)
+    if (idChair) {
+      getChairById(idChair)
+    }
   }, [idChair])
 
   function openModal(id) {
@@ -701,7 +703,9 @@ const TableComp = () => {
       setTableData(res.table)
     }
 
-    getTableById(idTable)
+    if (idTable) {
+      getTableById(idTable)
+    }
   }, [idTable])
 
 
