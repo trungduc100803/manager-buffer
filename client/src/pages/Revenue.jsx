@@ -33,6 +33,7 @@ export default function Revenue() {
 const RevenueChair = () => {
     const dispatch = useDispatch()
     const { allBill, loading } = useSelector(state => state.bill)
+    const [allBillGroup, setAllBillGroup] = useState(null)
     const [stateFilter, setStateFilter] = useState('today')
     const [startDate, setStartdate] = useState(null)
     const [endDate, setEndDate] = useState(null)
@@ -129,14 +130,17 @@ const RevenueChair = () => {
         setTotalRevenue(total)
     }, [allBill])
 
-    const groupedByDateOut = allBill.reduce((acc, item) => {
+    let groupedByDateOut = null
 
-        if (!acc[item.dateOut]) {
-            acc[item.dateOut] = [];
-        }
-        acc[item.dateOut].push(item);
-        return acc;
-    }, {});
+    if (allBill != undefined) {
+        groupedByDateOut = allBill.reduce((acc, item) => {
+            if (!acc[item.dateOut]) {
+                acc[item.dateOut] = [];
+            }
+            acc[item.dateOut].push(item);
+            return acc;
+        }, {});
+    }
     const arrayBill = Object.values(groupedByDateOut)
 
     const handleTotalItem = (item) => {
@@ -338,14 +342,17 @@ const RevenueTable = () => {
         setTotalRevenue(total)
     }, [allBillTable])
 
-    const groupedByDateOut = allBillTable.reduce((acc, item) => {
+    let groupedByDateOut = null
+    if (allBillTable != undefined) {
+        groupedByDateOut = allBillTable.reduce((acc, item) => {
+            if (!acc[item.dateOut]) {
+                acc[item.dateOut] = [];
+            }
+            acc[item.dateOut].push(item);
+            return acc;
+        }, {});
+    }
 
-        if (!acc[item.dateOut]) {
-            acc[item.dateOut] = [];
-        }
-        acc[item.dateOut].push(item);
-        return acc;
-    }, {});
     const arrayBill = Object.values(groupedByDateOut)
 
     const handleTotalItem = (item) => {

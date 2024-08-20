@@ -62,6 +62,23 @@ const App = () => {
     });
   }, [])
 
+  const handleBeforeUnload = (event) => {
+    localStorage.clear()
+  };
+
+  useEffect(() => {
+    // window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener('onbeforeunload', handleBeforeUnload)
+
+    window.addEventListener('onload', () => {
+      return
+    })
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
   return (
     <BrowserRouter>
       <ToastContainer />
