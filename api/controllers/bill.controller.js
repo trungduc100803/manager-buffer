@@ -1,4 +1,5 @@
 import Bill from "../models/billModel.model.js";
+import Auth from '../models/authModel.model.js';
 
 
 const billController = {
@@ -72,6 +73,38 @@ const billController = {
 
             return res.send({
                 bills,
+                success: true,
+                message: 'ok'
+            })
+
+        } catch (error) {
+            next(error)
+        }
+    },
+    getBillOptionAndName: async (req, res, next) => {
+
+        try {
+            const nameEmployee = req.query.nameEmployee
+
+            const bills = await Bill.find()
+
+
+            let billsName = []
+            for (let i = 0; i < bills.length; i++) {
+                const getSender = async () => {
+                    const sender = await Auth.find(bills[i].sender)
+                    if (sender.username === nameEmployee) {
+                        billsName.push(bills[i])
+                    }
+                }
+                getSender()
+            }
+            if (billsName.length > 1) {
+                billsName.reverse()
+            }
+
+            return res.send({
+                billsName,
                 success: true,
                 message: 'ok'
             })

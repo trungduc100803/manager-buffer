@@ -44,8 +44,8 @@ const TablePage = () => {
                     {
                         listCurrentTable.length > 0 ?
                             listCurrentTable.map((table, i) => (
-                                <div className="tablepage-card-item">
-                                    <Card key={table._id} data={table} slug={slug.table} />
+                                <div key={table._id} className="tablepage-card-item">
+                                    <Card data={table} slug={slug.table} />
                                 </div>
                             )) :
                             <div className='img_nochair'>

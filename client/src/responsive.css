@@ -36,6 +36,8 @@
         width: 13%;
     }
 
+
+
     .revenue-filter {
         display: block;
     }
@@ -319,6 +321,14 @@
         transform: translateX(-100%);
         display: none;
         opacity: 0;
+    }
+
+    .chair-infos {
+        margin-top: 30px;
+    }
+
+    .chair-info>p {
+        font-size: 0.9rem;
     }
 
     .header {

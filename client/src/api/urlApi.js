@@ -1,5 +1,5 @@
-const baseUrl = 'https://quanlykhohangokc.onrender.com/api/'
-// const baseUrl = 'http://localhost:5000/api/'
+// const baseUrl = 'https://quanlykhohangokc.onrender.com/api/'
+const baseUrl = 'http://localhost:5000/api/'
 
 const urlApi = {
     signupUrl: baseUrl + 'auth/sign-up',
@@ -72,6 +72,9 @@ const urlApi = {
     },
     getBillOption: (startDate, endDate) => {
         return baseUrl + `bill/get-bill-option?startDate=${startDate}&endDate=${endDate}`
+    },
+    getBillOptionAndNameUrl: (nameEmployee) => {
+        return baseUrl + `bill/get-bill-option-and-name?nameEmployee=${nameEmployee}`
     },
     getBillTableOptionUrl: (startDate, endDate) => {
         return baseUrl + `bill-table/get-bill-table-option?startDate=${startDate}&endDate=${endDate}`

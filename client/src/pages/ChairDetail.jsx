@@ -191,10 +191,10 @@ export default function ChairDetail() {
               <p className="chair-info-title">Ngày nhập về kho:</p>
               <span>{chairData.dateIn && formatDate(chairData.dateIn)}</span>
             </div> */}
-            <div className="chair-info">
+            {/* <div className="chair-info">
               <p className="chair-info-title">Số lượng lúc nhập:</p>
               <span>{chairData.numberAtIn}</span>
-            </div>
+            </div> */}
             {/* <div className="chair-info">
               <p className="chair-info-title">Địa chỉ nhập hàng:</p>
               <span>{chairData.addressIn}</span>

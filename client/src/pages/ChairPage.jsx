@@ -30,8 +30,8 @@ const ChairPage = () => {
                     {
                         listCurrentChair.length > 0 ?
                             listCurrentChair.map((chair, i) => (
-                                <div className="chairpage-card-item">
-                                    <Card key={chair._id} data={chair} slug={slug.chair} />
+                                <div key={chair._id} className="chairpage-card-item">
+                                    <Card data={chair} slug={slug.chair} />
                                 </div>
                             )) :
                             <div className='img_nochair'>

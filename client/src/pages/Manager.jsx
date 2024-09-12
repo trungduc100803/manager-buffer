@@ -596,7 +596,7 @@ const TableComp = () => {
   const [indexShow, setIndexShow] = useState(null)
   const [modalEditNameTable, setModalEditNameTable] = useState(false)
   const [nameEditTable, setNameEditTable] = useState(null)
-  const [addNumberTable, setAddNumberTable] = useState(null)
+  const [addNumberTable, setAddNumberTable] = useState()
   const [numberFutureTable, setNumberFutureTable] = useState(0)
   const [modalMinusNumberTable, setModalMinusNumberTable] = useState(null)
   const [minusNumberTable, setMinusNumberTable] = useState(0)

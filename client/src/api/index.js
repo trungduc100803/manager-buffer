@@ -300,6 +300,18 @@ const handleRequestApi = {
 
         return bills
     },
+    getBillOptionAndName: async (nameEmployee) => {
+        const res = await fetch(urlApi.getBillOptionAndNameUrl(nameEmployee), {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+
+        const bills = await res.json()
+
+        return bills
+    },
     getBillTableOption: async (startDate, endDate) => {
         const res = await fetch(urlApi.getBillTableOptionUrl(startDate, endDate), {
             method: "GET",

@@ -16,16 +16,33 @@
     margin-top: 40px;
     padding-bottom: 50px;
     border-bottom: 1px solid #757575;
+    flex-wrap: wrap;
 }
 
 .revenue-filter-left {
     width: 50%;
 }
 
-.revenue-filter-right {
-    flex: 1;
+.revenue-filter-rigth {
+    width: 50%;
 }
 
+.revenue-filter-name {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.form-filter-name-item>label {
+    margin-right: 10px;
+}
+
+.form-filter-name-item>select {
+    width: 300px;
+    border-radius: 4px;
+}
+
+.revenue-filter-name>p,
 .revenue-filter-rigth>p,
 .revenue-filter-left>p {
     font-size: 1.1rem;

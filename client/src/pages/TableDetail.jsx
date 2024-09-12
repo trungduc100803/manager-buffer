@@ -156,10 +156,10 @@ export default function TableDetail() {
               <p className="chair-info-title">Ngày nhập về kho:</p>
               <span>{tableData && tableData.dateIn}</span>
             </div>
-            <div className="chair-info">
+            {/* <div className="chair-info">
               <p className="chair-info-title">Số lượng lúc nhập:</p>
               <span>{tableData && tableData.number}</span>
-            </div>
+            </div> */}
             {/* <div className="chair-info">
               <p className="chair-info-title">Địa chỉ nhập hàng:</p>
               <span>{tableData && tableData.addressIn}</span>

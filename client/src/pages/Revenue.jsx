@@ -38,6 +38,7 @@ const RevenueChair = () => {
     const [startDate, setStartdate] = useState(null)
     const [endDate, setEndDate] = useState(null)
     const [totalRevenue, setTotalRevenue] = useState(0)
+    const [nameEmployee, setNameEmployee] = useState('')
 
     const getBillToday = async () => {
         const date = new Date()
@@ -105,20 +106,32 @@ const RevenueChair = () => {
         setEndDate(newDate)
     }
 
-    const handleFilter = async (e) => {
-        e.preventDefault()
-        if (startDate === null || endDate === null) {
-            toast.warning('Yêu cầu nhập đủ ngày tháng để tìm kiếm😊')
-            return
+    const handleFilter = async () => {
+        // e.preventDefault()
+
+        // dispatch(setAllBillPending())
+        if (nameEmployee === "") {
+            if (startDate === null || endDate === null) {
+                toast.warning('Yêu cầu nhập đủ ngày tháng để tìm kiếm😊')
+                return
+            }
+            dispatch(setAllBillPending())
+            const bills = await handleRequestApi.getBillOption(startDate, endDate)
+            if (!bills.success) {
+                dispatch(setAllBillFailure('loi'))
+                return
+            }
+            dispatch(setAllBillSuccess(bills.bills))
+            setStateFilter('')
+        } else {
+            if (startDate === null && endDate === null) {
+                //loc theo ten
+                const b = await handleRequestApi.getBillOptionAndName(nameEmployee)
+                console.log(b)
+            } else {
+                console.log(nameEmployee)
+            }
         }
-        dispatch(setAllBillPending())
-        const bills = await handleRequestApi.getBillOption(startDate, endDate)
-        if (!bills.success) {
-            dispatch(setAllBillFailure('loi'))
-            return
-        }
-        dispatch(setAllBillSuccess(bills.bills))
-        setStateFilter('')
     }
 
     useEffect(() => {
@@ -152,7 +165,6 @@ const RevenueChair = () => {
         return formatNumberWithDots(total)
     }
 
-
     return (
 
         <>
@@ -180,7 +192,7 @@ const RevenueChair = () => {
 
                         <div className="revenue-filter-rigth">
                             <p>Tùy chọn</p>
-                            <form onSubmit={e => handleFilter(e)} className="revenue-filter-rigth-body">
+                            <div className="revenue-filter-rigth-body">
                                 <div className="revenue-filter-rigth-item">
                                     <label htmlFor="">Từ ngày</label>
                                     <input type="date" name="" id="startDate" onChange={e => handleChangeStartDate(e)} />
@@ -189,48 +201,65 @@ const RevenueChair = () => {
                                     <label htmlFor="">Đến ngày</label>
                                     <input type="date" name="" id="endDate" onChange={e => handleChangeEndDate(e)} />
                                 </div>
-                                <button className='btn-filter' type='submit'>Lọc</button>
+                            </div>
+                        </div>
+
+                        <div className="revenue-filter-name">
+                            <p>Lọc theo tên nhân viên</p>
+                            <form action="" className='form-filter-name'>
+                                <div className="form-filter-name-item">
+                                    <label htmlFor="">Tên nhân viên</label>
+                                    <select onChange={e => setNameEmployee(e.target.value)} name="nameEmployee" id="nameEmployee">
+                                        <option value="">VD: --Nguyễn Văn A--</option>
+                                        <option value="a">a</option>
+                                        <option value="b">b</option>
+                                        <option value="c">c</option>
+                                    </select>
+                                </div>
                             </form>
                         </div>
+                        <button onClick={handleFilter} className='btn-filter' type='submit'>Lọc</button>
+
                     </div>
                     {
                         loading ? 'loading ....' :
-                            arrayBill &&
-                            <>
-                                {
-                                    arrayBill.map((b) => {
-                                        return <div className="revenue-body">
-                                            <p className='option-tile'>Doanh thu {b[0] && formatDate(b[0].dateOut)}</p>
+                            arrayBill.length > 0 ?
+                                <>
+                                    {
+                                        arrayBill.map((b, i) => {
+                                            return <div key={i} className="revenue-body">
+                                                <p className='option-tile'>Doanh thu {b[0] && formatDate(b[0].dateOut)}</p>
 
-                                            <div className="revenue-head">
-                                                <div className="revenue-head-item stt">STT</div>
-                                                <div className="revenue-head-item sender">Người bán</div>
-                                                <div className="revenue-head-item product">Sản phẩm</div>
-                                                <div className="revenue-head-item img">Hình ảnh</div>
-                                                <div className="revenue-head-item color">Màu sắc</div>
-                                                <div className="revenue-head-item number">Số lượng</div>
-                                                <div className="revenue-head-item dateOut">Ngày xuất</div>
-                                                <div className="revenue-head-item price">Đơn giá</div>
-                                                <div className="revenue-head-item totalPrice">Tổng</div>
+                                                <div className="revenue-head">
+                                                    <div className="revenue-head-item stt">STT</div>
+                                                    <div className="revenue-head-item sender">Người bán</div>
+                                                    <div className="revenue-head-item product">Sản phẩm</div>
+                                                    <div className="revenue-head-item img">Hình ảnh</div>
+                                                    <div className="revenue-head-item color">Màu sắc</div>
+                                                    <div className="revenue-head-item number">Số lượng</div>
+                                                    <div className="revenue-head-item dateOut">Ngày xuất</div>
+                                                    <div className="revenue-head-item price">Đơn giá</div>
+                                                    <div className="revenue-head-item totalPrice">Tổng</div>
+                                                </div>
+                                                {
+                                                    b && b.map((bill, i) => <RevenueComp revenue={bill} stt={i + 1} key={i} />)
+                                                }
+
+                                                <div className="revenue-total-item">
+                                                    <p className='revenue-total-title-item'>Tổng hóa đơn:</p>
+                                                    <span>{handleTotalItem(b)}</span>
+                                                </div>
+
+
+                                                <div className="revenue-total">
+                                                    <p className='revenue-total-title'>Tổng hóa đơn:</p>
+                                                    <span>{formatNumberWithDots(totalRevenue)}</span>
+                                                </div>
                                             </div>
-                                            {
-                                                b && b.map((bill, i) => <RevenueComp revenue={bill} stt={i + 1} key={i} />)
-                                            }
-
-                                            <div className="revenue-total-item">
-                                                <p className='revenue-total-title-item'>Tổng hóa đơn:</p>
-                                                <span>{handleTotalItem(b)}</span>
-                                            </div>
-
-
-                                            <div className="revenue-total">
-                                                <p className='revenue-total-title'>Tổng hóa đơn:</p>
-                                                <span>{formatNumberWithDots(totalRevenue)}</span>
-                                            </div>
-                                        </div>
-                                    })
-                                }
-                            </>
+                                        })
+                                    }
+                                </> :
+                                <div>Không có sản phẩm nào!!</div>
                     }
                 </div >
             }
@@ -408,8 +437,8 @@ const RevenueTable = () => {
                             arrayBill &&
                             <>
                                 {
-                                    arrayBill.map((b) => {
-                                        return <div className="revenue-body">
+                                    arrayBill.map((b, i) => {
+                                        return <div key={i} className="revenue-body">
                                             <p className='option-tile'>Doanh thu {b[0] && formatDate(b[0].dateOut)}</p>
                                             <div className="revenue-head">
                                                 <div className="revenue-head-item stt">STT</div>
