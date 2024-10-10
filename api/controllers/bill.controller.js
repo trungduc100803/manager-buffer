@@ -42,7 +42,13 @@ const billController = {
                 }
             })
 
-            if (bills.length > 1) {
+            if (bills.length < 1) {
+                return res.status(200).send({
+                    success: true,
+                    message: "OK",
+                    bills: []
+                })
+            } else {
                 bills.reverse()
             }
 
@@ -92,9 +98,9 @@ const billController = {
             let billsName = []
             for (let i = 0; i < bills.length; i++) {
                 const getSender = async () => {
-                    const sender = await Auth.find(bills[i].sender)
-                    if (sender.username === nameEmployee) {
-                        billsName.push(bills[i])
+                    const sender = await Auth.findOne(bills[i].sender)
+                    if (sender.username == nameEmployee) {
+                        billsName = [1]
                     }
                 }
                 getSender()

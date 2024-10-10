@@ -1,5 +1,5 @@
-const baseUrl = 'https://quanlykhohangokc.onrender.com/api/'
-// const baseUrl = 'http://localhost:5000/api/'
+// const baseUrl = 'https://quanlykhohangokc.onrender.com/api/'
+const baseUrl = 'http://localhost:5000/api/'
 
 const urlApi = {
     signupUrl: baseUrl + 'auth/sign-up',
@@ -12,6 +12,7 @@ const urlApi = {
     deleteChairUrl: baseUrl + 'chair/delete-chair',
     deleteTableUrl: baseUrl + 'table/delete-table',
     getAccountAdminUrl: baseUrl + 'auth/get-account-admin',
+    getAllAuthUrl: baseUrl + 'auth/get-all-auth',
     getWeeklyBillUrl: baseUrl + 'bill/get-weekly-bill',
     getMonthlyBillUrl: baseUrl + 'bill/get-monthly-bill',
     getWeeklyBillTableUrl: baseUrl + 'bill-table/get-weekly-bill-table',

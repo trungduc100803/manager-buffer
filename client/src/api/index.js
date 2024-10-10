@@ -436,6 +436,16 @@ const handleRequestApi = {
         const bills = await res.json()
         return bills
     },
+    getAllAuth: async () => {
+        const res = await fetch(urlApi.getAllAuthUrl, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+        const auths = await res.json()
+        return auths
+    },
     editNameTableById: async (name, id) => {
         const res = await fetch(urlApi.editNameTableUrl(id), {
             method: "PUT",

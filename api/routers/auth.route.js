@@ -10,6 +10,7 @@ router.post('/sign-out', authController.singOut)
 router.post('/verify-password', authController.verifyPassword)
 router.get('/get-account-admin', authController.getAccountAdmin)
 router.get('/get-auth-by-id/:id', authController.getAuthById)
+router.get('/get-all-auth', authController.getAllAuth)
 router.put('/update-auth', authController.updateAuth)
 router.put('/change-password/:id', authController.changPassword)
 

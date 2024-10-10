@@ -261,6 +261,17 @@ const authController = {
         } catch (error) {
             next(error)
         }
+    },
+    getAllAuth: async (req, res, next) => {
+        try {
+            const allAuth = await Auth.find()
+            return res.status(200).send({
+                success: true,
+                allAuth
+            })
+        } catch (error) {
+            next(error)
+        }
     }
 
 }

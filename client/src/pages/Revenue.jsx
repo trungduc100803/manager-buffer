@@ -6,24 +6,24 @@ import { toast } from 'react-toastify'
 import '../css/Revenue.css'
 import { formatDate, formatNumberWithDots } from '../utils/index'
 import handleRequestApi from '../api'
-import billSlice, { setAllBillFailure, setAllBillPending, setAllBillSuccess } from '../redux/billSlice'
+import { setAllBillFailure, setAllBillPending, setAllBillSuccess } from '../redux/billSlice'
 import { setAllBillTableFailure, setAllBillTablePending, setAllBillTableSuccess } from '../redux/billTableSlice'
 
 export default function Revenue() {
-    const [tab, setTab] = useState(true)
+    const [tab, setTab] = useState('true')
 
     return <>
         <div className="tab-manager revenu">
-            <div className={tab ? 'tab-manager-item active' : "tab-manager-item"} onClick={() => setTab(true)}>
+            <div className={tab === 'true' ? 'tab-manager-item active' : "tab-manager-item"} onClick={() => setTab('true')}>
                 <p>Ghế</p>
             </div>
 
-            <div className={tab ? 'tab-manager-item' : 'tab-manager-item active'} onClick={() => setTab(false)}>
+            <div className={tab === 'true' ? 'tab-manager-item' : 'tab-manager-item active'} onClick={() => setTab('false')}>
                 <p>Bàn</p>
             </div>
         </div>
         {
-            tab && tab ? <RevenueChair /> : <RevenueTable />
+            tab && tab === 'true' ? <RevenueChair /> : <RevenueTable />
         }
     </>
 
@@ -39,6 +39,7 @@ const RevenueChair = () => {
     const [endDate, setEndDate] = useState(null)
     const [totalRevenue, setTotalRevenue] = useState(0)
     const [nameEmployee, setNameEmployee] = useState('')
+    const [allAuth, setAllAuth] = useState([])
 
     const getBillToday = async () => {
         const date = new Date()
@@ -70,6 +71,15 @@ const RevenueChair = () => {
         }
         dispatch(setAllBillSuccess((bills.monthlyBills[0].bills).reverse()))
     }
+
+    useEffect(() => {
+        const getAllAuth = async () => {
+            const auths = await handleRequestApi.getAllAuth()
+            if (!auths.success) return
+            setAllAuth(auths.allAuth)
+        }
+        getAllAuth()
+    }, [])
 
 
     useEffect(() => {
@@ -211,9 +221,12 @@ const RevenueChair = () => {
                                     <label htmlFor="">Tên nhân viên</label>
                                     <select onChange={e => setNameEmployee(e.target.value)} name="nameEmployee" id="nameEmployee">
                                         <option value="">VD: --Nguyễn Văn A--</option>
-                                        <option value="a">a</option>
-                                        <option value="b">b</option>
-                                        <option value="c">c</option>
+                                        {
+                                            allAuth.length > 0 ?
+                                                allAuth.map((auth, i) => <option key={i} value={auth.username}>{auth.username}</option>)
+                                                :
+                                                <></>
+                                        }
                                     </select>
                                 </div>
                             </form>
